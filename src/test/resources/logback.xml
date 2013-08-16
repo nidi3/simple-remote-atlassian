@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="A1" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%-4r [%t] %-5p %c - %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.apache.axis" level="WARN"/>
+    <logger name="httpclient" level="WARN"/>
+
+    <root level="DEBUG">
+        <appender-ref ref="A1"/>
+    </root>
+</configuration>

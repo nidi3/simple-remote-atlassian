@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>stni.atlassian.remote</groupId>
+    <artifactId>simple-remote-atlassian</artifactId>
+    <version>1.0.6-SNAPSHOT</version>
+
+    <name>${project.artifactId}</name>
+
+    <description />
+    <properties>
+        <slf4j-version>1.6.6</slf4j-version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.compiler.version>1.6</project.build.compiler.version>
+
+
+        <!-- SONAR reporting server, works only on bamboo! -->
+        <sonar.jdbc.url>${mimacom-sonar-jdbc-url}</sonar.jdbc.url>
+        <sonar.jdbc.driverClassName>${mimacom-sonar-jdbc-driver-class-name}</sonar.jdbc.driverClassName>
+        <sonar.jdbc.username>${mimacom-sonar-jdbc-username}</sonar.jdbc.username>
+        <sonar.jdbc.password>${mimacom-sonar-jdbc-password}</sonar.jdbc.password>
+        <sonar.host.url>${mimacom-sonar-host-url}</sonar.host.url>
+
+        <sonar.sourceEncoding>${project.build.sourceEncoding}</sonar.sourceEncoding>
+        <sonar.branch>TRUNK</sonar.branch>
+        <sonar.java.source>${project.build.compiler.version}</sonar.java.source>
+        <sonar.java.target>${project.build.compiler.version}</sonar.java.target>
+        <sonar.exclusions>com/**/*.java,org/apache/xml/**/*.java,**/DefaultJiraService.java,**/DefaultConfluenceService.java</sonar.exclusions>
+    </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>2.0</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>${project.build.compiler.version}</source>
+                    <target>${project.build.compiler.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.scala-tools</groupId>
+                <artifactId>maven-scala-plugin</artifactId>
+                <version>2.14.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.2.2</version>
+                <configuration>
+                    <checkModificationExcludeList>workspace.xml</checkModificationExcludeList>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.1</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.7</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.2</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.5</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>2.5.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>axistools-maven-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>wsdl2java</goal>
+                        </goals>
+                        <configuration>
+                            <urls>
+                                <url>https://jira.mimacom.com/rpc/soap/jirasoapservice-v2?wsdl</url>
+                                <url>https://rune.mimacom.com/rpc/soap-axis/confluenceservice-v2?wsdl</url>
+                            </urls>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-webdav-jackrabbit</artifactId>
+                <version>2.2</version>
+            </extension>
+        </extensions>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>stni</groupId>
+            <artifactId>text-transform</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>2.10.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.8</version>
+        </dependency>
+        <dependency>
+            <groupId>axis</groupId>
+            <artifactId>axis</artifactId>
+            <version>1.2.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.mail</groupId>
+                    <artifactId>mail</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>axis</groupId>
+            <artifactId>axis-jaxrpc</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${slf4j-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>1.7</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.0.7</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest_2.10</artifactId>
+            <version>1.9.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <scm>
+        <connection>scm:git:https://git.mimacom.com/scm/MIMACOM/simple-remote-atlassian.git</connection>
+        <developerConnection>scm:git:https://git.mimacom.com/scm/MIMACOM/simple-remote-atlassian.git</developerConnection>
+        <url>https://git.mimacom.com/projects/MIMACOM/repos/simple-remote-atlassian/browse</url>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>mimacom-repo-id-deploy-open</id>
+            <name>mimacom releases open</name>
+            <uniqueVersion>false</uniqueVersion>
+            <url>${mimacom-deploy-path-releases-open}</url>
+        </repository>
+        <snapshotRepository>
+            <id>mimacom-repo-id-deploy-open</id>
+            <name>mimacom snapshots open</name>
+            <uniqueVersion>false</uniqueVersion>
+            <url>${mimacom-deploy-path-snapshots-open}</url>
+        </snapshotRepository>
+        <site>
+            <id>mimacom-repo-id-deploy-open</id>
+            <name>mimacom sites open</name>
+            <url>${mimacom-deploy-path-sites-open}/simple-remote-atlassian/${project.version}</url>
+        </site>
+    </distributionManagement>
+
+</project>
