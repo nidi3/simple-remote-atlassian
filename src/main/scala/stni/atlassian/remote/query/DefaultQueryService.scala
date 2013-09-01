@@ -4,7 +4,7 @@ import org.slf4j.LoggerFactory
 import com.atlassian.jira.rpc.soap.beans.{RemoteIssueType, RemotePriority, RemoteIssue, RemoteProject}
 import java.util.Collections
 import collection.convert.Wrappers
-import stni.atlassian.remote.JiraService
+import stni.atlassian.remote.jira.JiraService
 
 /**
  *

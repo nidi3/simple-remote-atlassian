@@ -6,11 +6,11 @@ import com.atlassian.jira.rpc.soap.beans.RemoteProject;
 import com.atlassian.jira.rpc.soap.beans.RemoteVersion;
 import org.junit.Ignore;
 import org.junit.Test;
-import stni.atlassian.remote.ConfluenceService;
-import stni.atlassian.remote.JiraService;
+import stni.atlassian.remote.confluence.ConfluenceService;
+import stni.atlassian.remote.jira.JiraService;
 import stni.atlassian.remote.script.RemoteJira;
-import stni.atlassian.remote.ConfluenceTasks;
-import stni.atlassian.remote.JiraTasks;
+import stni.atlassian.remote.confluence.ConfluenceTasks;
+import stni.atlassian.remote.jira.JiraTasks;
 
 import java.util.List;
 import java.util.Map;

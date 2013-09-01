@@ -1,0 +1,19 @@
+package stni.atlassian.remote.jira.rest;
+
+import org.codehaus.jackson.type.TypeReference;
+import stni.atlassian.remote.rest.RestAccess;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+/**
+ *
+ */
+public class JiraRestAccess extends RestAccess{
+    public static final TypeReference<HashMap<String, ArrayList<IssueLinkType>>> MAP_WITH_LINKTYPES_TYPE_REFERENCE = new TypeReference<HashMap<String, ArrayList<IssueLinkType>>>() {
+    };
+
+    public JiraRestAccess(String base, String username, String password) {
+        super(base+"/rest/api/2/",username,password);
+    }
+}

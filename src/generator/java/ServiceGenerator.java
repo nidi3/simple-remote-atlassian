@@ -1,10 +1,10 @@
 import com.mimacom.jira.rpc.soap.jirasoapservice_v2.JiraSoapService;
 import com.mimacom.rune.rpc.soap_axis.confluenceservice_v2.ConfluenceSoapService;
-import stni.atlassian.remote.ConfluenceService;
-import stni.atlassian.remote.ConfluenceTasks;
-import stni.atlassian.remote.JiraService;
-import stni.atlassian.remote.JiraTasks;
-import stni.atlassian.remote.rest.JiraRestService;
+import stni.atlassian.remote.confluence.ConfluenceService;
+import stni.atlassian.remote.confluence.ConfluenceTasks;
+import stni.atlassian.remote.jira.JiraService;
+import stni.atlassian.remote.jira.JiraTasks;
+import stni.atlassian.remote.jira.rest.JiraRestService;
 
 import java.io.*;
 import java.lang.reflect.Method;
@@ -28,28 +28,26 @@ public class ServiceGenerator {
 
     public static void main(String[] args) throws IOException {
         ServiceGenerator generator = new ServiceGenerator();
-        generator.generateService("/rpc/soap/jirasoapservice-v2", "JiraService", JiraSoapService.class, "getJirasoapserviceV2", JiraRestService.class, JiraTasks.class);
-        generator.generateService("/rpc/soap-axis/confluenceservice-v2", "ConfluenceService", ConfluenceSoapService.class, "getConfluenceserviceV2", ConfluenceTasks.class);
-    }
-
-    public ServiceGenerator() {
-        targetDirectory().mkdirs();
+        generator.generateService("/rpc/soap/jirasoapservice-v2", "jira", JiraSoapService.class, "getJirasoapserviceV2", JiraRestService.class, JiraTasks.class);
+        generator.generateService("/rpc/soap-axis/confluenceservice-v2", "confluence", ConfluenceSoapService.class, "getConfluenceserviceV2", ConfluenceTasks.class);
     }
 
     private void generateService(String path, String name, Class<?> serviceClass, String serviceGetter, Class<?>... delegateClasses) throws IOException {
-        generateInterface(name, serviceClass, delegateClasses);
-        final String className = "Default" + name;
-        PrintWriter writer = createWriter(className);
-        writer.println("package " + PACKAGE + ";");
+        String interfaceName = Character.toUpperCase(name.charAt(0)) + name.substring(1) + "Service";
+        generateInterface(name, interfaceName, serviceClass, delegateClasses);
+        final String implName = "Default" + interfaceName;
+        PrintWriter writer = createWriter(name, implName);
+        writer.println("package " + PACKAGE + "." + name + ";");
         writer.println("import java.net.URL;");
-        writer.println("public class " + className + " implements " + name + "{");
+        writer.println("import "+PACKAGE+".AtlassianException;");
+        writer.println("public class " + implName + " implements " + interfaceName + "{");
         writer.println("  private final String baseUrl;");
         writer.println("  private final String token;");
         writer.println("  private final " + serviceClass.getName() + " service;");
         for (Class<?> delegateClass : delegateClasses) {
             writer.println("  private final " + delegateClass.getName() + " " + paramName(delegateClass) + ";");
         }
-        writer.println("  public " + className + "(String baseUrl, String username, String password){");
+        writer.println("  public " + implName + "(String baseUrl, String username, String password){");
         writer.println("    this.baseUrl = baseUrl;");
         writer.println("    try{");
         writer.println("      " + serviceClass.getName() + "ServiceLocator locator = new " + serviceClass.getName() + "ServiceLocator();");
@@ -65,7 +63,7 @@ public class ServiceGenerator {
             writer.println(");");
         }
         writer.println("    }catch(Exception e){");
-        writer.println("      throw new AtlassianException(\"Error initing " + className + "\",e);");
+        writer.println("      throw new AtlassianException(\"Error initing " + implName + "\",e);");
         writer.println("    }");
         writer.println("  }");
         writer.println("  public String getBaseUrl(){ return baseUrl; }");
@@ -77,13 +75,15 @@ public class ServiceGenerator {
         writer.close();
     }
 
-    private File targetDirectory() {
-        return new File("src/main/java/" + PACKAGE.replace('.', '/'));
+    private File targetDirectory(String name) {
+        final File dir = new File("src/main/java/" + PACKAGE.replace('.', '/') + "/" + name);
+        dir.mkdirs();
+        return dir;
     }
 
-    private void generateInterface(String className, Class<?> serviceClass, Class<?>... delegateClasses) throws IOException {
-        PrintWriter writer = createWriter(className);
-        writer.println("package " + PACKAGE + ";");
+    private void generateInterface(String subPackage, String className, Class<?> serviceClass, Class<?>... delegateClasses) throws IOException {
+        PrintWriter writer = createWriter(subPackage, className);
+        writer.println("package " + PACKAGE + "." + subPackage + ";");
         writer.println("public interface " + className + "{");
         writer.println("  String getBaseUrl();");
         writeMethodDecls(writer, serviceClass, true);
@@ -94,8 +94,8 @@ public class ServiceGenerator {
         writer.close();
     }
 
-    private PrintWriter createWriter(String className) throws IOException {
-        final File file = new File(targetDirectory(), className + ".java");
+    private PrintWriter createWriter(String subPackage, String className) throws IOException {
+        final File file = new File(targetDirectory(subPackage), className + ".java");
         System.out.println("Writing to file " + file);
         return new PrintWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
     }

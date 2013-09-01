@@ -13,33 +13,9 @@
         <slf4j-version>1.6.6</slf4j-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.compiler.version>1.6</project.build.compiler.version>
-
-
-        <!-- SONAR reporting server, works only on bamboo! -->
-        <sonar.jdbc.url>${mimacom-sonar-jdbc-url}</sonar.jdbc.url>
-        <sonar.jdbc.driverClassName>${mimacom-sonar-jdbc-driver-class-name}</sonar.jdbc.driverClassName>
-        <sonar.jdbc.username>${mimacom-sonar-jdbc-username}</sonar.jdbc.username>
-        <sonar.jdbc.password>${mimacom-sonar-jdbc-password}</sonar.jdbc.password>
-        <sonar.host.url>${mimacom-sonar-host-url}</sonar.host.url>
-
-        <sonar.sourceEncoding>${project.build.sourceEncoding}</sonar.sourceEncoding>
-        <sonar.branch>TRUNK</sonar.branch>
-        <sonar.java.source>${project.build.compiler.version}</sonar.java.source>
-        <sonar.java.target>${project.build.compiler.version}</sonar.java.target>
-        <sonar.exclusions>com/**/*.java,org/apache/xml/**/*.java,**/DefaultJiraService.java,**/DefaultConfluenceService.java</sonar.exclusions>
     </properties>
 
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>sonar-maven-plugin</artifactId>
-                    <version>2.0</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
