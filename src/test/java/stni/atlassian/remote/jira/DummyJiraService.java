@@ -635,7 +635,7 @@ public class DummyJiraService implements JiraService {
     }
 
     @Override
-    public RemoteIssue createRequirementAndFeature(RemoteProject remoteProject0, String string1, String string2) {
+    public RemoteIssue createRequirementAndFeature(RemoteProject remoteProject0, String string1, String string2,String s) {
         return null; 
     }
 

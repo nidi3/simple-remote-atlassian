@@ -36,13 +36,13 @@ public class DefaultConfluenceService implements ConfluenceService{
     try{
       return service.addAnonymousViewUserProfilePermission(token);
     }catch(Exception e){throw new AtlassianException("Error calling addAnonymousViewUserProfilePermission.",e);}}
-  public com.atlassian.confluence.rpc.soap.beans.RemoteAttachment addAttachment(long long1,com.atlassian.confluence.rpc.soap.beans.RemoteAttachment remoteAttachment2,byte[] byte3){
-    try{
-      return service.addAttachment(token,long1,remoteAttachment2,byte3);
-    }catch(Exception e){throw new AtlassianException("Error calling addAttachment.",e);}}
   public com.atlassian.confluence.rpc.soap.beans.RemoteAttachment addAttachment(com.atlassian.confluence.rpc.soap.beans.RemoteAttachment remoteAttachment1,byte[] byte2){
     try{
       return service.addAttachment(token,remoteAttachment1,byte2);
+    }catch(Exception e){throw new AtlassianException("Error calling addAttachment.",e);}}
+  public com.atlassian.confluence.rpc.soap.beans.RemoteAttachment addAttachment(long long1,com.atlassian.confluence.rpc.soap.beans.RemoteAttachment remoteAttachment2,byte[] byte3){
+    try{
+      return service.addAttachment(token,long1,remoteAttachment2,byte3);
     }catch(Exception e){throw new AtlassianException("Error calling addAttachment.",e);}}
   public com.atlassian.confluence.rpc.soap.beans.RemoteComment addComment(com.atlassian.confluence.rpc.soap.beans.RemoteComment remoteComment1){
     try{
@@ -108,13 +108,13 @@ public class DefaultConfluenceService implements ConfluenceService{
     try{
       return service.addSpaceWithDefaultPermissions(token,remoteSpace1);
     }catch(Exception e){throw new AtlassianException("Error calling addSpaceWithDefaultPermissions.",e);}}
-  public void addUser(com.atlassian.confluence.rpc.soap.beans.RemoteUser remoteUser1,java.lang.String string2){
-    try{
-      service.addUser(token,remoteUser1,string2);
-    }catch(Exception e){throw new AtlassianException("Error calling addUser.",e);}}
   public void addUser(com.atlassian.confluence.rpc.soap.beans.RemoteUser remoteUser1,java.lang.String string2,boolean boolean3){
     try{
       service.addUser(token,remoteUser1,string2,boolean3);
+    }catch(Exception e){throw new AtlassianException("Error calling addUser.",e);}}
+  public void addUser(com.atlassian.confluence.rpc.soap.beans.RemoteUser remoteUser1,java.lang.String string2){
+    try{
+      service.addUser(token,remoteUser1,string2);
     }catch(Exception e){throw new AtlassianException("Error calling addUser.",e);}}
   public boolean addUserToGroup(java.lang.String string1,java.lang.String string2){
     try{

@@ -514,9 +514,9 @@ public class DefaultJiraService implements JiraService{
     try{
       return jiraTasks.actionByName(string0,string1);
     }catch(Exception e){throw new AtlassianException("Error calling actionByName.",e);}}
-  public com.atlassian.jira.rpc.soap.beans.RemoteIssue createRequirementAndFeature(com.atlassian.jira.rpc.soap.beans.RemoteProject remoteProject0,java.lang.String string1,java.lang.String string2){
+  public com.atlassian.jira.rpc.soap.beans.RemoteIssue createRequirementAndFeature(com.atlassian.jira.rpc.soap.beans.RemoteProject remoteProject0,java.lang.String string1,java.lang.String string2,java.lang.String string3){
     try{
-      return jiraTasks.createRequirementAndFeature(remoteProject0,string1,string2);
+      return jiraTasks.createRequirementAndFeature(remoteProject0,string1,string2,string3);
     }catch(Exception e){throw new AtlassianException("Error calling createRequirementAndFeature.",e);}}
   public java.lang.String customFieldByName(com.atlassian.jira.rpc.soap.beans.RemoteIssue remoteIssue0,java.lang.String string1){
     try{

@@ -5,8 +5,8 @@ public interface ConfluenceService{
   boolean addAnonymousPermissionsToSpace(java.lang.String[] string1,java.lang.String string2);
   boolean addAnonymousUsePermission();
   boolean addAnonymousViewUserProfilePermission();
-  com.atlassian.confluence.rpc.soap.beans.RemoteAttachment addAttachment(long long1,com.atlassian.confluence.rpc.soap.beans.RemoteAttachment remoteAttachment2,byte[] byte3);
   com.atlassian.confluence.rpc.soap.beans.RemoteAttachment addAttachment(com.atlassian.confluence.rpc.soap.beans.RemoteAttachment remoteAttachment1,byte[] byte2);
+  com.atlassian.confluence.rpc.soap.beans.RemoteAttachment addAttachment(long long1,com.atlassian.confluence.rpc.soap.beans.RemoteAttachment remoteAttachment2,byte[] byte3);
   com.atlassian.confluence.rpc.soap.beans.RemoteComment addComment(com.atlassian.confluence.rpc.soap.beans.RemoteComment remoteComment1);
   boolean addGlobalPermission(java.lang.String string1,java.lang.String string2);
   boolean addGlobalPermissions(java.lang.String[] string1,java.lang.String string2);
@@ -23,8 +23,8 @@ public interface ConfluenceService{
   com.atlassian.confluence.rpc.soap.beans.RemoteSpace addSpace(com.atlassian.confluence.rpc.soap.beans.RemoteSpace remoteSpace1);
   com.atlassian.confluence.rpc.soap.beans.RemoteSpaceGroup addSpaceGroup(com.atlassian.confluence.rpc.soap.beans.RemoteSpaceGroup remoteSpaceGroup1);
   com.atlassian.confluence.rpc.soap.beans.RemoteSpace addSpaceWithDefaultPermissions(com.atlassian.confluence.rpc.soap.beans.RemoteSpace remoteSpace1);
-  void addUser(com.atlassian.confluence.rpc.soap.beans.RemoteUser remoteUser1,java.lang.String string2);
   void addUser(com.atlassian.confluence.rpc.soap.beans.RemoteUser remoteUser1,java.lang.String string2,boolean boolean3);
+  void addUser(com.atlassian.confluence.rpc.soap.beans.RemoteUser remoteUser1,java.lang.String string2);
   boolean addUserToGroup(java.lang.String string1,java.lang.String string2);
   boolean changeMyPassword(java.lang.String string1,java.lang.String string2);
   boolean changeUserPassword(java.lang.String string1,java.lang.String string2);

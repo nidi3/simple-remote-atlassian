@@ -14,7 +14,7 @@ public class JiraTasksLiveTest {
     @Test
     @Ignore
     public void testCreateRequirementAndFeature() throws Exception {
-        JiraTasks tasks = new JiraTasks(new DefaultJiraService("https://jira.mimacom.com",System.getenv("JIRA_USER"), System.getenv("JIRA_PASS")));
+        JiraTasks tasks = new JiraTasks(new DefaultJiraService("https://jira.mimacom.com", System.getenv("JIRA_USER"), System.getenv("JIRA_PASS")));
         tasks.progressStatusAction("IPOM-100", "close", "closed");
         tasks.progressStatusAction("IPOM-100", "resolve", "resolved");
         tasks.progressStatusAction("IPOM-100", "reopen", "reopened");
@@ -33,13 +33,13 @@ public class JiraTasksLiveTest {
         issue = tasks.getService().getIssue("IPOM-113");
         Object o = tasks.getService().executeGet("issue/IPOM-113");
         List linkTypes = tasks.getService().getIssueLinkTypes();
-        tasks.createRequirementAndFeature(sibad, "My summary", "my desc");
+        tasks.createRequirementAndFeature(sibad, "My summary", "my desc", "mimacom security level");
     }
 
     @Test
     @Ignore
     public void testDelete() throws Exception {
-        JiraTasks tasks = new JiraTasks(new DefaultJiraService("https://jira.mimacom.com",System.getenv("JIRA_USER"), System.getenv("JIRA_PASS")));
+        JiraTasks tasks = new JiraTasks(new DefaultJiraService("https://jira.mimacom.com", System.getenv("JIRA_USER"), System.getenv("JIRA_PASS")));
         for (int i = 1229; i <= 1234; i++) {
             tasks.getService().deleteIssue("SIBAD-" + i);
         }

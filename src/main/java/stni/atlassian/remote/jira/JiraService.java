@@ -124,7 +124,7 @@ public interface JiraService{
   void linkIssues(stni.atlassian.remote.jira.rest.IssueLink issueLink0);
   java.io.InputStream loadAttachment(com.atlassian.jira.rpc.soap.beans.RemoteAttachment remoteAttachment0);
   com.atlassian.jira.rpc.soap.beans.RemoteNamedObject actionByName(java.lang.String string0,java.lang.String string1);
-  com.atlassian.jira.rpc.soap.beans.RemoteIssue createRequirementAndFeature(com.atlassian.jira.rpc.soap.beans.RemoteProject remoteProject0,java.lang.String string1,java.lang.String string2);
+  com.atlassian.jira.rpc.soap.beans.RemoteIssue createRequirementAndFeature(com.atlassian.jira.rpc.soap.beans.RemoteProject remoteProject0,java.lang.String string1,java.lang.String string2,java.lang.String string3);
   java.lang.String customFieldByName(com.atlassian.jira.rpc.soap.beans.RemoteIssue remoteIssue0,java.lang.String string1);
   java.lang.String fieldNameById(java.lang.String string0);
   com.atlassian.jira.rpc.soap.beans.RemoteIssue[] getIssues(com.atlassian.jira.rpc.soap.beans.RemoteProject remoteProject0,com.atlassian.jira.rpc.soap.beans.RemoteVersion remoteVersion1,boolean boolean2);
