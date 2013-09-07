@@ -20,6 +20,13 @@ import java.util.Map;
  */
 public class JiraRestServiceTest {
     @Test
+    public void test() throws IOException, RestException {
+        JiraService js = new DefaultJiraService("https://jira.mimacom.com", System.getenv("JIRA_USER"), System.getenv("JIRA_PASS"));
+        final List<Map<String, Object>> description = js.getIssuesByJql("project=LS and key=LS-62", 0, 100, "description", null);
+        System.out.println(description);
+    }
+
+    @Test
     @Ignore
     public void testRest() throws IOException, RestException {
         JiraService js = new DefaultJiraService("https://jira.mimacom.com", System.getenv("JIRA_USER"), System.getenv("JIRA_PASS"));

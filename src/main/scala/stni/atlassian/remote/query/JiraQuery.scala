@@ -1,7 +1,7 @@
 package stni.atlassian.remote.query
 
 import org.slf4j.LoggerFactory
-import stni.text.transform.{TransformContext, Formatter, Parser, Attribute}
+import stni.text.transform.{TransformContext, Formatter, Attribute}
 import stni.text.transform.Name._
 import stni.text.transform.Segment._
 import stni.text.transform.parse.SimpleParser
@@ -15,7 +15,7 @@ import java.util.Locale
 class JiraQuery(service: QueryService,
                 maxResult: Int = 100,
                 globalExpression: String = null,
-                parser: Parser = new SimpleParser(new TransformContext(0, Locale.ENGLISH, null)),
+                parser: QueryParser = new QueryParser(new SimpleParser(new TransformContext(0, Locale.ENGLISH, null))),
                 formatter: Formatter = new SimpleFormatter) {
 
   import JiraQuery._
