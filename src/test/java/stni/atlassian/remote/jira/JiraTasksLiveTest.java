@@ -6,6 +6,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -15,6 +16,7 @@ public class JiraTasksLiveTest {
     @Ignore
     public void testCreateRequirementAndFeature() throws Exception {
         JiraTasks tasks = new JiraTasks(new DefaultJiraService("https://jira.mimacom.com", System.getenv("JIRA_USER"), System.getenv("JIRA_PASS")));
+        RemoteIssue[] issues = tasks.getService().getIssuesFromJqlSearch("parent in (LS-354) and (type='Acceptance Criteria')",3);
         tasks.progressStatusAction("IPOM-100", "close", "closed");
         tasks.progressStatusAction("IPOM-100", "resolve", "resolved");
         tasks.progressStatusAction("IPOM-100", "reopen", "reopened");

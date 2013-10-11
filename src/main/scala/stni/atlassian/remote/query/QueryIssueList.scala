@@ -42,6 +42,8 @@ class QueryIssueList(query: JiraQuery, elems: Seq[QueryIssue]) extends QueryIssu
 
   def timeToResolve: Long = query.timeToResolve(issue)
 
+  override def toString: String = elems.toString
+
 }
 
 object QueryIssueList {

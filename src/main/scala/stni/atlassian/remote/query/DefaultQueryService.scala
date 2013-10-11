@@ -5,6 +5,7 @@ import com.atlassian.jira.rpc.soap.beans.{RemoteIssueType, RemotePriority, Remot
 import java.util.Collections
 import collection.convert.Wrappers
 import stni.atlassian.remote.jira.JiraService
+import stni.atlassian.remote.AtlassianException
 
 /**
  *
@@ -15,28 +16,35 @@ class DefaultQueryService(service: JiraService) extends QueryService {
   def getProjectsByKey(keys: String*): Seq[RemoteProject] = {
     Wrappers.JListWrapper(
       keys.length match {
-        case 0 => service.getAllProjects
-        case 1 => Collections.singletonList(service.getProjectByKey(keys(0)))
-        case _ => service.getProjectsByKey(keys: _*)
+        case 0 => wrap((dummy: String) => service.getAllProjects, null)
+        case 1 => Collections.singletonList(wrap(service.getProjectByKey, keys(0)))
+        case _ => wrap((keys:Seq[String])=>service.getProjectsByKey(keys:_*), keys)
       })
   }
 
-  def getIssue(issueKey: String): RemoteIssue = service.getIssue(issueKey)
+  def getIssue(issueKey: String): RemoteIssue = wrap(service.getIssue, issueKey)
 
-  def getIssuesFromFilter(filter: String): Seq[RemoteIssue] = service.getIssuesFromFilter(filter)
+  def getIssuesFromFilter(filter: String): Seq[RemoteIssue] = wrap(service.getIssuesFromFilter, filter)
 
   def getIssuesFromJqlSearch(query: String, maxResults: Int): Seq[RemoteIssue] = {
     log.debug("Executing jql '{}'", query)
-    service.getIssuesFromJqlSearch(query, maxResults)
+    wrap((q: String) => service.getIssuesFromJqlSearch(q, maxResults), query)
   }
 
   def baseUrl: String = service.getBaseUrl
 
-  def customField(issue: RemoteIssue, name: String): String = service.customFieldByName(issue, name)
+  def customField(issue: RemoteIssue, name: String): String = wrap((i: RemoteIssue) => service.customFieldByName(i, name), issue)
 
-  def priorityById(id: String): RemotePriority = service.priorityById(id)
+  def priorityById(id: String): RemotePriority = wrap(service.priorityById, id)
 
-  def issueTypeById(id: String): RemoteIssueType = service.issueTypeById(id)
+  def issueTypeById(id: String): RemoteIssueType = wrap(service.issueTypeById, id)
 
-  def timeToResolve(issue: RemoteIssue): Long = service.timeToResolve(issue)
+  def timeToResolve(issue: RemoteIssue): Long = wrap(service.timeToResolve, issue)
+
+  private def wrap[P, T](exec: P => T, param: P): T =
+    try {
+      exec(param)
+    } catch {
+      case e: AtlassianException => throw new QueryException(param.toString, e.getCause)
+    }
 }

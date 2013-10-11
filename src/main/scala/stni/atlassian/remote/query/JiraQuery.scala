@@ -40,10 +40,18 @@ class JiraQuery(service: QueryService,
     service.getIssuesFromJqlSearch(s + JqlBuilder.and(globalExpression), maxResult)
 
   def parseAndFormat(s: String, issue: QueryIssueList): String = {
+    def parse = {
+      try {
+        parser.parse(s)(ISSUE -> issue)
+      } catch {
+        case e: Exception => throw new ParseException(issue, e)
+      }
+    }
+
     if (s == null) {
       ""
     } else {
-      val root = parser.parse(s)(ISSUE -> issue)
+      val root = parse
       val formatted = formatter.format(root)
       log.trace("Formatting input\n{}\n****** parsed:\n{}\n****** formatted:\n{}\n******", Array(s, root, formatted))
       formatted
