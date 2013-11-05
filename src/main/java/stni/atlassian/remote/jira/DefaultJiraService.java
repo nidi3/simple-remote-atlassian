@@ -1,8 +1,6 @@
 package stni.atlassian.remote.jira;
-
-import stni.atlassian.remote.AtlassianException;
-
 import java.net.URL;
+import stni.atlassian.remote.AtlassianException;
 public class DefaultJiraService implements JiraService{
   private final String baseUrl;
   private final String token;
@@ -482,9 +480,9 @@ public class DefaultJiraService implements JiraService{
     try{
       return jiraRestService.executePost(string0,object1);
     }catch(Exception e){throw new AtlassianException("Error calling executePost.",e);}}
-  public java.util.List<java.util.Map<java.lang.String, java.lang.Object>> getAllIssuesByJql(java.lang.String string0,java.lang.String string1,java.lang.String string2){
+  public java.util.List<java.util.Map<java.lang.String, java.lang.Object>> getAllIssuesByJql(java.lang.String string0,java.lang.String string1,java.util.List list2){
     try{
-      return jiraRestService.getAllIssuesByJql(string0,string1,string2);
+      return jiraRestService.getAllIssuesByJql(string0,string1,list2);
     }catch(Exception e){throw new AtlassianException("Error calling getAllIssuesByJql.",e);}}
   public java.util.List<com.atlassian.jira.rpc.soap.beans.RemoteProject> getAllProjects(){
     try{
@@ -494,9 +492,13 @@ public class DefaultJiraService implements JiraService{
     try{
       return jiraRestService.getIssueLinkTypes();
     }catch(Exception e){throw new AtlassianException("Error calling getIssueLinkTypes.",e);}}
-  public java.util.List<java.util.Map<java.lang.String, java.lang.Object>> getIssuesByJql(java.lang.String string0,int int1,int int2,java.lang.String string3,java.lang.String string4){
+  public java.util.List<java.util.Map<java.lang.String, java.lang.Object>> getIssuesByJql(java.lang.String string0,int int1,int int2,java.lang.String string3,java.util.List list4){
     try{
-      return jiraRestService.getIssuesByJql(string0,int1,int2,string3,string4);
+      return jiraRestService.getIssuesByJql(string0,int1,int2,string3,list4);
+    }catch(Exception e){throw new AtlassianException("Error calling getIssuesByJql.",e);}}
+  public com.atlassian.jira.rpc.soap.beans.RemoteIssue[] getIssuesByJql(java.lang.String string0,int int1,int int2){
+    try{
+      return jiraRestService.getIssuesByJql(string0,int1,int2);
     }catch(Exception e){throw new AtlassianException("Error calling getIssuesByJql.",e);}}
   public java.util.List<com.atlassian.jira.rpc.soap.beans.RemoteProject> getProjectsByKey(java.lang.String... string0){
     try{

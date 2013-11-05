@@ -18,7 +18,7 @@ class DefaultQueryService(service: JiraService) extends QueryService {
       keys.length match {
         case 0 => wrap((dummy: String) => service.getAllProjects, null)
         case 1 => Collections.singletonList(wrap(service.getProjectByKey, keys(0)))
-        case _ => wrap((keys:Seq[String])=>service.getProjectsByKey(keys:_*), keys)
+        case _ => wrap((keys: Seq[String]) => service.getProjectsByKey(keys: _*), keys)
       })
   }
 
@@ -28,7 +28,7 @@ class DefaultQueryService(service: JiraService) extends QueryService {
 
   def getIssuesFromJqlSearch(query: String, maxResults: Int): Seq[RemoteIssue] = {
     log.debug("Executing jql '{}'", query)
-    wrap((q: String) => service.getIssuesFromJqlSearch(q, maxResults), query)
+    wrap((q: String) => service.getIssuesByJql(q, 0, maxResults), query)
   }
 
   def baseUrl: String = service.getBaseUrl

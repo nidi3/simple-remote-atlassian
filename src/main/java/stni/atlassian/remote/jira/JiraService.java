@@ -116,10 +116,11 @@ public interface JiraService{
   void updateWorklogWithNewRemainingEstimate(com.atlassian.jira.rpc.soap.beans.RemoteWorklog remoteWorklog1,java.lang.String string2);
   java.lang.Object executeGet(java.lang.String string0);
   java.lang.Object executePost(java.lang.String string0,java.lang.Object object1);
-  java.util.List<java.util.Map<java.lang.String, java.lang.Object>> getAllIssuesByJql(java.lang.String string0,java.lang.String string1,java.lang.String string2);
+  java.util.List<java.util.Map<java.lang.String, java.lang.Object>> getAllIssuesByJql(java.lang.String string0,java.lang.String string1,java.util.List list2);
   java.util.List<com.atlassian.jira.rpc.soap.beans.RemoteProject> getAllProjects();
   java.util.List<stni.atlassian.remote.jira.rest.IssueLinkType> getIssueLinkTypes();
-  java.util.List<java.util.Map<java.lang.String, java.lang.Object>> getIssuesByJql(java.lang.String string0,int int1,int int2,java.lang.String string3,java.lang.String string4);
+  java.util.List<java.util.Map<java.lang.String, java.lang.Object>> getIssuesByJql(java.lang.String string0,int int1,int int2,java.lang.String string3,java.util.List list4);
+  com.atlassian.jira.rpc.soap.beans.RemoteIssue[] getIssuesByJql(java.lang.String string0,int int1,int int2);
   java.util.List<com.atlassian.jira.rpc.soap.beans.RemoteProject> getProjectsByKey(java.lang.String... string0);
   void linkIssues(stni.atlassian.remote.jira.rest.IssueLink issueLink0);
   java.io.InputStream loadAttachment(com.atlassian.jira.rpc.soap.beans.RemoteAttachment remoteAttachment0);

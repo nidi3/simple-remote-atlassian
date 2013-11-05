@@ -119,10 +119,6 @@ public class DummyJiraService implements JiraService {
         return null; 
     }
 
-    @Override
-    public RemoteProjectRole createProjectRole(RemoteProjectRole remoteProjectRole1) {
-        return null; 
-    }
 
     @Override
     public RemoteUser createUser(String string1, String string2, String string3, String string4) {
@@ -595,7 +591,12 @@ public class DummyJiraService implements JiraService {
     }
 
     @Override
-    public List<Map<String, Object>> getAllIssuesByJql(String string0, String string1, String string2) {
+    public List<Map<String, Object>> getAllIssuesByJql(String string0, String string1, List list2) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public List<Map<String, Object>> getIssuesByJql(String string0, int int1, int int2, String string3, List list4) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -610,8 +611,13 @@ public class DummyJiraService implements JiraService {
     }
 
     @Override
-    public List<Map<String, Object>> getIssuesByJql(String string0, int int1, int int2, String string3, String string4) {
+    public RemoteProjectRole createProjectRole(RemoteProjectRole remoteProjectRole1) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public RemoteIssue[] getIssuesByJql(String string0, int int1, int int2) {
+        return new RemoteIssue[0];  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override

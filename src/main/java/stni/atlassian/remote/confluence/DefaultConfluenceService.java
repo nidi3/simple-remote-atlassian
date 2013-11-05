@@ -1,8 +1,6 @@
 package stni.atlassian.remote.confluence;
-
-import stni.atlassian.remote.AtlassianException;
-
 import java.net.URL;
+import stni.atlassian.remote.AtlassianException;
 public class DefaultConfluenceService implements ConfluenceService{
   private final String baseUrl;
   private final String token;
@@ -36,13 +34,13 @@ public class DefaultConfluenceService implements ConfluenceService{
     try{
       return service.addAnonymousViewUserProfilePermission(token);
     }catch(Exception e){throw new AtlassianException("Error calling addAnonymousViewUserProfilePermission.",e);}}
-  public com.atlassian.confluence.rpc.soap.beans.RemoteAttachment addAttachment(com.atlassian.confluence.rpc.soap.beans.RemoteAttachment remoteAttachment1,byte[] byte2){
-    try{
-      return service.addAttachment(token,remoteAttachment1,byte2);
-    }catch(Exception e){throw new AtlassianException("Error calling addAttachment.",e);}}
   public com.atlassian.confluence.rpc.soap.beans.RemoteAttachment addAttachment(long long1,com.atlassian.confluence.rpc.soap.beans.RemoteAttachment remoteAttachment2,byte[] byte3){
     try{
       return service.addAttachment(token,long1,remoteAttachment2,byte3);
+    }catch(Exception e){throw new AtlassianException("Error calling addAttachment.",e);}}
+  public com.atlassian.confluence.rpc.soap.beans.RemoteAttachment addAttachment(com.atlassian.confluence.rpc.soap.beans.RemoteAttachment remoteAttachment1,byte[] byte2){
+    try{
+      return service.addAttachment(token,remoteAttachment1,byte2);
     }catch(Exception e){throw new AtlassianException("Error calling addAttachment.",e);}}
   public com.atlassian.confluence.rpc.soap.beans.RemoteComment addComment(com.atlassian.confluence.rpc.soap.beans.RemoteComment remoteComment1){
     try{
@@ -108,13 +106,13 @@ public class DefaultConfluenceService implements ConfluenceService{
     try{
       return service.addSpaceWithDefaultPermissions(token,remoteSpace1);
     }catch(Exception e){throw new AtlassianException("Error calling addSpaceWithDefaultPermissions.",e);}}
-  public void addUser(com.atlassian.confluence.rpc.soap.beans.RemoteUser remoteUser1,java.lang.String string2,boolean boolean3){
-    try{
-      service.addUser(token,remoteUser1,string2,boolean3);
-    }catch(Exception e){throw new AtlassianException("Error calling addUser.",e);}}
   public void addUser(com.atlassian.confluence.rpc.soap.beans.RemoteUser remoteUser1,java.lang.String string2){
     try{
       service.addUser(token,remoteUser1,string2);
+    }catch(Exception e){throw new AtlassianException("Error calling addUser.",e);}}
+  public void addUser(com.atlassian.confluence.rpc.soap.beans.RemoteUser remoteUser1,java.lang.String string2,boolean boolean3){
+    try{
+      service.addUser(token,remoteUser1,string2,boolean3);
     }catch(Exception e){throw new AtlassianException("Error calling addUser.",e);}}
   public boolean addUserToGroup(java.lang.String string1,java.lang.String string2){
     try{
@@ -156,13 +154,13 @@ public class DefaultConfluenceService implements ConfluenceService{
     try{
       return service.exportSite(token,boolean1);
     }catch(Exception e){throw new AtlassianException("Error calling exportSite.",e);}}
-  public java.lang.String exportSpace(java.lang.String string1,java.lang.String string2){
-    try{
-      return service.exportSpace(token,string1,string2);
-    }catch(Exception e){throw new AtlassianException("Error calling exportSpace.",e);}}
   public java.lang.String exportSpace(java.lang.String string1,java.lang.String string2,boolean boolean3){
     try{
       return service.exportSpace(token,string1,string2,boolean3);
+    }catch(Exception e){throw new AtlassianException("Error calling exportSpace.",e);}}
+  public java.lang.String exportSpace(java.lang.String string1,java.lang.String string2){
+    try{
+      return service.exportSpace(token,string1,string2);
     }catch(Exception e){throw new AtlassianException("Error calling exportSpace.",e);}}
   public boolean flushIndexQueue(){
     try{
@@ -268,13 +266,13 @@ public class DefaultConfluenceService implements ConfluenceService{
     try{
       return service.getMostPopularLabelsInSpace(token,string1,int2);
     }catch(Exception e){throw new AtlassianException("Error calling getMostPopularLabelsInSpace.",e);}}
-  public com.atlassian.confluence.rpc.soap.beans.RemotePage getPage(long long1){
-    try{
-      return service.getPage(token,long1);
-    }catch(Exception e){throw new AtlassianException("Error calling getPage.",e);}}
   public com.atlassian.confluence.rpc.soap.beans.RemotePage getPage(java.lang.String string1,java.lang.String string2){
     try{
       return service.getPage(token,string1,string2);
+    }catch(Exception e){throw new AtlassianException("Error calling getPage.",e);}}
+  public com.atlassian.confluence.rpc.soap.beans.RemotePage getPage(long long1){
+    try{
+      return service.getPage(token,long1);
     }catch(Exception e){throw new AtlassianException("Error calling getPage.",e);}}
   public com.atlassian.confluence.rpc.soap.beans.RemotePageHistory[] getPageHistory(long long1){
     try{
@@ -284,13 +282,13 @@ public class DefaultConfluenceService implements ConfluenceService{
     try{
       return service.getPagePermissions(token,long1);
     }catch(Exception e){throw new AtlassianException("Error calling getPagePermissions.",e);}}
-  public com.atlassian.confluence.rpc.soap.beans.RemotePageSummary getPageSummary(long long1){
-    try{
-      return service.getPageSummary(token,long1);
-    }catch(Exception e){throw new AtlassianException("Error calling getPageSummary.",e);}}
   public com.atlassian.confluence.rpc.soap.beans.RemotePageSummary getPageSummary(java.lang.String string1,java.lang.String string2){
     try{
       return service.getPageSummary(token,string1,string2);
+    }catch(Exception e){throw new AtlassianException("Error calling getPageSummary.",e);}}
+  public com.atlassian.confluence.rpc.soap.beans.RemotePageSummary getPageSummary(long long1){
+    try{
+      return service.getPageSummary(token,long1);
     }catch(Exception e){throw new AtlassianException("Error calling getPageSummary.",e);}}
   public com.atlassian.confluence.rpc.soap.beans.RemotePageSummary[] getPages(java.lang.String string1){
     try{

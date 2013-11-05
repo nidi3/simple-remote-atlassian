@@ -1,10 +1,13 @@
 package stni.atlassian.remote.jira;
 
+import com.atlassian.jira.rpc.soap.beans.RemoteCustomFieldValue;
 import com.atlassian.jira.rpc.soap.beans.RemoteIssue;
 import com.atlassian.jira.rpc.soap.beans.RemoteProject;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -12,11 +15,34 @@ import java.util.Map;
  *
  */
 public class JiraTasksLiveTest {
+    private void print(RemoteIssue issue) {
+        Arrays.sort(issue.getCustomFieldValues(), new Comparator<RemoteCustomFieldValue>() {
+            @Override
+            public int compare(RemoteCustomFieldValue o1, RemoteCustomFieldValue o2) {
+                return o1 == null ? 1 : o2 == null ? -1 : key(o1).compareTo(key(o2));
+            }
+
+            private String key(RemoteCustomFieldValue v) {
+                return v.getCustomfieldId() == null ? "" : v.getCustomfieldId();
+            }
+        });
+        for (RemoteCustomFieldValue value : issue.getCustomFieldValues()) {
+            System.out.println(value == null ? null : (value.getCustomfieldId() + " " + value.getKey() + " " + Arrays.toString(value.getValues())));
+        }
+    }
+
     @Test
     @Ignore
     public void testCreateRequirementAndFeature() throws Exception {
         JiraTasks tasks = new JiraTasks(new DefaultJiraService("https://jira.mimacom.com", System.getenv("JIRA_USER"), System.getenv("JIRA_PASS")));
-        RemoteIssue[] issues = tasks.getService().getIssuesFromJqlSearch("parent in (LS-354) and (type='Acceptance Criteria')",3);
+        RemoteIssue i = tasks.getService().getIssue("LS-62");
+//        List<Map<String, Object>> allIssuesByJql = tasks.getService().getIssuesByJql("project in (LS) and (type in (Epic,'Non Functional Requirement') and fixVersion='r1.0' and level is empty and component is not empty)", 1, 2,null,null);
+        RemoteIssue[] issues = tasks.getService().getIssuesByJql("project in (LS) and (type in (Epic,'Non Functional Requirement') and fixVersion='r1.0' and level is empty and component is not empty)", 1, 1);
+        print(issues[0]);
+        System.out.println("-------------------");
+        RemoteIssue issue1 = tasks.getService().getIssue("LS-657");
+        print(issue1);
+        //RemoteIssue[] issues = tasks.getService().getIssuesFromJqlSearch("project in (LS) and (type in (Epic,'Non Functional Requirement') and fixVersion='r1.0' and level is empty and component is not empty)",3);
         tasks.progressStatusAction("IPOM-100", "close", "closed");
         tasks.progressStatusAction("IPOM-100", "resolve", "resolved");
         tasks.progressStatusAction("IPOM-100", "reopen", "reopened");

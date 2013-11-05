@@ -5,8 +5,8 @@ public interface ConfluenceService{
   boolean addAnonymousPermissionsToSpace(java.lang.String[] string1,java.lang.String string2);
   boolean addAnonymousUsePermission();
   boolean addAnonymousViewUserProfilePermission();
-  com.atlassian.confluence.rpc.soap.beans.RemoteAttachment addAttachment(com.atlassian.confluence.rpc.soap.beans.RemoteAttachment remoteAttachment1,byte[] byte2);
   com.atlassian.confluence.rpc.soap.beans.RemoteAttachment addAttachment(long long1,com.atlassian.confluence.rpc.soap.beans.RemoteAttachment remoteAttachment2,byte[] byte3);
+  com.atlassian.confluence.rpc.soap.beans.RemoteAttachment addAttachment(com.atlassian.confluence.rpc.soap.beans.RemoteAttachment remoteAttachment1,byte[] byte2);
   com.atlassian.confluence.rpc.soap.beans.RemoteComment addComment(com.atlassian.confluence.rpc.soap.beans.RemoteComment remoteComment1);
   boolean addGlobalPermission(java.lang.String string1,java.lang.String string2);
   boolean addGlobalPermissions(java.lang.String[] string1,java.lang.String string2);
@@ -23,8 +23,8 @@ public interface ConfluenceService{
   com.atlassian.confluence.rpc.soap.beans.RemoteSpace addSpace(com.atlassian.confluence.rpc.soap.beans.RemoteSpace remoteSpace1);
   com.atlassian.confluence.rpc.soap.beans.RemoteSpaceGroup addSpaceGroup(com.atlassian.confluence.rpc.soap.beans.RemoteSpaceGroup remoteSpaceGroup1);
   com.atlassian.confluence.rpc.soap.beans.RemoteSpace addSpaceWithDefaultPermissions(com.atlassian.confluence.rpc.soap.beans.RemoteSpace remoteSpace1);
-  void addUser(com.atlassian.confluence.rpc.soap.beans.RemoteUser remoteUser1,java.lang.String string2,boolean boolean3);
   void addUser(com.atlassian.confluence.rpc.soap.beans.RemoteUser remoteUser1,java.lang.String string2);
+  void addUser(com.atlassian.confluence.rpc.soap.beans.RemoteUser remoteUser1,java.lang.String string2,boolean boolean3);
   boolean addUserToGroup(java.lang.String string1,java.lang.String string2);
   boolean changeMyPassword(java.lang.String string1,java.lang.String string2);
   boolean changeUserPassword(java.lang.String string1,java.lang.String string2);
@@ -35,8 +35,8 @@ public interface ConfluenceService{
   boolean editUser(com.atlassian.confluence.rpc.soap.beans.RemoteUser remoteUser1);
   boolean emptyTrash(java.lang.String string1);
   java.lang.String exportSite(boolean boolean1);
-  java.lang.String exportSpace(java.lang.String string1,java.lang.String string2);
   java.lang.String exportSpace(java.lang.String string1,java.lang.String string2,boolean boolean3);
+  java.lang.String exportSpace(java.lang.String string1,java.lang.String string2);
   boolean flushIndexQueue();
   java.lang.String[] getActiveUsers(boolean boolean1);
   com.atlassian.confluence.rpc.soap.beans.RemotePageSummary[] getAncestors(long long1);
@@ -63,12 +63,12 @@ public interface ConfluenceService{
   com.atlassian.confluence.rpc.soap.beans.RemoteLabel[] getLabelsById(long long1);
   com.atlassian.confluence.rpc.soap.beans.RemoteLabel[] getMostPopularLabels(int int1);
   com.atlassian.confluence.rpc.soap.beans.RemoteLabel[] getMostPopularLabelsInSpace(java.lang.String string1,int int2);
-  com.atlassian.confluence.rpc.soap.beans.RemotePage getPage(long long1);
   com.atlassian.confluence.rpc.soap.beans.RemotePage getPage(java.lang.String string1,java.lang.String string2);
+  com.atlassian.confluence.rpc.soap.beans.RemotePage getPage(long long1);
   com.atlassian.confluence.rpc.soap.beans.RemotePageHistory[] getPageHistory(long long1);
   com.atlassian.confluence.rpc.soap.beans.RemotePermission[] getPagePermissions(long long1);
-  com.atlassian.confluence.rpc.soap.beans.RemotePageSummary getPageSummary(long long1);
   com.atlassian.confluence.rpc.soap.beans.RemotePageSummary getPageSummary(java.lang.String string1,java.lang.String string2);
+  com.atlassian.confluence.rpc.soap.beans.RemotePageSummary getPageSummary(long long1);
   com.atlassian.confluence.rpc.soap.beans.RemotePageSummary[] getPages(java.lang.String string1);
   java.lang.String[] getPermissions(java.lang.String string1);
   java.lang.String[] getPermissionsForUser(java.lang.String string1,java.lang.String string2);
