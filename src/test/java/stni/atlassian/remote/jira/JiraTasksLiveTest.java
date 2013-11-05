@@ -69,7 +69,7 @@ public class JiraTasksLiveTest {
     public void testDelete() throws Exception {
         JiraTasks tasks = new JiraTasks(new DefaultJiraService("https://jira.mimacom.com", System.getenv("JIRA_USER"), System.getenv("JIRA_PASS")));
         for (int i = 1229; i <= 1234; i++) {
-            tasks.getService().deleteIssue("SIBAD-" + i);
+            //tasks.getService().deleteIssue("SIBAD-" + i);
         }
     }
 }
