@@ -35,7 +35,7 @@ public class JiraTasksLiveTest {
     @Ignore
     public void testCreateRequirementAndFeature() throws Exception {
         JiraTasks tasks = new JiraTasks(new DefaultJiraService("https://jira.mimacom.com", System.getenv("JIRA_USER"), System.getenv("JIRA_PASS")));
-        RemoteIssue i = tasks.getService().getIssue("LS-62");
+        RemoteIssue i = tasks.getService().getIssue("MOA-63");
 //        List<Map<String, Object>> allIssuesByJql = tasks.getService().getIssuesByJql("project in (LS) and (type in (Epic,'Non Functional Requirement') and fixVersion='r1.0' and level is empty and component is not empty)", 1, 2,null,null);
         RemoteIssue[] issues = tasks.getService().getIssuesByJql("project in (LS) and (type in (Epic,'Non Functional Requirement') and fixVersion='r1.0' and level is empty and component is not empty)", 1, 1);
         print(issues[0]);

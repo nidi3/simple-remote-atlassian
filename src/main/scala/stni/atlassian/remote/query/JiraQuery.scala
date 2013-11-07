@@ -18,8 +18,6 @@ class JiraQuery(service: QueryService,
                 parser: QueryParser = new QueryParser(new SimpleParser(new TransformContext(0, Locale.ENGLISH, null))),
                 formatter: Formatter = new SimpleFormatter) {
 
-  import JiraQuery._
-
   private val log = LoggerFactory.getLogger(getClass)
 
   def issuesOfFilter(name: String): QueryIssueList =
@@ -40,18 +38,10 @@ class JiraQuery(service: QueryService,
     service.getIssuesFromJqlSearch(s + JqlBuilder.and(globalExpression), maxResult)
 
   def parseAndFormat(s: String, issue: QueryIssueList): String = {
-    def parse = {
-      try {
-        parser.parse(s)(ISSUE -> issue)
-      } catch {
-        case e: Exception => throw new ParseException(issue, e)
-      }
-    }
-
     if (s == null) {
       ""
     } else {
-      val root = parse
+      val root = parser.parse(s, issue)
       val formatted = formatter.format(root)
       log.trace("Formatting input\n{}\n****** parsed:\n{}\n****** formatted:\n{}\n******", Array(s, root, formatted))
       formatted
@@ -69,8 +59,4 @@ class JiraQuery(service: QueryService,
   def issueTypeById(id: String): RemoteIssueType = service.issueTypeById(id)
 
   def timeToResolve(issue: RemoteIssue): Long = service.timeToResolve(issue)
-}
-
-object JiraQuery {
-  val ISSUE = Attribute("issue")
 }

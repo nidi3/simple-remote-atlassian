@@ -55,4 +55,9 @@ object QueryIssueList {
   def ofRemoteIssues(query: JiraQuery, issues: Seq[RemoteIssue]): QueryIssueList =
     ofQueryIssues(query, issues.map(ri => new QueryIssue(ri)): _*)
 
+  def ofDescription(desc: String) = {
+    val issue = new RemoteIssue()
+    issue.setKey(desc)
+    new QueryIssueList(null, List(new QueryIssue(issue)))
+  }
 }
