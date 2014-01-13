@@ -1,5 +1,6 @@
 package stni.atlassian.remote.bamboo.rest;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import stni.atlassian.remote.bamboo.BambooResultDetail;
 import stni.atlassian.remote.bamboo.BambooService;
@@ -34,6 +35,7 @@ public class BambooTest {
     }
 
     @Test
+    @Ignore
     public void resultDetail() {
         final BambooResultDetail detail = service.getResultDetail("IPOM-NIGHTLY-221");
         assertNotNull(detail);
