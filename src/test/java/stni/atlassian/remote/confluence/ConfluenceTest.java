@@ -16,7 +16,7 @@ public class ConfluenceTest {
         DefaultConfluenceService service = new DefaultConfluenceService("https://rune.mimacom.com", System.getenv("JIRA_USER"), System.getenv("JIRA_PASS"));
         RemoteSpaceSummary[] spaces = service.getSpaces();
         RemoteSpace moa = service.getSpace("LIVINGSERVICES");
-        RemotePage page = service.getPage("LIVINGSERVICES", "bega-test");
+        RemotePage page = service.getPage("IPOM", "Release notes");
         System.out.println(page.getContent());
 
         page = service.getPage("LIVINGSERVICES", "Einführung und Ziele");
