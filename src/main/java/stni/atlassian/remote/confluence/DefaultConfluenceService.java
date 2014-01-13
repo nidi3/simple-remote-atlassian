@@ -4,12 +4,12 @@ import stni.atlassian.remote.AtlassianException;
 public class DefaultConfluenceService implements ConfluenceService{
   private final String baseUrl;
   private final String token;
-  private final com.mimacom.rune.rpc.soap_axis.confluenceservice_v2.ConfluenceSoapService service;
+  private final com.mimacom.rune.plugins.servlet.soap_axis1.confluenceservice_v2.ConfluenceSoapService service;
   private final stni.atlassian.remote.confluence.ConfluenceTasks confluenceTasks;
   public DefaultConfluenceService(String baseUrl, String username, String password){
     this.baseUrl = baseUrl;
     try{
-      com.mimacom.rune.rpc.soap_axis.confluenceservice_v2.ConfluenceSoapServiceServiceLocator locator = new com.mimacom.rune.rpc.soap_axis.confluenceservice_v2.ConfluenceSoapServiceServiceLocator();
+      com.mimacom.rune.plugins.servlet.soap_axis1.confluenceservice_v2.ConfluenceSoapServiceServiceLocator locator = new com.mimacom.rune.plugins.servlet.soap_axis1.confluenceservice_v2.ConfluenceSoapServiceServiceLocator();
       service = locator.getConfluenceserviceV2(new URL(baseUrl+"/rpc/soap-axis/confluenceservice-v2"));
       token = service.login(username, password);
       confluenceTasks = new stni.atlassian.remote.confluence.ConfluenceTasks(this);
@@ -106,13 +106,13 @@ public class DefaultConfluenceService implements ConfluenceService{
     try{
       return service.addSpaceWithDefaultPermissions(token,remoteSpace1);
     }catch(Exception e){throw new AtlassianException("Error calling addSpaceWithDefaultPermissions.",e);}}
-  public void addUser(com.atlassian.confluence.rpc.soap.beans.RemoteUser remoteUser1,java.lang.String string2){
-    try{
-      service.addUser(token,remoteUser1,string2);
-    }catch(Exception e){throw new AtlassianException("Error calling addUser.",e);}}
   public void addUser(com.atlassian.confluence.rpc.soap.beans.RemoteUser remoteUser1,java.lang.String string2,boolean boolean3){
     try{
       service.addUser(token,remoteUser1,string2,boolean3);
+    }catch(Exception e){throw new AtlassianException("Error calling addUser.",e);}}
+  public void addUser(com.atlassian.confluence.rpc.soap.beans.RemoteUser remoteUser1,java.lang.String string2){
+    try{
+      service.addUser(token,remoteUser1,string2);
     }catch(Exception e){throw new AtlassianException("Error calling addUser.",e);}}
   public boolean addUserToGroup(java.lang.String string1,java.lang.String string2){
     try{
@@ -370,6 +370,14 @@ public class DefaultConfluenceService implements ConfluenceService{
     try{
       return service.getUser(token,string1);
     }catch(Exception e){throw new AtlassianException("Error calling getUser.",e);}}
+  public com.atlassian.confluence.rpc.soap.beans.RemoteConfluenceUser getUserByKey(java.lang.String string1){
+    try{
+      return service.getUserByKey(token,string1);
+    }catch(Exception e){throw new AtlassianException("Error calling getUserByKey.",e);}}
+  public com.atlassian.confluence.rpc.soap.beans.RemoteConfluenceUser getUserByName(java.lang.String string1){
+    try{
+      return service.getUserByName(token,string1);
+    }catch(Exception e){throw new AtlassianException("Error calling getUserByName.",e);}}
   public java.lang.String[] getUserGroups(java.lang.String string1){
     try{
       return service.getUserGroups(token,string1);
@@ -462,6 +470,10 @@ public class DefaultConfluenceService implements ConfluenceService{
     try{
       return service.movePageToTopLevel(token,long1,string2);
     }catch(Exception e){throw new AtlassianException("Error calling movePageToTopLevel.",e);}}
+  public java.lang.String performBackup(boolean boolean1){
+    try{
+      return service.performBackup(token,boolean1);
+    }catch(Exception e){throw new AtlassianException("Error calling performBackup.",e);}}
   public boolean purgeFromTrash(java.lang.String string1,long long2){
     try{
       return service.purgeFromTrash(token,string1,long2);
@@ -562,13 +574,21 @@ public class DefaultConfluenceService implements ConfluenceService{
     try{
       return service.removeUserFromGroup(token,string1,string2);
     }catch(Exception e){throw new AtlassianException("Error calling removeUserFromGroup.",e);}}
-  public java.lang.String renderContent(java.lang.String string1,long long2,java.lang.String string3,java.util.HashMap hashMap4){
+  public boolean renameUser(java.lang.String string1,java.lang.String string2){
     try{
-      return service.renderContent(token,string1,long2,string3,hashMap4);
-    }catch(Exception e){throw new AtlassianException("Error calling renderContent.",e);}}
+      return service.renameUser(token,string1,string2);
+    }catch(Exception e){throw new AtlassianException("Error calling renameUser.",e);}}
+  public java.lang.String[] renameUsers(java.util.HashMap hashMap1){
+    try{
+      return service.renameUsers(token,hashMap1);
+    }catch(Exception e){throw new AtlassianException("Error calling renameUsers.",e);}}
   public java.lang.String renderContent(java.lang.String string1,long long2,java.lang.String string3){
     try{
       return service.renderContent(token,string1,long2,string3);
+    }catch(Exception e){throw new AtlassianException("Error calling renderContent.",e);}}
+  public java.lang.String renderContent(java.lang.String string1,long long2,java.lang.String string3,java.util.HashMap hashMap4){
+    try{
+      return service.renderContent(token,string1,long2,string3,hashMap4);
     }catch(Exception e){throw new AtlassianException("Error calling renderContent.",e);}}
   public com.atlassian.confluence.rpc.soap.beans.RemoteSearchResult[] search(java.lang.String string1,java.util.HashMap hashMap2,int int3){
     try{
