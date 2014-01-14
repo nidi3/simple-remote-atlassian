@@ -72,7 +72,7 @@ class QueryTest extends FlatSpec {
 
   it should "implement QueryList" in {
     jq.project("x").children("a=b")
-    assert(qs.lastQuery === "project in (x) and (a=b)")
+    assert(qs.lastQuery === "(project in (x)) and (a=b)")
 
     assert(jq.project("x").linked("a=b").isEmpty)
   }
@@ -86,7 +86,7 @@ class QueryTest extends FlatSpec {
 
   it should "implement QueryList" in {
     jq.projects().children("a=b")
-    assert(qs.lastQuery === "project in (a,b) and (a=b)")
+    assert(qs.lastQuery === "(project in (a,b)) and (a=b)")
 
     assert(jq.projects().linked("a=b").isEmpty)
   }
@@ -104,7 +104,7 @@ class QueryTest extends FlatSpec {
 
   it should "implement QueryList" in {
     jq.project("x").children("a=b")
-    assert(qs.lastQuery === "project in (x) and (a=b)")
+    assert(qs.lastQuery === "(project in (x)) and (a=b)")
 
     assert(jq.project("x").linked("a=b").isEmpty)
   }
