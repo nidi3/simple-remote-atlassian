@@ -1,7 +1,7 @@
 package stni.atlassian.remote.query
 
 import org.slf4j.LoggerFactory
-import stni.text.transform.{TransformContext, Formatter, Attribute}
+import stni.text.transform.{TransformContext, Formatter}
 import stni.text.transform.Name._
 import stni.text.transform.Segment._
 import stni.text.transform.parse.SimpleParser
@@ -34,8 +34,8 @@ class JiraQuery(service: QueryService,
 
   def issue(issueKey: String): QueryIssueList = QueryIssueList.ofRemoteIssues(this, List(service.getIssue(issueKey)))
 
-  private[query] def executeJql(s: String): Seq[RemoteIssue] =
-    service.getIssuesFromJqlSearch(s + JqlBuilder.and(globalExpression), maxResult)
+  private[query] def executeJql(jql: String): Seq[RemoteIssue] =
+    service.getIssuesFromJqlSearch(JqlBuilder.and(globalExpression, jql), maxResult)
 
   def parseAndFormat(s: String, issue: QueryIssueList): String = {
     if (s == null) {
