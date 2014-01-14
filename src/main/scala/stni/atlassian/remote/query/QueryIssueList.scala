@@ -1,8 +1,9 @@
 package stni.atlassian.remote.query
 
-import com.atlassian.jira.rpc.soap.beans.{RemoteIssueType, RemotePriority, RemoteIssue}
+import com.atlassian.jira.rpc.soap.beans.{RemoteVersion, RemoteIssueType, RemotePriority, RemoteIssue}
 import JqlBuilder._
 import collection.convert.Wrappers
+import scala.collection.immutable.SortedMap
 
 /**
  *
@@ -42,9 +43,27 @@ class QueryIssueList(query: JiraQuery, elems: Seq[QueryIssue]) extends QueryIssu
 
   def timeToResolve: Long = query.timeToResolve(issue)
 
+  def firstFixVersion: RemoteVersion = firstVersion(getFixVersions)
+
+  def firstAffectsVersion: RemoteVersion = firstVersion(getAffectsVersions)
+
+
+  type VersionGroup = Map[RemoteVersion, Seq[QueryIssueList]]
+
+  def groupByFirstFixVersion: VersionGroup = groupByVersion(_.firstFixVersion)
+
+  def groupByFirstAffectsVersion: VersionGroup = groupByVersion(_.firstAffectsVersion)
+
+
   override def toString: String = elems.toString
 
+  private def firstVersion(v: => Array[RemoteVersion]): RemoteVersion =
+    if (v == null || v.length == 0) null
+    else v.toList.sorted(Orderings.version)(0)
+
+  private def groupByVersion(v: QueryIssueList => RemoteVersion): VersionGroup = SortedMap(groupBy(v).toSeq: _*)(Orderings.version)
 }
+
 
 object QueryIssueList {
   def ofQueryIssues(query: JiraQuery, elems: QueryIssue*): QueryIssueList = new QueryIssueList(query, elems)
