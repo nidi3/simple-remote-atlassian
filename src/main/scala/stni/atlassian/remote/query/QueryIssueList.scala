@@ -16,7 +16,7 @@ class QueryIssueList(query: JiraQuery, elems: Seq[QueryIssue]) extends QueryIssu
     if (this.isEmpty) {
       ofQueryIssues(query)
     } else {
-      ofJql(query, parentIn(this), expression, order)
+      ofJql(query, Jql(parentIn(this)).or(Jql(epicLinkIn(this))).string, expression, order)
     }
 
   def typedLinked(linkType: String, expression: String, order: String): QueryIssueList = {

@@ -3,6 +3,7 @@ package stni.atlassian.remote.jira;
 import com.atlassian.jira.rpc.soap.beans.RemoteCustomFieldValue;
 import com.atlassian.jira.rpc.soap.beans.RemoteIssue;
 import com.atlassian.jira.rpc.soap.beans.RemoteProject;
+import com.atlassian.jira.rpc.soap.beans.RemoteVersion;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -35,6 +36,7 @@ public class JiraTasksLiveTest {
     @Ignore
     public void testCreateRequirementAndFeature() throws Exception {
         JiraTasks tasks = new JiraTasks(new DefaultJiraService("https://jira.mimacom.com", System.getenv("JIRA_USER"), System.getenv("JIRA_PASS")));
+        RemoteVersion[] vs = tasks.getService().getVersions("MOA");
         RemoteIssue i = tasks.getService().getIssue("MOA-63");
 //        List<Map<String, Object>> allIssuesByJql = tasks.getService().getIssuesByJql("project in (LS) and (type in (Epic,'Non Functional Requirement') and fixVersion='r1.0' and level is empty and component is not empty)", 1, 2,null,null);
         RemoteIssue[] issues = tasks.getService().getIssuesByJql("project in (LS) and (type in (Epic,'Non Functional Requirement') and fixVersion='r1.0' and level is empty and component is not empty)", 1, 1);

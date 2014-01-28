@@ -10,9 +10,14 @@ object JqlBuilder {
 
   def parentIn(issues: QueryIssueList): String = "parent in (" + issues.map(i => i.getKey).mkString(",") + ")"
 
+  def epicLinkIn(issues: QueryIssueList): String = "\"Epic Link\" in (" + issues.map(i => i.getKey).mkString(",") + ")"
+
   def projectIn(projects: QueryProjectList): String = "project in (" + projects.map(p => p.getKey).mkString(",") + ")"
 
-  def linkedWith(issueKey: String, linkType: String): String = "id in linkedissues(" + issueKey + (if (linkType != null) ",'" + linkType + "'") + ")"
+  def linkedWith(issueKey: String, linkType: String): String = {
+    val typ = if (linkType != null) ",'" + linkType + "'" else ""
+    "id in linkedissues(" + issueKey + typ + ")"
+  }
 
   def jql(context: String, query: String, order: String): String = {
     if (context == null) {
@@ -24,12 +29,16 @@ object JqlBuilder {
 }
 
 class Jql(val query: String, val order: List[String]) {
-  def and(jql: Jql) = {
+  def op(jql: Jql, op: String) = {
     val newQuery =
-      if (hasQuery && jql.hasQuery) s"($query) and (${jql.query})"
+      if (hasQuery && jql.hasQuery) s"($query) $op (${jql.query})"
       else if (hasQuery) query else jql.query
     new Jql(newQuery, order ++ jql.order)
   }
+
+  def and(jql: Jql) = op(jql, "and")
+
+  def or(jql: Jql) = op(jql, "or")
 
   def string = query + (if (!order.isEmpty) Jql.ORDER_BY + order.mkString(",") else "")
 
