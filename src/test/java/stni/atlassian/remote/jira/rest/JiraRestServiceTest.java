@@ -1,8 +1,8 @@
 package stni.atlassian.remote.jira.rest;
 
 import com.atlassian.jira.rpc.soap.beans.*;
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Ignore;
 import org.junit.Test;
 import stni.atlassian.remote.jira.DefaultJiraService;
@@ -53,7 +53,7 @@ public class JiraRestServiceTest {
         Object o = service.executeGet("search?jql=" + URLEncoder.encode("id in linkedissues(IPOM-53) and (type=\"Test Case\")","utf-8"));
 
         ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         List issues = (List) ((Map<String, Object>) o).get("issues");
 
         //      RemoteFieldValue[] desc = new RemoteFieldValue[]{new RemoteFieldValue("description", new String[]{issue.getDescription() + "äÄ"})};

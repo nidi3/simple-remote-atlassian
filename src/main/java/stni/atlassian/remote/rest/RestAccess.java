@@ -1,16 +1,16 @@
 package stni.atlassian.remote.rest;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.methods.ByteArrayRequestEntity;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -23,6 +23,8 @@ import java.util.Map;
  *
  */
 public class RestAccess {
+    private static final int MAX_RESPONSE_SIZE = 1024 * 1024;
+
     public static final TypeReference<HashMap<String, Object>> MAP_TYPE_REFERENCE = new TypeReference<HashMap<String, Object>>() {
     };
     public static final TypeReference<ArrayList<Object>> LIST_TYPE_REFERENCE = new TypeReference<ArrayList<Object>>() {
@@ -37,8 +39,7 @@ public class RestAccess {
     public RestAccess(String baseUrl, String username, String password) {
         client = new HttpClient();
         mapper = new ObjectMapper();
-        mapper.setDeserializationConfig(mapper.getDeserializationConfig()
-                .without(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES));
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         this.baseUrl = baseUrl;
         this.username = username;
         this.password = password;
@@ -93,7 +94,7 @@ public class RestAccess {
         return executeImpl(get, parameters, type);
     }
 
-    private Object executeImpl(HttpMethod method) throws IOException, RestException {
+    private Object executeImpl(HttpMethodBase method) throws IOException, RestException {
         String resString = doExecute(method);
 
         if (resString.length() == 0) {
@@ -110,7 +111,7 @@ public class RestAccess {
         return mapper.readValue(resString, LIST_TYPE_REFERENCE);
     }
 
-    private <T> T executeImpl(HttpMethod method, Map<String, Object> parameters, Class<T> type) throws IOException, RestException {
+    private <T> T executeImpl(HttpMethodBase method, Map<String, Object> parameters, Class<T> type) throws IOException, RestException {
         method.setQueryString(createQuery(parameters));
         String resString = doExecute(method);
 
@@ -138,9 +139,9 @@ public class RestAccess {
         return res;
     }
 
-    private String doExecute(HttpMethod method) throws IOException, RestException {
+    private String doExecute(HttpMethodBase method) throws IOException, RestException {
         int status = client.executeMethod(method);
-        String resString = method.getResponseBodyAsString();
+        String resString = method.getResponseBodyAsString(MAX_RESPONSE_SIZE);
         if (status != HttpStatus.SC_OK) {
             try {
                 Map<String, Object> errorMsg = mapper.readValue(resString, MAP_TYPE_REFERENCE);

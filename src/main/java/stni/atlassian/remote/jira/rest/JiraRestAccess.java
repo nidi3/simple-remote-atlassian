@@ -1,6 +1,6 @@
 package stni.atlassian.remote.jira.rest;
 
-import org.codehaus.jackson.type.TypeReference;
+import com.fasterxml.jackson.core.type.TypeReference;
 import stni.atlassian.remote.rest.RestAccess;
 
 import java.util.ArrayList;

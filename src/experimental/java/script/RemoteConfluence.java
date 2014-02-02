@@ -20,6 +20,8 @@ import java.util.Map;
  *
  */
 public class RemoteConfluence {
+    private static final int MAX_RESPONSE_SIZE = 1024 * 1024;
+
     private final HttpClient client;
     private final String serverUrl;
     private final String username;
@@ -53,13 +55,13 @@ public class RemoteConfluence {
         return executeImpl("storePage", page);
     }
 
-    public Object updatePage(Map<String, Object> page,Map<String, Object> pageUpdateOptions) throws RpcException {
+    public Object updatePage(Map<String, Object> page, Map<String, Object> pageUpdateOptions) throws RpcException {
         Map<String, Object> p = new HashMap<String, Object>(page);
         p.remove("current");
-        return executeImpl("updatePage", page,pageUpdateOptions);
+        return executeImpl("updatePage", page, pageUpdateOptions);
     }
 
-     Object executeImpl(String command, Object... parameters) throws RpcException {
+    Object executeImpl(String command, Object... parameters) throws RpcException {
         PostMethod post = new PostMethod(serverUrl + "/rpc/json-rpc/confluenceservice-v2/" + command);
         post.setRequestHeader("Content-Type", "application/json");
         post.setRequestHeader("Authorization", "Basic " + Base64.encodeBase64String((username + ":" + password).getBytes()));
@@ -73,7 +75,7 @@ public class RemoteConfluence {
                 throw new IOException("not ok");
             }
             try {
-                ErrorResponse errorResponse = mapper.readValue(post.getResponseBodyAsString(), ErrorResponse.class);
+                ErrorResponse errorResponse = mapper.readValue(post.getResponseBodyAsString(MAX_RESPONSE_SIZE), ErrorResponse.class);
                 throw new RpcException(errorResponse);
             } catch (JsonParseException e) {
                 //ignore
@@ -81,14 +83,14 @@ public class RemoteConfluence {
                 //ignore
             }
             try {
-                return mapper.readValue(post.getResponseBodyAsString(), new TypeReference<HashMap<String, Object>>() {
+                return mapper.readValue(post.getResponseBodyAsString(MAX_RESPONSE_SIZE), new TypeReference<HashMap<String, Object>>() {
                 });
             } catch (JsonParseException e) {
                 //ignore
             } catch (JsonMappingException e) {
                 //ignore
             }
-            return mapper.readValue(post.getResponseBodyAsString(), new TypeReference<ArrayList<Object>>() {
+            return mapper.readValue(post.getResponseBodyAsString(MAX_RESPONSE_SIZE), new TypeReference<ArrayList<Object>>() {
             });
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

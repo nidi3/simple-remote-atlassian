@@ -19,6 +19,8 @@ import java.util.HashMap;
  *
  */
 public class RemoteJira {
+    private static final int MAX_RESPONSE_SIZE = 1024 * 1024;
+
     private final HttpClient client;
     private final String serverUrl;
     private final String username;
@@ -56,10 +58,10 @@ public class RemoteJira {
             post.setRequestEntity(new ByteArrayRequestEntity(baos.toByteArray()));
             int status = client.executeMethod(post);
             if (status != HttpStatus.SC_OK) {
-                throw new IOException("not ok: " + status + " " + post.getResponseBodyAsString());
+                throw new IOException("not ok: " + status + " " + post.getResponseBodyAsString(MAX_RESPONSE_SIZE));
             }
             try {
-                ErrorResponse errorResponse = mapper.readValue(post.getResponseBodyAsString(), ErrorResponse.class);
+                ErrorResponse errorResponse = mapper.readValue(post.getResponseBodyAsString(MAX_RESPONSE_SIZE), ErrorResponse.class);
                 throw new RpcException(errorResponse);
             } catch (JsonParseException e) {
                 //ignore
@@ -67,7 +69,7 @@ public class RemoteJira {
                 //ignore
             }
             try {
-                return mapper.readValue(post.getResponseBodyAsString(), new TypeReference<HashMap<String, Object>>() {
+                return mapper.readValue(post.getResponseBodyAsString(MAX_RESPONSE_SIZE), new TypeReference<HashMap<String, Object>>() {
                 });
             } catch (JsonParseException e) {
                 //ignore
@@ -75,14 +77,14 @@ public class RemoteJira {
                 //ignore
             }
             try {
-                return mapper.readValue(post.getResponseBodyAsString(), new TypeReference<ArrayList<Object>>() {
+                return mapper.readValue(post.getResponseBodyAsString(MAX_RESPONSE_SIZE), new TypeReference<ArrayList<Object>>() {
                 });
             } catch (JsonParseException e) {
                 //ignore
             } catch (JsonMappingException e) {
                 //ignore
             }
-            return mapper.readValue(post.getResponseBodyAsString(), String.class);
+            return mapper.readValue(post.getResponseBodyAsString(MAX_RESPONSE_SIZE), String.class);
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
