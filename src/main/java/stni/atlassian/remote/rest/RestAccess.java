@@ -7,14 +7,22 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.httpclient.*;
-import org.apache.commons.httpclient.methods.ByteArrayRequestEntity;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +45,7 @@ public class RestAccess {
     private final String password;
 
     public RestAccess(String baseUrl, String username, String password) {
-        client = new HttpClient();
+        client = new DefaultHttpClient();
         mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         this.baseUrl = baseUrl;
@@ -45,19 +53,19 @@ public class RestAccess {
         this.password = password;
     }
 
-    public PostMethod post(String url) {
-        return addHeaders(new PostMethod(baseUrl + url));
+    public HttpPost post(String url) {
+        return addHeaders(new HttpPost(baseUrl + url));
     }
 
-    public GetMethod get(String url) {
-        return addHeaders(new GetMethod(baseUrl + url));
+    public HttpGet get(String url) {
+        return addHeaders(new HttpGet(baseUrl + url));
     }
 
-    public <T extends HttpMethodBase> T addHeaders(T method) {
-        method.setRequestHeader("Content-Type", "application/json");
-        method.setRequestHeader("Accept", "application/json");
+    public <T extends HttpRequestBase> T addHeaders(T method) {
+        method.setHeader("Content-Type", "application/json");
+        method.setHeader("Accept", "application/json");
         try {
-            method.setRequestHeader("Authorization", "Basic " + Base64.encodeBase64String((username + ":" + password).getBytes("utf-8")));
+            method.setHeader("Authorization", "Basic " + Base64.encodeBase64String((username + ":" + password).getBytes("utf-8")));
         } catch (UnsupportedEncodingException e) {
             throw new AssertionError("utf-8 encoding not found");
         }
@@ -68,33 +76,33 @@ public class RestAccess {
         return executeImpl(preparePost(command, parameters));
     }
 
-    public <T> T executePost(String command, Object parameters, Class<T> type) throws RestException, IOException {
+    public <T> T executePost(String command, Object parameters, Class<T> type) throws RestException, IOException, URISyntaxException {
         return executeImpl(preparePost(command, parameters), null, type);
     }
 
-    private PostMethod preparePost(String command, Object parameters) throws RestException {
-        PostMethod post = post(command);
+    private HttpPost preparePost(String command, Object parameters) throws RestException {
+        HttpPost post = post(command);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             mapper.writeValue(baos, parameters);
         } catch (Exception e) {
             throw new RestException("error serializing parameters", e);
         }
-        post.setRequestEntity(new ByteArrayRequestEntity(baos.toByteArray()));
+        post.setEntity(new ByteArrayEntity(baos.toByteArray()));
         return post;
     }
 
     public Object executeGet(String command) throws RestException, IOException {
-        GetMethod get = get(command);
+        HttpGet get = get(command);
         return executeImpl(get);
     }
 
-    public <T> T executeGet(String command, Map<String, Object> parameters, Class<T> type) throws RestException, IOException {
-        GetMethod get = get(command);
+    public <T> T executeGet(String command, Map<String, Object> parameters, Class<T> type) throws RestException, IOException, URISyntaxException {
+        HttpGet get = get(command);
         return executeImpl(get, parameters, type);
     }
 
-    private Object executeImpl(HttpMethodBase method) throws IOException, RestException {
+    private Object executeImpl(HttpRequestBase method) throws IOException, RestException {
         String resString = doExecute(method);
 
         if (resString.length() == 0) {
@@ -111,8 +119,8 @@ public class RestAccess {
         return mapper.readValue(resString, LIST_TYPE_REFERENCE);
     }
 
-    private <T> T executeImpl(HttpMethodBase method, Map<String, Object> parameters, Class<T> type) throws IOException, RestException {
-        method.setQueryString(createQuery(parameters));
+    private <T> T executeImpl(HttpRequestBase method, Map<String, Object> parameters, Class<T> type) throws IOException, RestException, URISyntaxException {
+        method.setURI(addQuery(new URIBuilder(method.getURI()), parameters).build());
         String resString = doExecute(method);
 
         if (resString.length() == 0) {
@@ -127,22 +135,19 @@ public class RestAccess {
         }
     }
 
-    private NameValuePair[] createQuery(Map<String, Object> parameters) {
-        if (parameters == null) {
-            return new NameValuePair[0];
+    private URIBuilder addQuery(URIBuilder builder, Map<String, Object> parameters) {
+        if (parameters != null) {
+            for (Map.Entry<String, Object> entry : parameters.entrySet()) {
+                builder.addParameter(entry.getKey(), entry.getValue().toString());
+            }
         }
-        NameValuePair[] res = new NameValuePair[parameters.size()];
-        int i = 0;
-        for (Map.Entry<String, Object> entry : parameters.entrySet()) {
-            res[i++] = new NameValuePair(entry.getKey(), entry.getValue().toString());
-        }
-        return res;
+        return builder;
     }
 
-    private String doExecute(HttpMethodBase method) throws IOException, RestException {
-        int status = client.executeMethod(method);
-        String resString = method.getResponseBodyAsString(MAX_RESPONSE_SIZE);
-        if (status != HttpStatus.SC_OK) {
+    private String doExecute(HttpRequestBase method) throws IOException, RestException {
+        HttpResponse response = client.execute(method);
+        String resString = EntityUtils.toString(response.getEntity());
+        if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
             try {
                 Map<String, Object> errorMsg = mapper.readValue(resString, MAP_TYPE_REFERENCE);
                 throw new RestException(errorMsg);
@@ -153,12 +158,12 @@ public class RestAccess {
         return resString;
     }
 
-    public int executeMethod(HttpMethod method) throws IOException {
-        return client.executeMethod(method);
+    public HttpResponse executeMethod(HttpUriRequest method) throws IOException {
+        return client.execute(method);
     }
 
-    public <T> T readResponse(HttpMethod method, TypeReference ref) throws IOException {
-        return (T) mapper.readValue(method.getResponseBodyAsStream(), ref);
+    public <T> T readResponse(HttpResponse response, TypeReference ref) throws IOException {
+        return (T) mapper.readValue(EntityUtils.toString(response.getEntity()), ref);
     }
 
 }

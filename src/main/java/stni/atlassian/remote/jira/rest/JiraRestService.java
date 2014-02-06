@@ -1,8 +1,9 @@
 package stni.atlassian.remote.jira.rest;
 
 import com.atlassian.jira.rpc.soap.beans.*;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
 import stni.atlassian.remote.rest.RestException;
 
 import java.io.IOException;
@@ -31,14 +32,14 @@ public class JiraRestService {
     }
 
     public List<IssueLinkType> getIssueLinkTypes() throws IOException, RestException {
-        GetMethod method = access.get("issueLinkType");
-        int status = access.executeMethod(method);
-        if (status != HttpStatus.SC_OK) {
-            Map<String, Object> errorMsg = access.readResponse(method, JiraRestAccess.MAP_TYPE_REFERENCE);
+        HttpGet method = access.get("issueLinkType");
+        HttpResponse response = access.executeMethod(method);
+        if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+            Map<String, Object> errorMsg = access.readResponse(response, JiraRestAccess.MAP_TYPE_REFERENCE);
             throw new RestException(errorMsg);
         }
 
-        Map<String, List<IssueLinkType>> res = access.readResponse(method, JiraRestAccess.MAP_WITH_LINKTYPES_TYPE_REFERENCE);
+        Map<String, List<IssueLinkType>> res = access.readResponse(response, JiraRestAccess.MAP_WITH_LINKTYPES_TYPE_REFERENCE);
         return res.get("issueLinkTypes");
     }
 
@@ -49,12 +50,12 @@ public class JiraRestService {
     public InputStream loadAttachment(RemoteAttachment attachment) throws IOException, RestException {
         Map<String, Object> info = (Map<String, Object>) access.executeGet("attachment/" + attachment.getId());
         String url = (String) info.get("content");
-        GetMethod get = new GetMethod(url);
-        int status = access.executeMethod(get);
-        if (status != HttpStatus.SC_OK) {
-            throw new IOException("Could not load attachment. Status: " + status + ", " + get.getStatusLine().getReasonPhrase());
+        HttpGet get = new HttpGet(url);
+        HttpResponse response = access.executeMethod(get);
+        if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+            throw new IOException("Could not load attachment. Status: " + response.getStatusLine().getStatusCode() + ", " + response.getStatusLine().getReasonPhrase());
         }
-        return get.getResponseBodyAsStream();
+        return response.getEntity().getContent();
     }
 
     public List<RemoteProject> getAllProjects() throws IOException, RestException {
