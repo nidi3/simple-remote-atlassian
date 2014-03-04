@@ -3,9 +3,9 @@ import java.util.Map;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import stni.atlassian.remote.script.JsConfluence;
-import stni.atlassian.remote.script.RemoteConfluence;
-import stni.atlassian.remote.script.RpcException;
+import guru.nidi.atlassian.remote.script.JsConfluence;
+import guru.nidi.atlassian.remote.script.RemoteConfluence;
+import guru.nidi.atlassian.remote.script.RpcException;
 
 /**
  *

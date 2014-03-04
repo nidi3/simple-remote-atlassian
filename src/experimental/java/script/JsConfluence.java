@@ -1,4 +1,4 @@
-package stni.atlassian.remote.script;
+package guru.nidi.atlassian.remote.script;
 
 import sun.org.mozilla.javascript.internal.NativeArray;
 import sun.org.mozilla.javascript.internal.NativeObject;

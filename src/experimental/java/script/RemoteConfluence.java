@@ -1,4 +1,4 @@
-package stni.atlassian.remote.script;
+package guru.nidi.atlassian.remote.script;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.HttpClient;

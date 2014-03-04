@@ -1,4 +1,4 @@
-package stni.atlassian.remote.script;
+package guru.nidi.atlassian.remote.script;
 
 import java.util.Collection;
 import java.util.Map;

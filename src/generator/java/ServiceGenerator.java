@@ -1,10 +1,10 @@
 import com.mimacom.jira.rpc.soap.jirasoapservice_v2.JiraSoapService;
 import com.mimacom.rune.plugins.servlet.soap_axis1.confluenceservice_v2.ConfluenceSoapService;
-import stni.atlassian.remote.confluence.ConfluenceService;
-import stni.atlassian.remote.confluence.ConfluenceTasks;
-import stni.atlassian.remote.jira.JiraService;
-import stni.atlassian.remote.jira.JiraTasks;
-import stni.atlassian.remote.jira.rest.JiraRestService;
+import guru.nidi.atlassian.remote.confluence.ConfluenceService;
+import guru.nidi.atlassian.remote.confluence.ConfluenceTasks;
+import guru.nidi.atlassian.remote.jira.JiraService;
+import guru.nidi.atlassian.remote.jira.JiraTasks;
+import guru.nidi.atlassian.remote.jira.rest.JiraRestService;
 
 import java.io.*;
 import java.lang.reflect.Method;
@@ -17,7 +17,7 @@ import java.util.Comparator;
  *
  */
 public class ServiceGenerator {
-    private static final String PACKAGE = "stni.atlassian.remote";
+    private static final String PACKAGE = "guru.nidi.atlassian.remote";
 
     private static final Comparator<Method> METHODS_BY_NAME = new Comparator<Method>() {
         @Override
