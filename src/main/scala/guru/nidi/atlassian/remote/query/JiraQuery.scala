@@ -60,3 +60,4 @@ class JiraQuery(service: QueryService,
 
   def timeToResolve(issue: RemoteIssue): Long = service.timeToResolve(issue)
 }
+
