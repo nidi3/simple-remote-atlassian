@@ -1,11 +1,12 @@
 package guru.nidi.atlassian.remote.meta;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
  *
  */
-public class GenerateRequest {
+public class GenerateRequest implements Serializable {
     private String url;
     private String template;
     private String templateSrc;
