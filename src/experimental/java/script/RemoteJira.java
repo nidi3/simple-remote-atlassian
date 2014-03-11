@@ -12,6 +12,7 @@ import org.codehaus.jackson.type.TypeReference;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -50,7 +51,7 @@ public class RemoteJira {
     Object executeImpl(String command, Object... parameters) throws RpcException {
         PostMethod post = new PostMethod(serverUrl + "/rpc/json-rpc/jirasoapservice-v2/" + command);
         post.setRequestHeader("Content-Type", "application/json");
-        post.setRequestHeader("Authorization", "Basic " + Base64.encodeBase64String((username + ":" + password).getBytes()));
+        HttpUtils.setAuthHeader(post, username, password);
         ObjectMapper mapper = new ObjectMapper();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {

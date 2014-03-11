@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.codec.binary.Base64;
+import guru.nidi.atlassian.remote.HttpUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
@@ -21,7 +21,6 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,8 +30,6 @@ import java.util.Map;
  *
  */
 public class RestAccess {
-    private static final int MAX_RESPONSE_SIZE = 1024 * 1024;
-
     public static final TypeReference<HashMap<String, Object>> MAP_TYPE_REFERENCE = new TypeReference<HashMap<String, Object>>() {
     };
     public static final TypeReference<ArrayList<Object>> LIST_TYPE_REFERENCE = new TypeReference<ArrayList<Object>>() {
@@ -64,11 +61,7 @@ public class RestAccess {
     public <T extends HttpRequestBase> T addHeaders(T method) {
         method.setHeader("Content-Type", "application/json");
         method.setHeader("Accept", "application/json");
-        try {
-            method.setHeader("Authorization", "Basic " + Base64.encodeBase64String((username + ":" + password).getBytes("utf-8")));
-        } catch (UnsupportedEncodingException e) {
-            throw new AssertionError("utf-8 encoding not found");
-        }
+        HttpUtils.setAuthHeader(method, username, password);
         return method;
     }
 

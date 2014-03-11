@@ -1,6 +1,6 @@
 package guru.nidi.atlassian.remote.script;
 
-import org.apache.commons.codec.binary.Base64;
+import guru.nidi.atlassian.remote.HttpUtils;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.ByteArrayRequestEntity;
@@ -64,7 +64,7 @@ public class RemoteConfluence {
     Object executeImpl(String command, Object... parameters) throws RpcException {
         PostMethod post = new PostMethod(serverUrl + "/rpc/json-rpc/confluenceservice-v2/" + command);
         post.setRequestHeader("Content-Type", "application/json");
-        post.setRequestHeader("Authorization", "Basic " + Base64.encodeBase64String((username + ":" + password).getBytes()));
+        HttpUtils.setAuthHeader(post, username, password);
         ObjectMapper mapper = new ObjectMapper();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {

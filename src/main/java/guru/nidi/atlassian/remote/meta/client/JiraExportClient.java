@@ -2,22 +2,24 @@ package guru.nidi.atlassian.remote.meta.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.codec.binary.Base64;
+import guru.nidi.atlassian.remote.HttpUtils;
+import guru.nidi.atlassian.remote.meta.GenerateRequest;
+import guru.nidi.atlassian.remote.meta.JiraGenerateRequest;
+import guru.nidi.atlassian.remote.meta.ResponseMessage;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import guru.nidi.atlassian.remote.meta.GenerateRequest;
-import guru.nidi.atlassian.remote.meta.JiraGenerateRequest;
-import guru.nidi.atlassian.remote.meta.ResponseMessage;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  *
@@ -74,7 +76,7 @@ public class JiraExportClient {
         final String jsonRequest = mapper.writeValueAsString(new RequestHolder(request));
         final HttpPost post = new HttpPost(serverUrl + "/action/generate/jira");
         post.setEntity(new StringEntity(jsonRequest, ContentType.APPLICATION_JSON));
-        setAuthHeader(post);
+        HttpUtils.setAuthHeader(post, username, password);
         final HttpResponse response = client.execute(post);
         if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
             throwClientException("Problem generating the export", response);
@@ -108,17 +110,11 @@ public class JiraExportClient {
     private InputStream requestExport(String url) throws IOException {
         final HttpGet get = new HttpGet(url);
         get.setHeader("Accept", "application/octet-stream");
-        setAuthHeader(get);
+        HttpUtils.setAuthHeader(get, username, password);
         final HttpResponse response = client.execute(get);
         if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
             throwClientException("Problem fetching the export", response);
         }
         return response.getEntity().getContent();
     }
-
-    private void setAuthHeader(HttpRequestBase req) throws UnsupportedEncodingException {
-        req.setHeader("Authorization", Base64.encodeBase64String((username + ":" + password).getBytes("utf-8")));
-    }
-
-
 }
