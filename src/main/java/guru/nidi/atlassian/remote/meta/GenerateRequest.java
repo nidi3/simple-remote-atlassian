@@ -2,6 +2,7 @@ package guru.nidi.atlassian.remote.meta;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -12,12 +13,14 @@ public class GenerateRequest implements Serializable {
     private String templateSrc;
     private String style;
     private String styleSrc;
+    private Set<String> stylesSecondary;
     private String language;
     private String projectKey;
     private String projectName;
     private String versions;
     private String docType;
     private String status;
+    private String classification;
     private String author;
     private String collaborators;
     private String distribution;
@@ -63,6 +66,14 @@ public class GenerateRequest implements Serializable {
 
     public void setStyleSrc(String styleSrc) {
         this.styleSrc = styleSrc;
+    }
+
+    public Set<String> getStylesSecondary() {
+        return stylesSecondary;
+    }
+
+    public void setStylesSecondary(Set<String> stylesSecondary) {
+        this.stylesSecondary = stylesSecondary;
     }
 
     public String getLanguage() {
@@ -111,6 +122,14 @@ public class GenerateRequest implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getClassification() {
+        return classification;
+    }
+
+    public void setClassification(String classification) {
+        this.classification = classification;
     }
 
     public String getAuthor() {
