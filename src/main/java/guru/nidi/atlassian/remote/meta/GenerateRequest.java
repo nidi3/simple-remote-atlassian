@@ -12,6 +12,7 @@ public class GenerateRequest implements Serializable {
     private String templateSrc;
     private String style;
     private String styleSrc;
+    private String language;
     private String projectKey;
     private String projectName;
     private String versions;
@@ -62,6 +63,14 @@ public class GenerateRequest implements Serializable {
 
     public void setStyleSrc(String styleSrc) {
         this.styleSrc = styleSrc;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     public String getProjectKey() {
