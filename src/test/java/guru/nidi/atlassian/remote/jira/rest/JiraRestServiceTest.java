@@ -3,12 +3,13 @@ package guru.nidi.atlassian.remote.jira.rest;
 import com.atlassian.jira.rpc.soap.beans.*;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Ignore;
-import org.junit.Test;
 import guru.nidi.atlassian.remote.jira.DefaultJiraService;
 import guru.nidi.atlassian.remote.jira.JiraService;
 import guru.nidi.atlassian.remote.jira.JiraTasks;
+import guru.nidi.atlassian.remote.jira.RemoteIssueExt;
 import guru.nidi.atlassian.remote.rest.RestException;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.io.*;
 import java.net.URLEncoder;
@@ -22,8 +23,23 @@ public class JiraRestServiceTest {
     @Test
     public void test() throws IOException, RestException {
         JiraService js = new DefaultJiraService("https://jira.mimacom.com", System.getenv("JIRA_USER"), System.getenv("JIRA_PASS"));
-        final List<Map<String, Object>> description = js.getIssuesByJql("project=LS and key=LS-62", 0, 100, "description", null);
+        final List<Map<String, Object>> description = js.getIssuesByJql("project=LS and key=LS-62", 0, 100, "description,status", "operations,changelog");
         System.out.println(description);
+    }
+
+    @Test
+    @Ignore
+    public void testRestGetIssue() throws IOException, RestException {
+        JiraService js = new DefaultJiraService("https://jira.mimacom.com", System.getenv("JIRA_USER"), System.getenv("JIRA_PASS"));
+        final RemoteIssueExt issue = js.getIssue("LS-1774");
+        final Map<String, Object> issue2 = js.getIssue("LS-1774", "status,description", "operations,changelog");
+    }
+
+    @Test
+    @Ignore
+    public void testRestGetIssuesFromFilter() throws IOException, RestException {
+        JiraService js = new DefaultJiraService("https://jira.mimacom.com", System.getenv("JIRA_USER"), System.getenv("JIRA_PASS"));
+        final RemoteIssueExt[] issues = js.getIssuesFromFilter("Sibad | Resolved Bugs");
     }
 
     @Test
@@ -50,7 +66,7 @@ public class JiraRestServiceTest {
         String s1 = service.fieldNameById("10040");
         String s = service.customFieldByName(issue, "Release Notes Comments");
 
-        Object o = service.executeGet("search?jql=" + URLEncoder.encode("id in linkedissues(IPOM-53) and (type=\"Test Case\")","utf-8"));
+        Object o = service.executeGet("search?jql=" + URLEncoder.encode("id in linkedissues(IPOM-53) and (type=\"Test Case\")", "utf-8"));
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

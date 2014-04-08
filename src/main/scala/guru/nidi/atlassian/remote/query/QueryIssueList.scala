@@ -1,9 +1,10 @@
 package guru.nidi.atlassian.remote.query
 
-import com.atlassian.jira.rpc.soap.beans.{RemoteVersion, RemoteIssueType, RemotePriority, RemoteIssue}
+import com.atlassian.jira.rpc.soap.beans.{RemoteVersion, RemoteIssueType, RemotePriority}
 import JqlBuilder._
 import collection.convert.Wrappers
 import scala.collection.immutable.SortedMap
+import guru.nidi.atlassian.remote.jira.RemoteIssueExt
 
 /**
  *
@@ -41,8 +42,6 @@ class QueryIssueList(query: JiraQuery, elems: Seq[QueryIssue]) extends QueryIssu
 
   def issueType: RemoteIssueType = query.issueTypeById(getType)
 
-  def timeToResolve: Long = query.timeToResolve(issue)
-
   def firstFixVersion: RemoteVersion = firstVersion(getFixVersions)
 
   def firstAffectsVersion: RemoteVersion = firstVersion(getAffectsVersions)
@@ -71,11 +70,11 @@ object QueryIssueList {
   def ofJql(query: JiraQuery, context: String, expression: String, order: String): QueryIssueList =
     ofRemoteIssues(query, query.executeJql(jql(context, expression, order)))
 
-  def ofRemoteIssues(query: JiraQuery, issues: Seq[RemoteIssue]): QueryIssueList =
+  def ofRemoteIssues(query: JiraQuery, issues: Seq[RemoteIssueExt]): QueryIssueList =
     ofQueryIssues(query, issues.map(ri => new QueryIssue(ri)): _*)
 
   def ofDescription(desc: String) = {
-    val issue = new RemoteIssue()
+    val issue = new RemoteIssueExt()
     issue.setKey(desc)
     new QueryIssueList(null, List(new QueryIssue(issue)))
   }

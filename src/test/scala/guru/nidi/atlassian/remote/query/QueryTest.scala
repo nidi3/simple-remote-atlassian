@@ -3,13 +3,14 @@ import org.scalatest.FlatSpec
 import guru.nidi.atlassian.remote.query.QueryProjectList._
 import guru.nidi.atlassian.remote.query.QueryIssueList._
 import com.atlassian.jira.rpc.soap.beans.{RemotePriority, RemoteIssueType, RemoteProject, RemoteIssue}
+import guru.nidi.atlassian.remote.jira.RemoteIssueExt
 
 /**
  *
  */
 class QueryTest extends FlatSpec {
   def issue(key: String) = {
-    val issue = new RemoteIssue()
+    val issue = new RemoteIssueExt()
     issue.setKey(key)
     issue
   }
@@ -23,9 +24,7 @@ class QueryTest extends FlatSpec {
   val qs = new QueryService {
     var lastQuery: String = null
 
-    def getIssue(issueKey: String): RemoteIssue = issue(issueKey)
-
-    def getIssuesFromFilter(filter: String): Seq[RemoteIssue] = List(issue(filter + "1"), issue(filter + "2"))
+    def getIssue(issueKey: String): RemoteIssueExt = issue(issueKey)
 
     def customField(issue: RemoteIssue, name: String): String = issue.getKey + name
 
@@ -33,7 +32,7 @@ class QueryTest extends FlatSpec {
 
     def baseUrl: String = "base"
 
-    def getIssuesFromJqlSearch(query: String, maxResults: Int): Seq[RemoteIssue] = {
+    def getIssuesFromJqlSearch(query: String, maxResults: Int): Seq[RemoteIssueExt] = {
       lastQuery = query
       Nil
     }
@@ -41,8 +40,6 @@ class QueryTest extends FlatSpec {
     def priorityById(id: String): RemotePriority = new RemotePriority(id, id, "", "", "")
 
     def issueTypeById(id: String): RemoteIssueType = new RemoteIssueType(id, id, "", "", false)
-
-    def timeToResolve(issue: RemoteIssue): Long = 6666
   }
 
   val jq = new JiraQuery(qs)
@@ -50,7 +47,6 @@ class QueryTest extends FlatSpec {
   behavior of "Jira remote"
 
   it should "support its entry functions" in {
-    assert(jq.issuesOfFilter("myFilter") === ofRemoteIssues(jq, List(issue("myFilter1"), issue("myFilter2"))))
     assert(jq.projects() === ofRemoteProjects(jq, List(project("a"), project("b"))))
     assert(jq.allProjects === ofRemoteProjects(jq, List(project("a"), project("b"))))
     assert(jq.projects("c") === ofRemoteProjects(jq, List(project("c"))))

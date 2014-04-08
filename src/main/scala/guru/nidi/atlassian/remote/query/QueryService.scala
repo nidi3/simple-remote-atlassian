@@ -1,6 +1,7 @@
 package guru.nidi.atlassian.remote.query
 
 import com.atlassian.jira.rpc.soap.beans.{RemoteIssueType, RemotePriority, RemoteProject, RemoteIssue}
+import guru.nidi.atlassian.remote.jira.RemoteIssueExt
 
 /**
  *
@@ -8,11 +9,9 @@ import com.atlassian.jira.rpc.soap.beans.{RemoteIssueType, RemotePriority, Remot
 trait QueryService {
   def getProjectsByKey(keys: String*): Seq[RemoteProject]
 
-  def getIssue(issueKey: String): RemoteIssue
+  def getIssue(issueKey: String): RemoteIssueExt
 
-  def getIssuesFromFilter(filter: String): Seq[RemoteIssue]
-
-  def getIssuesFromJqlSearch(query: String, maxResults: Int): Seq[RemoteIssue]
+  def getIssuesFromJqlSearch(query: String, maxResults: Int): Seq[RemoteIssueExt]
 
   def baseUrl: String
 
@@ -21,6 +20,4 @@ trait QueryService {
   def priorityById(id: String): RemotePriority
 
   def issueTypeById(id: String): RemoteIssueType
-
-  def timeToResolve(issue: RemoteIssue): Long
 }

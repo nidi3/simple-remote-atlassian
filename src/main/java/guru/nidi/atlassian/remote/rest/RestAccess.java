@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import guru.nidi.atlassian.remote.HttpUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -69,8 +71,8 @@ public class RestAccess {
         return executeImpl(preparePost(command, parameters));
     }
 
-    public <T> T executePost(String command, Object parameters, Class<T> type) throws RestException, IOException, URISyntaxException {
-        return executeImpl(preparePost(command, parameters), null, type);
+    public <T> T executePost(String command, Object parameters, Class<T> type) throws RestException, IOException {
+        return executeImpl(preparePost(command, parameters), type);
     }
 
     private HttpPost preparePost(String command, Object parameters) throws RestException {
@@ -85,14 +87,41 @@ public class RestAccess {
         return post;
     }
 
+
     public Object executeGet(String command) throws RestException, IOException {
         HttpGet get = get(command);
         return executeImpl(get);
     }
 
-    public <T> T executeGet(String command, Map<String, Object> parameters, Class<T> type) throws RestException, IOException, URISyntaxException {
+    public <T> T executeGet(String command, Map<String, Object> parameters, Class<T> type) throws RestException, IOException {
+        return executeImpl(prepareGet(command, parameters), type);
+    }
+
+    private HttpGet prepareGet(String command, Map<String, Object> parameters) throws RestException {
         HttpGet get = get(command);
-        return executeImpl(get, parameters, type);
+        try {
+            get.setURI(addQuery(new URIBuilder(get.getURI()), parameters).build());
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException(e);
+        }
+        return get;
+    }
+
+    private URIBuilder addQuery(URIBuilder builder, Map<String, Object> parameters) {
+        if (parameters != null) {
+            for (Map.Entry<String, Object> entry : parameters.entrySet()) {
+                String value;
+                if (entry.getValue() instanceof List) {
+                    value = StringUtils.join((List<?>) entry.getValue(), ",");
+                } else if (entry.getValue().getClass().isArray()) {
+                    value = StringUtils.join((Object[]) entry.getValue(), ",");
+                } else {
+                    value = entry.getValue().toString();
+                }
+                builder.addParameter(entry.getKey(), value);
+            }
+        }
+        return builder;
     }
 
     private Object executeImpl(HttpRequestBase method) throws IOException, RestException {
@@ -112,8 +141,7 @@ public class RestAccess {
         return mapper.readValue(resString, LIST_TYPE_REFERENCE);
     }
 
-    private <T> T executeImpl(HttpRequestBase method, Map<String, Object> parameters, Class<T> type) throws IOException, RestException, URISyntaxException {
-        method.setURI(addQuery(new URIBuilder(method.getURI()), parameters).build());
+    private <T> T executeImpl(HttpRequestBase method, Class<T> type) throws IOException, RestException {
         String resString = doExecute(method);
 
         if (resString.length() == 0) {
@@ -126,15 +154,6 @@ public class RestAccess {
         } catch (JsonMappingException e) {
             throw new RestException(resString, e);
         }
-    }
-
-    private URIBuilder addQuery(URIBuilder builder, Map<String, Object> parameters) {
-        if (parameters != null) {
-            for (Map.Entry<String, Object> entry : parameters.entrySet()) {
-                builder.addParameter(entry.getKey(), entry.getValue().toString());
-            }
-        }
-        return builder;
     }
 
     private String doExecute(HttpRequestBase method) throws IOException, RestException {

@@ -8,6 +8,7 @@ import guru.nidi.text.transform.parse.SimpleParser
 import guru.nidi.text.transform.format.SimpleFormatter
 import com.atlassian.jira.rpc.soap.beans.{RemoteIssueType, RemotePriority, RemoteIssue}
 import java.util.Locale
+import guru.nidi.atlassian.remote.jira.RemoteIssueExt
 
 /**
  *
@@ -20,9 +21,6 @@ class JiraQuery(service: QueryService,
 
   private val log = LoggerFactory.getLogger(getClass)
 
-  def issuesOfFilter(name: String): QueryIssueList =
-    QueryIssueList.ofRemoteIssues(this, service.getIssuesFromFilter(name))
-
   def projects(names: String*): QueryProjectList =
     QueryProjectList.ofRemoteProjects(this, service.getProjectsByKey(names: _*))
 
@@ -34,7 +32,7 @@ class JiraQuery(service: QueryService,
 
   def issue(issueKey: String): QueryIssueList = QueryIssueList.ofRemoteIssues(this, List(service.getIssue(issueKey)))
 
-  private[query] def executeJql(jql: String): Seq[RemoteIssue] =
+  private[query] def executeJql(jql: String): Seq[RemoteIssueExt] =
     service.getIssuesFromJqlSearch(JqlBuilder.and(globalExpression, jql), maxResult)
 
   def parseAndFormat(s: String, issue: QueryIssueList): String = {
@@ -57,7 +55,5 @@ class JiraQuery(service: QueryService,
   def priorityById(id: String): RemotePriority = service.priorityById(id)
 
   def issueTypeById(id: String): RemoteIssueType = service.issueTypeById(id)
-
-  def timeToResolve(issue: RemoteIssue): Long = service.timeToResolve(issue)
 }
 

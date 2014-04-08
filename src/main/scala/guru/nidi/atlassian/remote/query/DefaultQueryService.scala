@@ -4,7 +4,7 @@ import org.slf4j.LoggerFactory
 import com.atlassian.jira.rpc.soap.beans.{RemoteIssueType, RemotePriority, RemoteIssue, RemoteProject}
 import java.util.Collections
 import collection.convert.Wrappers
-import guru.nidi.atlassian.remote.jira.JiraService
+import guru.nidi.atlassian.remote.jira.{RemoteIssueExt, JiraService}
 import guru.nidi.atlassian.remote.AtlassianException
 
 /**
@@ -22,11 +22,9 @@ class DefaultQueryService(service: JiraService) extends QueryService {
       })
   }
 
-  def getIssue(issueKey: String): RemoteIssue = wrap(service.getIssue, issueKey)
+  def getIssue(issueKey: String): RemoteIssueExt = wrap(service.getIssue, issueKey)
 
-  def getIssuesFromFilter(filter: String): Seq[RemoteIssue] = wrap(service.getIssuesFromFilter, filter)
-
-  def getIssuesFromJqlSearch(query: String, maxResults: Int): Seq[RemoteIssue] = {
+  def getIssuesFromJqlSearch(query: String, maxResults: Int): Seq[RemoteIssueExt] = {
     log.debug("Executing jql '{}'", query)
     wrap((q: String) => service.getIssuesByJql(q, 0, maxResults), query)
   }
@@ -38,8 +36,6 @@ class DefaultQueryService(service: JiraService) extends QueryService {
   def priorityById(id: String): RemotePriority = wrap(service.priorityById, id)
 
   def issueTypeById(id: String): RemoteIssueType = wrap(service.issueTypeById, id)
-
-  def timeToResolve(issue: RemoteIssue): Long = wrap(service.timeToResolve, issue)
 
   private def wrap[P, T](exec: P => T, param: P): T =
     try {

@@ -1,6 +1,7 @@
 package guru.nidi.atlassian.remote.query
 
 import com.atlassian.jira.rpc.soap.beans.{RemoteProject, RemotePriority, RemoteIssueType, RemoteIssue}
+import guru.nidi.atlassian.remote.jira.RemoteIssueExt
 
 /**
  *
@@ -8,11 +9,9 @@ import com.atlassian.jira.rpc.soap.beans.{RemoteProject, RemotePriority, RemoteI
 class QueryServiceWrapper(val delegate: QueryService) extends QueryService {
   def getProjectsByKey(keys: String*): Seq[RemoteProject] = delegate.getProjectsByKey(keys: _*)
 
-  def getIssue(issueKey: String): RemoteIssue = delegate.getIssue(issueKey)
+  def getIssue(issueKey: String): RemoteIssueExt = delegate.getIssue(issueKey)
 
-  def getIssuesFromFilter(filter: String): Seq[RemoteIssue] = delegate.getIssuesFromFilter(filter)
-
-  def getIssuesFromJqlSearch(query: String, maxResults: Int): Seq[RemoteIssue] = getIssuesFromJqlSearch(query, maxResults)
+  def getIssuesFromJqlSearch(query: String, maxResults: Int): Seq[RemoteIssueExt] = getIssuesFromJqlSearch(query, maxResults)
 
   def baseUrl: String = delegate.baseUrl
 
@@ -21,6 +20,4 @@ class QueryServiceWrapper(val delegate: QueryService) extends QueryService {
   def priorityById(id: String): RemotePriority = delegate.priorityById(id)
 
   def issueTypeById(id: String): RemoteIssueType = delegate.issueTypeById(id)
-
-  def timeToResolve(issue: RemoteIssue): Long = delegate.timeToResolve(issue)
 }

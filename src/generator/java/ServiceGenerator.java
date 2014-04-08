@@ -12,6 +12,8 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -35,11 +37,15 @@ public class ServiceGenerator {
     private void generateService(String path, String name, Class<?> serviceClass, String serviceGetter, Class<?>... delegateClasses) throws IOException {
         String interfaceName = Character.toUpperCase(name.charAt(0)) + name.substring(1) + "Service";
         generateInterface(name, interfaceName, serviceClass, delegateClasses);
+        generateImpl(path, name, serviceClass, serviceGetter, interfaceName, delegateClasses);
+    }
+
+    private void generateImpl(String path, String name, Class<?> serviceClass, String serviceGetter, String interfaceName, Class<?>[] delegateClasses) throws IOException {
         final String implName = "Default" + interfaceName;
         PrintWriter writer = createWriter(name, implName);
         writer.println("package " + PACKAGE + "." + name + ";");
         writer.println("import java.net.URL;");
-        writer.println("import "+PACKAGE+".AtlassianException;");
+        writer.println("import " + PACKAGE + ".AtlassianException;");
         writer.println("public class " + implName + " implements " + interfaceName + "{");
         writer.println("  private final String baseUrl;");
         writer.println("  private final String token;");
@@ -67,10 +73,11 @@ public class ServiceGenerator {
         writer.println("    }");
         writer.println("  }");
         writer.println("  public String getBaseUrl(){ return baseUrl; }");
-        writeMethods(writer, serviceClass, "service", "token");
+        Set<LocalMethod> methods = new HashSet<LocalMethod>();
         for (Class<?> delegateClass : delegateClasses) {
-            writeMethods(writer, delegateClass, paramName(delegateClass), null);
+            writeMethods(methods, writer, delegateClass, paramName(delegateClass), null);
         }
+        writeMethods(methods, writer, serviceClass, "service", "token");
         writer.println("}");
         writer.close();
     }
@@ -86,10 +93,11 @@ public class ServiceGenerator {
         writer.println("package " + PACKAGE + "." + subPackage + ";");
         writer.println("public interface " + className + "{");
         writer.println("  String getBaseUrl();");
-        writeMethodDecls(writer, serviceClass, true);
+        Set<LocalMethod> methods = new HashSet<LocalMethod>();
         for (Class<?> delegateClass : delegateClasses) {
-            writeMethodDecls(writer, delegateClass, false);
+            writeMethodDecls(methods, writer, delegateClass, false);
         }
+        writeMethodDecls(methods, writer, serviceClass, true);
         writer.println("}");
         writer.close();
     }
@@ -109,13 +117,46 @@ public class ServiceGenerator {
         }
     }
 
-    private void writeMethods(PrintWriter writer, Class<?> serviceClass, String delegate, String firstParam) {
+    private void writeMethods(Set<LocalMethod> methods, PrintWriter writer, Class<?> serviceClass, String delegate, String firstParam) {
         for (Method m : declaredMethods(serviceClass)) {
             if (Modifier.isPublic(m.getModifiers())) {
-                writer.print("  public ");
-                writeMethodDecl(writer, m, firstParam != null);
-                writeMethodBody(writer, m, delegate, firstParam);
+                if (writeMethodDecl(methods, writer, m, firstParam != null)) {
+                    writeMethodBody(writer, m, delegate, firstParam);
+                }
             }
+        }
+    }
+
+    private static class LocalMethod {
+        private final String name;
+        private final Class<?>[] paramTypes;
+
+        private LocalMethod(Method method, boolean ignoreFirst) {
+            this.name = method.getName();
+            int start = ignoreFirst ? 1 : 0;
+            paramTypes = new Class[method.getParameterTypes().length - start];
+            System.arraycopy(method.getParameterTypes(), start, paramTypes, 0, paramTypes.length);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+
+            LocalMethod that = (LocalMethod) o;
+
+            return name.equals(that.name)
+                    && Arrays.equals(paramTypes, that.paramTypes);
+        }
+
+        @Override
+        public int hashCode() {
+            return name.hashCode() + 17 *
+                    (Arrays.hashCode(paramTypes));
         }
     }
 
@@ -151,7 +192,14 @@ public class ServiceGenerator {
         writer.println("    }catch(Exception e){throw new AtlassianException(\"Error calling " + m.getName() + ".\",e);}}");
     }
 
-    private void writeMethodDecl(PrintWriter writer, Method m, boolean skipFirst) {
+    private boolean writeMethodDecl(Set<LocalMethod> methods, PrintWriter writer, Method m, boolean skipFirst) {
+        final LocalMethod localMethod = new LocalMethod(m, skipFirst);
+        if (methods.contains(localMethod)) {
+            return false;
+        }
+        methods.add(localMethod);
+
+        writer.print("public ");
         if (m.getGenericReturnType() instanceof ParameterizedType) {
             writer.print(m.getGenericReturnType());
         } else {
@@ -178,14 +226,16 @@ public class ServiceGenerator {
             index++;
         }
         writer.print(")");
+        return true;
     }
 
-    private void writeMethodDecls(PrintWriter writer, Class<?> serviceClass, boolean skipFirst) {
+    private void writeMethodDecls(Set<LocalMethod> methods, PrintWriter writer, Class<?> serviceClass, boolean skipFirst) {
         for (Method m : declaredMethods(serviceClass)) {
             if (Modifier.isPublic(m.getModifiers())) {
                 writer.print("  ");
-                writeMethodDecl(writer, m, skipFirst);
-                writer.println(";");
+                if (writeMethodDecl(methods, writer, m, skipFirst)) {
+                    writer.println(";");
+                }
             }
         }
     }

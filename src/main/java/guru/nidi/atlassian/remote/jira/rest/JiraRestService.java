@@ -1,10 +1,11 @@
 package guru.nidi.atlassian.remote.jira.rest;
 
 import com.atlassian.jira.rpc.soap.beans.*;
+import guru.nidi.atlassian.remote.jira.RemoteIssueExt;
+import guru.nidi.atlassian.remote.rest.RestException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
-import guru.nidi.atlassian.remote.rest.RestException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -86,65 +87,88 @@ public class JiraRestService {
         return projects;
     }
 
-    public List<Map<String, Object>> getAllIssuesByJql(String jql, String fields, List<String> expand) throws IOException, RestException {
+    public Map<String, Object> getIssue(String keyOrId, String fields, String expand) throws IOException, RestException {
+        final Map<String, Object> params = stdQueryParams(new HashMap<String, Object>(), fields, expand);
+        final Map<String, Object> res = (Map<String, Object>) access.executeGet("issue/" + keyOrId, params, Map.class);
+        return res;
+    }
+
+    private Map<String, Object> stdQueryParams(Map<String, Object> params, String fields, String expand) {
+        if (fields != null) {
+            params.put("fields", fields.split("\\s*,\\s*"));
+        }
+        if (expand != null) {
+            params.put("expand", expand.split("\\s*,\\s*"));
+        }
+        return params;
+    }
+
+    public RemoteIssueExt getIssue(String keyOrId) throws IOException, RestException {
+        return remoteIssueFromJson(getIssue(keyOrId, null, null));
+    }
+
+    public RemoteIssueExt[] getIssuesFromFilter(String filter) throws IOException, RestException {
+        return getIssuesByJql("filter='" + filter + "'", 0, 500);
+    }
+
+    public List<Map<String, Object>> getAllIssuesByJql(String jql, String fields, String expand) throws IOException, RestException {
         List<Map<String, Object>> res = new ArrayList<Map<String, Object>>();
         int start = 0;
         List<Map<String, Object>> result;
         do {
-            long a = System.currentTimeMillis();
             result = getIssuesByJql(jql, start, 500, fields, expand);
-            long b = System.currentTimeMillis();
-            System.out.println((b - a) / 500);
             res.addAll(result);
             start += result.size();
         } while (!result.isEmpty());
         return res;
     }
 
-    public List<Map<String, Object>> getIssuesByJql(String jql, int startAt, int maxResults, String fields, List<String> expand) throws IOException, RestException {
-        final HashMap<String, Object> req = new HashMap<String, Object>();
+    public List<Map<String, Object>> getIssuesByJql(String jql, int startAt, int maxResults, String fields, String expand) throws IOException, RestException {
+        final Map<String, Object> req = stdQueryParams(new HashMap<String, Object>(), fields, expand);
         req.put("jql", jql);
         req.put("startAt", startAt);
         req.put("maxResults", maxResults);
-        if (fields != null) {
-            req.put("fields", fields.split("\\s*,\\s*"));
-        }
-        if (expand != null) {
-            req.put("expand", expand);
-        }
         final Map<String, Object> res = (Map<String, Object>) access.executePost("search", req);
         return (List<Map<String, Object>>) res.get("issues");
     }
 
-    public RemoteIssue[] getIssuesByJql(String jql, int startAt, int maxResults) throws IOException, RestException {
+    public RemoteIssueExt[] getIssuesByJql(String jql, int startAt, int maxResults) throws IOException, RestException {
         List<Map<String, Object>> issues = getIssuesByJql(jql, startAt, maxResults, null, null);
-        RemoteIssue[] res = new RemoteIssue[issues.size()];
+        RemoteIssueExt[] res = new RemoteIssueExt[issues.size()];
         int index = 0;
         for (Map<String, Object> issue : issues) {
-            Map<String, Object> fields = (Map<String, Object>) issue.get("fields");
-            res[index] = new RemoteIssue((String) issue.get("id"),
-                    versions(access(fields, "versions")),
-                    access(fields, "assignee", "name"),
-                    null, components(fields),
-                    calendar((String) fields.get("created")),
-                    customFields(fields),
-                    (String) fields.get("description"),
-                    calendar((String) fields.get("duedate")),
-                    (String) fields.get("environment"),
-                    versions(access(fields, "fixVersions")),
-                    (String) issue.get("key"),
-                    access(fields, "priority", "id"),
-                    access(fields, "project", "key"),
-                    access(fields, "reporter", "name"),
-                    access(fields, "resolution", "id"),
-                    access(fields, "status", "id"),
-                    (String) fields.get("summary"),
-                    access(fields, "issuetype", "id"),
-                    calendar((String) fields.get("updated")),
-                    longOf(((Map<String, Integer>) fields.get("votes")).get("votes")));
+            res[index] = remoteIssueFromJson(issue);
             index++;
         }
         return res;
+    }
+
+    private RemoteIssueExt remoteIssueFromJson(Map<String, Object> issue) {
+        Map<String, Object> fields = (Map<String, Object>) issue.get("fields");
+        return new RemoteIssueExt((String) issue.get("id"),
+                versions(access(fields, "versions")),
+                access(fields, "assignee", "name"),
+                null, components(fields),
+                calendar((String) fields.get("created")),
+                customFields(fields),
+                (String) fields.get("description"),
+                calendar((String) fields.get("duedate")),
+                (String) fields.get("environment"),
+                versions(access(fields, "fixVersions")),
+                (String) issue.get("key"),
+                access(fields, "priority", "id"),
+                access(fields, "project", "key"),
+                access(fields, "reporter", "name"),
+                access(fields, "resolution", "id"),
+                access(fields, "status", "id"),
+                (String) fields.get("summary"),
+                access(fields, "issuetype", "id"),
+                calendar((String) fields.get("updated")),
+                longOf(((Map<String, Integer>) fields.get("votes")).get("votes")),
+                (Integer) fields.get("aggregatetimeoriginalestimate"),
+                (Integer) fields.get("timeoriginalestimate"),
+                (Integer) fields.get("aggregatetimespent"),
+                (Integer) fields.get("timespent"));
     }
 
     private String access(Map<String, Object> fields, String key, String sub) {

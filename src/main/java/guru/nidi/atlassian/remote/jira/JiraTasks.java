@@ -1,9 +1,9 @@
 package guru.nidi.atlassian.remote.jira;
 
 import com.atlassian.jira.rpc.soap.beans.*;
+import guru.nidi.atlassian.remote.jira.rest.IssueLink;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import guru.nidi.atlassian.remote.jira.rest.IssueLink;
 
 import java.rmi.RemoteException;
 import java.util.*;
@@ -23,6 +23,9 @@ public class JiraTasks {
     private static final String CUSTOMFIELD = "customfield_";
     private final JiraService service;
     private Map<String, String> fieldNames;
+    private Map<String, RemoteIssueType> issueTypeById, issueTypeByName;
+    private Map<String, RemoteStatus> statusById, statusByName;
+    private Map<String, RemotePriority> priorityById;
 
     public JiraTasks(JiraService service) {
         this.service = service;
@@ -33,35 +36,33 @@ public class JiraTasks {
     }
 
     public RemoteIssueType issueTypeById(String id) throws java.rmi.RemoteException {
-        RemoteIssueType[] issueTypes = service.getIssueTypes();
-        for (RemoteIssueType type : issueTypes) {
-            if (type.getId().equals(id)) {
-                return type;
+        if (issueTypeById == null) {
+            issueTypeById = new HashMap<String, RemoteIssueType>();
+            RemoteIssueType[] issueTypes = service.getIssueTypes();
+            for (RemoteIssueType type : issueTypes) {
+                issueTypeById.put(type.getId(), type);
+            }
+            RemoteIssueType[] issueSubTypes = service.getSubTaskIssueTypes();
+            for (RemoteIssueType type : issueSubTypes) {
+                issueTypeById.put(type.getId(), type);
             }
         }
-        RemoteIssueType[] issueSubTypes = service.getSubTaskIssueTypes();
-        for (RemoteIssueType type : issueSubTypes) {
-            if (type.getId().equals(id)) {
-                return type;
-            }
-        }
-        return null;
+        return id == null ? null : issueTypeById.get(id);
     }
 
     public RemoteIssueType issueTypeByName(String name) throws java.rmi.RemoteException {
-        RemoteIssueType[] issueTypes = service.getIssueTypes();
-        for (RemoteIssueType type : issueTypes) {
-            if (type.getName().equalsIgnoreCase(name)) {
-                return type;
+        if (issueTypeByName == null) {
+            issueTypeByName = new HashMap<String, RemoteIssueType>();
+            RemoteIssueType[] issueTypes = service.getIssueTypes();
+            for (RemoteIssueType type : issueTypes) {
+                issueTypeByName.put(type.getName().toLowerCase(), type);
+            }
+            RemoteIssueType[] issueSubTypes = service.getSubTaskIssueTypes();
+            for (RemoteIssueType type : issueSubTypes) {
+                issueTypeByName.put(type.getName().toLowerCase(), type);
             }
         }
-        RemoteIssueType[] issueSubTypes = service.getSubTaskIssueTypes();
-        for (RemoteIssueType type : issueSubTypes) {
-            if (type.getName().equalsIgnoreCase(name)) {
-                return type;
-            }
-        }
-        return null;
+        return name == null ? null : issueTypeByName.get(name.toLowerCase());
     }
 
     public String fieldNameById(String fieldId) {
@@ -115,30 +116,33 @@ public class JiraTasks {
     }
 
     public RemoteStatus statusByName(String name) {
-        for (RemoteStatus status : service.getStatuses()) {
-            if (status.getName().equalsIgnoreCase(name)) {
-                return status;
+        if (statusByName == null) {
+            statusByName = new HashMap<String, RemoteStatus>();
+            for (RemoteStatus status : service.getStatuses()) {
+                statusByName.put(status.getName().toLowerCase(), status);
             }
         }
-        return null;
+        return name == null ? null : statusByName.get(name.toLowerCase());
     }
 
     public RemoteStatus statusById(String id) {
-        for (RemoteStatus status : service.getStatuses()) {
-            if (status.getId().equals(id)) {
-                return status;
+        if (statusById == null) {
+            statusById = new HashMap<String, RemoteStatus>();
+            for (RemoteStatus status : service.getStatuses()) {
+                statusById.put(status.getId(), status);
             }
         }
-        return null;
+        return id == null ? null : statusById.get(id);
     }
 
     public RemotePriority priorityById(String id) {
-        for (RemotePriority priority : service.getPriorities()) {
-            if (priority.getId().equals(id)) {
-                return priority;
+        if (priorityById == null) {
+            priorityById = new HashMap<String, RemotePriority>();
+            for (RemotePriority priority : service.getPriorities()) {
+                priorityById.put(priority.getId(), priority);
             }
         }
-        return null;
+        return id == null ? null : priorityById.get(id);
     }
 
     public long timeToResolve(RemoteIssue issue) {
