@@ -127,9 +127,14 @@ public class JiraRestService {
         final Map<String, Object> req = stdQueryParams(new HashMap<String, Object>(), fields, expand);
         req.put("jql", jql);
         req.put("startAt", startAt);
-        req.put("maxResults", maxResults);
+        req.put("maxResults", Math.min(maxResults, 500));
         final Map<String, Object> res = (Map<String, Object>) access.executePost("search", req);
-        return (List<Map<String, Object>>) res.get("issues");
+        final List<Map<String, Object>> issues = (List<Map<String, Object>>) res.get("issues");
+        final int read = startAt + issues.size();
+        if (read < (Integer) res.get("total") && read < maxResults) {
+            issues.addAll(getIssuesByJql(jql, read, maxResults, fields, expand));
+        }
+        return issues;
     }
 
     public RemoteIssueExt[] getIssuesByJql(String jql, int startAt, int maxResults) throws IOException, RestException {

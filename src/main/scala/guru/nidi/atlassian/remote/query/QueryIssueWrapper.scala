@@ -51,6 +51,16 @@ abstract class QueryIssueWrapper(elems: Seq[QueryIssue], t: QueryIssue => QueryI
 
   def getKey: String = issue.getKey
 
+  implicit def integer2OptionInt(i: Integer): Option[Int] = if (i == null) None else Some(i)
+
+  def getTimeSpent: Option[Int] = issue.getTimeSpent
+
+  def getTimeOriginalEstimate: Option[Int] = issue.getTimeOriginalEstimate
+
+  def getAggregateTimeSpent: Option[Int] = issue.getAggregateTimeSpent
+
+  def getAggregateTimeOriginalEstimate: Option[Int] = issue.getAggregateTimeOriginalEstimate
+
   override def toString = "Issue (key=" + getKey + ")"
 }
 

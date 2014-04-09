@@ -26,7 +26,9 @@ class DefaultQueryService(service: JiraService) extends QueryService {
 
   def getIssuesFromJqlSearch(query: String, maxResults: Int): Seq[RemoteIssueExt] = {
     log.debug("Executing jql '{}'", query)
-    wrap((q: String) => service.getIssuesByJql(q, 0, maxResults), query)
+    val res = wrap((q: String) => service.getIssuesByJql(q, 0, maxResults), query)
+    if (res.size > 20) log.debug("Found {} results", res.size)
+    res
   }
 
   def baseUrl: String = service.getBaseUrl
