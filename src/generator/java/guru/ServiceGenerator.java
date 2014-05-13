@@ -1,3 +1,5 @@
+package guru;
+
 import com.mimacom.jira.rpc.soap.jirasoapservice_v2.JiraSoapService;
 import com.mimacom.rune.plugins.servlet.soap_axis1.confluenceservice_v2.ConfluenceSoapService;
 import guru.nidi.atlassian.remote.confluence.ConfluenceService;

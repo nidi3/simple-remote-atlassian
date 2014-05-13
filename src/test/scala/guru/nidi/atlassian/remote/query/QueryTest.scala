@@ -2,7 +2,7 @@ package guru.nidi.atlassian.remote.query
 import org.scalatest.FlatSpec
 import guru.nidi.atlassian.remote.query.QueryProjectList._
 import guru.nidi.atlassian.remote.query.QueryIssueList._
-import com.atlassian.jira.rpc.soap.beans.{RemotePriority, RemoteIssueType, RemoteProject, RemoteIssue}
+import com.atlassian.jira.rpc.soap.beans._
 import guru.nidi.atlassian.remote.jira.RemoteIssueExt
 
 /**
@@ -40,6 +40,10 @@ class QueryTest extends FlatSpec {
     def priorityById(id: String): RemotePriority = new RemotePriority(id, id, "", "", "")
 
     def issueTypeById(id: String): RemoteIssueType = new RemoteIssueType(id, id, "", "", false)
+    
+    def statusById(id: String): RemoteStatus = new RemoteStatus(id, id, "", null)
+    
+    def resolutionById(id: String): RemoteResolution = new RemoteResolution(id, id, "", null)
   }
 
   val jq = new JiraQuery(qs)

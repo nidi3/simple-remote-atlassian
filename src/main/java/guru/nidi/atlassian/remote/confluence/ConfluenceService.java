@@ -37,8 +37,8 @@ public interface ConfluenceService{
   public boolean editUser(com.atlassian.confluence.rpc.soap.beans.RemoteUser remoteUser1);
   public boolean emptyTrash(java.lang.String string1);
   public java.lang.String exportSite(boolean boolean1);
-  public java.lang.String exportSpace(java.lang.String string1,java.lang.String string2);
   public java.lang.String exportSpace(java.lang.String string1,java.lang.String string2,boolean boolean3);
+  public java.lang.String exportSpace(java.lang.String string1,java.lang.String string2);
   public boolean flushIndexQueue();
   public java.lang.String[] getActiveUsers(boolean boolean1);
   public com.atlassian.confluence.rpc.soap.beans.RemotePageSummary[] getAncestors(long long1);
@@ -69,8 +69,8 @@ public interface ConfluenceService{
   public com.atlassian.confluence.rpc.soap.beans.RemotePage getPage(java.lang.String string1,java.lang.String string2);
   public com.atlassian.confluence.rpc.soap.beans.RemotePageHistory[] getPageHistory(long long1);
   public com.atlassian.confluence.rpc.soap.beans.RemotePermission[] getPagePermissions(long long1);
-  public com.atlassian.confluence.rpc.soap.beans.RemotePageSummary getPageSummary(long long1);
   public com.atlassian.confluence.rpc.soap.beans.RemotePageSummary getPageSummary(java.lang.String string1,java.lang.String string2);
+  public com.atlassian.confluence.rpc.soap.beans.RemotePageSummary getPageSummary(long long1);
   public com.atlassian.confluence.rpc.soap.beans.RemotePageSummary[] getPages(java.lang.String string1);
   public java.lang.String[] getPermissions(java.lang.String string1);
   public java.lang.String[] getPermissionsForUser(java.lang.String string1,java.lang.String string2);
@@ -144,8 +144,8 @@ public interface ConfluenceService{
   public boolean removeUserFromGroup(java.lang.String string1,java.lang.String string2);
   public boolean renameUser(java.lang.String string1,java.lang.String string2);
   public java.lang.String[] renameUsers(java.util.HashMap hashMap1);
-  public java.lang.String renderContent(java.lang.String string1,long long2,java.lang.String string3,java.util.HashMap hashMap4);
   public java.lang.String renderContent(java.lang.String string1,long long2,java.lang.String string3);
+  public java.lang.String renderContent(java.lang.String string1,long long2,java.lang.String string3,java.util.HashMap hashMap4);
   public com.atlassian.confluence.rpc.soap.beans.RemoteSearchResult[] search(java.lang.String string1,int int2);
   public com.atlassian.confluence.rpc.soap.beans.RemoteSearchResult[] search(java.lang.String string1,java.util.HashMap hashMap2,int int3);
   public boolean setContentPermissions(long long1,java.lang.String string2,com.atlassian.confluence.rpc.soap.beans.RemoteContentPermission[] remoteContentPermission3);

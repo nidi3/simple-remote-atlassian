@@ -26,6 +26,7 @@ public class JiraTasks {
     private Map<String, RemoteIssueType> issueTypeById, issueTypeByName;
     private Map<String, RemoteStatus> statusById, statusByName;
     private Map<String, RemotePriority> priorityById;
+    private Map<String, RemoteResolution> resolutionById;
 
     public JiraTasks(JiraService service) {
         this.service = service;
@@ -143,6 +144,16 @@ public class JiraTasks {
             }
         }
         return id == null ? null : priorityById.get(id);
+    }
+
+    public RemoteResolution resolutionById(String id) {
+        if (resolutionById == null) {
+            resolutionById = new HashMap<String, RemoteResolution>();
+            for (RemoteResolution resolution : service.getResolutions()) {
+                resolutionById.put(resolution.getId(), resolution);
+            }
+        }
+        return id == null ? null : resolutionById.get(id);
     }
 
     public long timeToResolve(RemoteIssue issue) {

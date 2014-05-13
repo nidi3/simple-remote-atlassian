@@ -1,6 +1,6 @@
 package guru.nidi.atlassian.remote.query
 
-import com.atlassian.jira.rpc.soap.beans.{RemoteVersion, RemoteIssueType, RemotePriority}
+import com.atlassian.jira.rpc.soap.beans._
 import JqlBuilder._
 import collection.convert.Wrappers
 import scala.collection.immutable.SortedMap
@@ -42,6 +42,10 @@ class QueryIssueList(query: JiraQuery, elems: Seq[QueryIssue]) extends QueryIssu
 
   def issueType: RemoteIssueType = query.issueTypeById(getType)
 
+  def status: RemoteStatus = query.statusById(getStatus)
+  
+  def resolution: RemoteResolution = query.resolutionById(getResolution)
+
   def firstFixVersion: RemoteVersion = firstVersion(getFixVersions)
 
   def firstAffectsVersion: RemoteVersion = firstVersion(getAffectsVersions)
@@ -49,18 +53,19 @@ class QueryIssueList(query: JiraQuery, elems: Seq[QueryIssue]) extends QueryIssu
 
   type VersionGroup = Map[RemoteVersion, Seq[QueryIssueList]]
 
-  def groupByFirstFixVersion: VersionGroup = groupByVersion(_.firstFixVersion)
+  def groupByFirstFixVersion(ordering: Ordering[RemoteVersion] = Orderings.versionOldLast): VersionGroup = groupByVersion(_.firstFixVersion, ordering.asInstanceOf[Ordering[RemoteVersion]])
 
-  def groupByFirstAffectsVersion: VersionGroup = groupByVersion(_.firstAffectsVersion)
+  def groupByFirstAffectsVersion(ordering: Ordering[RemoteVersion] = Orderings.versionOldLast): VersionGroup = groupByVersion(_.firstAffectsVersion, ordering)
 
 
   override def toString: String = elems.toString
 
   private def firstVersion(v: => Array[RemoteVersion]): RemoteVersion =
     if (v == null || v.length == 0) null
-    else v.toList.sorted(Orderings.version)(0)
+    else v.toList.sorted(Orderings.versionOldFirst)(0)
 
-  private def groupByVersion(v: QueryIssueList => RemoteVersion): VersionGroup = SortedMap(groupBy(v).toSeq: _*)(Orderings.version)
+  private def groupByVersion(v: QueryIssueList => RemoteVersion, ordering: Ordering[RemoteVersion]): VersionGroup =
+    SortedMap(groupBy(v).toSeq: _*)(ordering)
 }
 
 
