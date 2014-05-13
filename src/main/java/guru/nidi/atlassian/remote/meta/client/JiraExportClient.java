@@ -93,7 +93,7 @@ public class JiraExportClient {
         try {
             throw new JiraExportClientException(message, mapper.readValue(body, ResponseMessage.class));
         } catch (JsonProcessingException e) {
-            throw new JiraExportClientException(message + body, null);
+            throw new JiraExportClientException(message + body, e);
         }
     }
 
