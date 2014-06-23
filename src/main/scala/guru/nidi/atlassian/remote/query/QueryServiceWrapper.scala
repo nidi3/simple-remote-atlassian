@@ -21,6 +21,7 @@ class QueryServiceWrapper(val delegate: QueryService) extends QueryService {
 
   def issueTypeById(id: String): RemoteIssueType = delegate.issueTypeById(id)
 
+  def statusById(id: String): RemoteStatus = delegate.statusById(id)
+  
   def resolutionById(id: String): RemoteResolution = delegate.resolutionById(id)
-
 }

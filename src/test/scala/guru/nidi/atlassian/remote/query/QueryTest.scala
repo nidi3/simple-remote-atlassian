@@ -41,9 +41,10 @@ class QueryTest extends FlatSpec {
     def priorityById(id: String): RemotePriority = new RemotePriority(id, id, "", "", "")
 
     def issueTypeById(id: String): RemoteIssueType = new RemoteIssueType(id, id, "", "", false)
-
+    
+    def statusById(id: String): RemoteStatus = new RemoteStatus(id, id, "", null)
+    
     def resolutionById(id: String): RemoteResolution = new RemoteResolution(id, id, "", null)
-
   }
 
   val jq = new JiraQuery(qs)

@@ -5,11 +5,11 @@ public interface JiraService{
   public java.lang.Object executePost(java.lang.String string0,java.lang.Object object1);
   public java.util.List<java.util.Map<java.lang.String, java.lang.Object>> getAllIssuesByJql(java.lang.String string0,java.lang.String string1,java.lang.String string2);
   public java.util.List<com.atlassian.jira.rpc.soap.beans.RemoteProject> getAllProjects();
-  public guru.nidi.atlassian.remote.jira.RemoteIssueExt getIssue(java.lang.String string0);
   public java.util.Map<java.lang.String, java.lang.Object> getIssue(java.lang.String string0,java.lang.String string1,java.lang.String string2);
+  public guru.nidi.atlassian.remote.jira.RemoteIssueExt getIssue(java.lang.String string0);
   public java.util.List<guru.nidi.atlassian.remote.jira.rest.IssueLinkType> getIssueLinkTypes();
-  public guru.nidi.atlassian.remote.jira.RemoteIssueExt[] getIssuesByJql(java.lang.String string0,int int1,int int2);
   public java.util.List<java.util.Map<java.lang.String, java.lang.Object>> getIssuesByJql(java.lang.String string0,int int1,int int2,java.lang.String string3,java.lang.String string4);
+  public guru.nidi.atlassian.remote.jira.RemoteIssueExt[] getIssuesByJql(java.lang.String string0,int int1,int int2);
   public guru.nidi.atlassian.remote.jira.RemoteIssueExt[] getIssuesFromFilter(java.lang.String string0);
   public java.util.List<com.atlassian.jira.rpc.soap.beans.RemoteProject> getProjectsByKey(java.lang.String... string0);
   public void linkIssues(guru.nidi.atlassian.remote.jira.rest.IssueLink issueLink0);

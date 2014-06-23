@@ -164,13 +164,13 @@ public java.lang.String exportSite(boolean boolean1){
     try{
       return service.exportSite(token,boolean1);
     }catch(Exception e){throw new AtlassianException("Error calling exportSite.",e);}}
-public java.lang.String exportSpace(java.lang.String string1,java.lang.String string2){
-    try{
-      return service.exportSpace(token,string1,string2);
-    }catch(Exception e){throw new AtlassianException("Error calling exportSpace.",e);}}
 public java.lang.String exportSpace(java.lang.String string1,java.lang.String string2,boolean boolean3){
     try{
       return service.exportSpace(token,string1,string2,boolean3);
+    }catch(Exception e){throw new AtlassianException("Error calling exportSpace.",e);}}
+public java.lang.String exportSpace(java.lang.String string1,java.lang.String string2){
+    try{
+      return service.exportSpace(token,string1,string2);
     }catch(Exception e){throw new AtlassianException("Error calling exportSpace.",e);}}
 public boolean flushIndexQueue(){
     try{
@@ -603,6 +603,10 @@ public java.lang.String[] renameUsers(java.util.HashMap hashMap1){
 public java.lang.String renderContent(java.lang.String string1,long long2,java.lang.String string3){
     try{
       return service.renderContent(token,string1,long2,string3);
+    }catch(Exception e){throw new AtlassianException("Error calling renderContent.",e);}}
+public java.lang.String renderContent(java.lang.String string1,long long2,java.lang.String string3,java.util.HashMap hashMap4){
+    try{
+      return service.renderContent(token,string1,long2,string3,hashMap4);
     }catch(Exception e){throw new AtlassianException("Error calling renderContent.",e);}}
 public java.lang.String renderContent(java.lang.String string1,long long2,java.lang.String string3,java.util.HashMap hashMap4){
     try{

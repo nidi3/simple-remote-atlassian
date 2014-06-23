@@ -38,25 +38,25 @@ public java.util.List<com.atlassian.jira.rpc.soap.beans.RemoteProject> getAllPro
     try{
       return jiraRestService.getAllProjects();
     }catch(Exception e){throw new AtlassianException("Error calling getAllProjects.",e);}}
+public java.util.Map<java.lang.String, java.lang.Object> getIssue(java.lang.String string0,java.lang.String string1,java.lang.String string2){
+    try{
+      return jiraRestService.getIssue(string0, string1, string2);
+    }catch(Exception e){throw new AtlassianException("Error calling getIssue.",e);}}
 public guru.nidi.atlassian.remote.jira.RemoteIssueExt getIssue(java.lang.String string0){
     try{
       return jiraRestService.getIssue(string0);
-    }catch(Exception e){throw new AtlassianException("Error calling getIssue.",e);}}
-public java.util.Map<java.lang.String, java.lang.Object> getIssue(java.lang.String string0,java.lang.String string1,java.lang.String string2){
-    try{
-      return jiraRestService.getIssue(string0,string1,string2);
     }catch(Exception e){throw new AtlassianException("Error calling getIssue.",e);}}
 public java.util.List<guru.nidi.atlassian.remote.jira.rest.IssueLinkType> getIssueLinkTypes(){
     try{
       return jiraRestService.getIssueLinkTypes();
     }catch(Exception e){throw new AtlassianException("Error calling getIssueLinkTypes.",e);}}
-public guru.nidi.atlassian.remote.jira.RemoteIssueExt[] getIssuesByJql(java.lang.String string0,int int1,int int2){
-    try{
-      return jiraRestService.getIssuesByJql(string0, int1, int2);
-    }catch(Exception e){throw new AtlassianException("Error calling getIssuesByJql.",e);}}
 public java.util.List<java.util.Map<java.lang.String, java.lang.Object>> getIssuesByJql(java.lang.String string0,int int1,int int2,java.lang.String string3,java.lang.String string4){
     try{
-      return jiraRestService.getIssuesByJql(string0,int1,int2,string3,string4);
+      return jiraRestService.getIssuesByJql(string0, int1, int2, string3, string4);
+    }catch(Exception e){throw new AtlassianException("Error calling getIssuesByJql.",e);}}
+public guru.nidi.atlassian.remote.jira.RemoteIssueExt[] getIssuesByJql(java.lang.String string0,int int1,int int2){
+    try{
+      return jiraRestService.getIssuesByJql(string0,int1,int2);
     }catch(Exception e){throw new AtlassianException("Error calling getIssuesByJql.",e);}}
 public guru.nidi.atlassian.remote.jira.RemoteIssueExt[] getIssuesFromFilter(java.lang.String string0){
     try{

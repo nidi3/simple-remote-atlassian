@@ -55,7 +55,9 @@ class JiraQuery(service: QueryService,
   def priorityById(id: String): RemotePriority = service.priorityById(id)
 
   def issueTypeById(id: String): RemoteIssueType = service.issueTypeById(id)
-
-  def resolution(id: String): RemoteResolution = service.resolutionById(id)
+  
+  def statusById(id: String): RemoteStatus = service.statusById(id)
+  
+  def resolutionById(id: String): RemoteResolution = service.resolutionById(id)
 }
 

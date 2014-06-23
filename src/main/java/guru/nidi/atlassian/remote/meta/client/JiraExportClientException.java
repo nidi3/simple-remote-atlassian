@@ -8,6 +8,11 @@ import guru.nidi.atlassian.remote.meta.ResponseMessage;
 public class JiraExportClientException extends RuntimeException {
     private final ResponseMessage responseMessage;
 
+    public JiraExportClientException(String message, Throwable cause) {
+        super(message, cause);
+        this.responseMessage = null;
+    }
+
     public JiraExportClientException(String message, ResponseMessage responseMessage) {
         super(message + (responseMessage == null ? "" : ("\n" + responseMessage.getText())));
         this.responseMessage = responseMessage;

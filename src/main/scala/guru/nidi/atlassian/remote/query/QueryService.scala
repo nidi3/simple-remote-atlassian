@@ -21,5 +21,7 @@ trait QueryService {
 
   def issueTypeById(id: String): RemoteIssueType
 
+  def statusById(id: String): RemoteStatus
+  
   def resolutionById(id: String): RemoteResolution
 }

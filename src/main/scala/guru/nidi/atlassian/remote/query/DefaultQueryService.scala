@@ -38,6 +38,10 @@ class DefaultQueryService(service: JiraService) extends QueryService {
   def priorityById(id: String): RemotePriority = wrap(service.priorityById, id)
 
   def issueTypeById(id: String): RemoteIssueType = wrap(service.issueTypeById, id)
+  
+  def statusById(id: String): RemoteStatus = wrap(service.statusById, id)
+  
+  def resolutionById(id: String): RemoteResolution = wrap(service.resolutionById, id)
 
   def resolutionById(id: String): RemoteResolution = wrap(service.resolutionById, id)
 
