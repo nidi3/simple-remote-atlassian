@@ -4,6 +4,7 @@ import com.atlassian.jira.rpc.soap.beans.RemoteCustomFieldValue;
 import com.atlassian.jira.rpc.soap.beans.RemoteIssue;
 import com.atlassian.jira.rpc.soap.beans.RemoteProject;
 import com.atlassian.jira.rpc.soap.beans.RemoteVersion;
+import guru.nidi.atlassian.remote.TestUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -34,7 +35,7 @@ public class JiraTasksLiveTest {
     @Test
     @Ignore
     public void testCreateRequirementAndFeature() throws Exception {
-        JiraTasks tasks = new JiraTasks(new DefaultJiraService("https://jira.atlassian.com","ghuder5@gmx.ch","kotzen3"));// System.getenv("JIRA_USER"), System.getenv("JIRA_PASS")));
+        JiraTasks tasks = new JiraTasks(new DefaultJiraService("https://jira.atlassian.com", System.getenv("JIRA_USER"), System.getenv("JIRA_PASS")));
         RemoteVersion[] vs = tasks.getService().getVersions("MOA");
         RemoteIssue i = tasks.getService().getIssue("MOA-63");
 //        List<Map<String, Object>> allIssuesByJql = tasks.getService().getIssuesByJql("project in (LS) and (type in (Epic,'Non Functional Requirement') and fixVersion='r1.0' and level is empty and component is not empty)", 1, 2,null,null);
@@ -68,7 +69,7 @@ public class JiraTasksLiveTest {
     @Test
     @Ignore
     public void testDelete() throws Exception {
-        JiraTasks tasks = new JiraTasks(new DefaultJiraService("https://jira.mimacom.com", System.getenv("JIRA_USER"), System.getenv("JIRA_PASS")));
+        JiraTasks tasks = new JiraTasks(TestUtils.jiraService());
         for (int i = 1229; i <= 1234; i++) {
             //tasks.getService().deleteIssue("SIBAD-" + i);
         }

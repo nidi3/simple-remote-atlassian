@@ -111,13 +111,14 @@
                 <version>1.4</version>
                 <executions>
                     <execution>
+                        <id>jira</id>
                         <goals>
                             <goal>wsdl2java</goal>
                         </goals>
                         <configuration>
                             <urls>
-                                <url>https://jira.mimacom.com/rpc/soap/jirasoapservice-v2?wsdl</url>
-                                <url>https://rune.mimacom.com/rpc/soap-axis/confluenceservice-v2?wsdl</url>
+                                <url>https://jira.atlassian.com/rpc/soap/jirasoapservice-v2?wsdl</url>
+                                <url>https://confluence.atlassian.com/rpc/soap-axis/confluenceservice-v2?wsdl</url>
                             </urls>
                         </configuration>
                     </execution>

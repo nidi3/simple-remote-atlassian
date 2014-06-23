@@ -3,7 +3,7 @@ package guru.nidi.atlassian.remote.jira.rest;
 import com.atlassian.jira.rpc.soap.beans.*;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import guru.nidi.atlassian.remote.jira.DefaultJiraService;
+import guru.nidi.atlassian.remote.TestUtils;
 import guru.nidi.atlassian.remote.jira.JiraService;
 import guru.nidi.atlassian.remote.jira.JiraTasks;
 import guru.nidi.atlassian.remote.jira.RemoteIssueExt;
@@ -22,7 +22,7 @@ import java.util.Map;
 public class JiraRestServiceTest {
     @Test
     public void test() throws IOException, RestException {
-        JiraService js = new DefaultJiraService("https://jira.mimacom.com", System.getenv("JIRA_USER"), System.getenv("JIRA_PASS"));
+        JiraService js = TestUtils.jiraService();
         final RemoteIssueExt[] issuesByJql = js.getIssuesByJql("project=CWSEP and key=CWSEP-1346", 0, 100);
         final RemoteResolution remoteResolution = js.resolutionById(issuesByJql[0].getResolution());
         final List<Map<String, Object>> description = js.getIssuesByJql("project=LS and key=LS-62", 0, 100, "description,status", "operations,changelog");
@@ -32,7 +32,7 @@ public class JiraRestServiceTest {
     @Test
     @Ignore
     public void testRestGetIssue() throws IOException, RestException {
-        JiraService js = new DefaultJiraService("https://jira.mimacom.com", System.getenv("JIRA_USER"), System.getenv("JIRA_PASS"));
+        JiraService js = TestUtils.jiraService();
         final RemoteIssueExt issue = js.getIssue("LS-1774");
         final Map<String, Object> issue2 = js.getIssue("LS-1774", "status,description", "operations,changelog");
     }
@@ -40,15 +40,15 @@ public class JiraRestServiceTest {
     @Test
     @Ignore
     public void testRestGetIssuesFromFilter() throws IOException, RestException {
-        JiraService js = new DefaultJiraService("https://jira.mimacom.com", System.getenv("JIRA_USER"), System.getenv("JIRA_PASS"));
+        JiraService js = TestUtils.jiraService();
         final RemoteIssueExt[] issues = js.getIssuesFromFilter("Sibad | Resolved Bugs");
     }
 
     @Test
     @Ignore
     public void testRest() throws IOException, RestException {
-        JiraService js = new DefaultJiraService("https://jira.mimacom.com", System.getenv("JIRA_USER"), System.getenv("JIRA_PASS"));
-        final JiraRestService service = new JiraRestService("https://jira.mimacom.com", System.getenv("JIRA_USER"), System.getenv("JIRA_PASS"));
+        JiraService js = TestUtils.jiraService();
+        final JiraRestService service = TestUtils.jiraRestService();
         for (RemoteIssueType type : js.getIssueTypes()) {
             final List<Map<String, Object>> ids = service.getAllIssuesByJql("type='" + type.getName() + "'", "id", null);
             System.out.println(type.getName() + ": " + ids.size());
@@ -58,7 +58,7 @@ public class JiraRestServiceTest {
     @Test
     @Ignore
     public void testExecuteImpl() throws Exception {
-        JiraService service = new DefaultJiraService("https://jira.mimacom.com", System.getenv("JIRA_USER"), System.getenv("JIRA_PASS"));
+        JiraService service = TestUtils.jiraService();
 
         // final List allProjects = service.getAllProjects();
 

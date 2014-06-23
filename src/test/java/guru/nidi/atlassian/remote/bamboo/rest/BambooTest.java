@@ -1,9 +1,10 @@
 package guru.nidi.atlassian.remote.bamboo.rest;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import guru.nidi.atlassian.remote.TestUtils;
 import guru.nidi.atlassian.remote.bamboo.BambooResultDetail;
 import guru.nidi.atlassian.remote.bamboo.BambooService;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ import static junit.framework.Assert.assertNotNull;
  *
  */
 public class BambooTest {
-    private BambooService service = new DefaultBambooService("http://bamboo.mimacom.com", System.getenv("JIRA_USER"), System.getenv("JIRA_PASS"));
+    private BambooService service = TestUtils.bambooService();
 
     @Test
     public void serverInfo() {
