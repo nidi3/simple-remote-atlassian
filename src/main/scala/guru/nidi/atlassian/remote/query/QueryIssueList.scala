@@ -1,6 +1,6 @@
 package guru.nidi.atlassian.remote.query
 
-import com.atlassian.jira.rpc.soap.beans.{RemoteResolution, RemoteVersion, RemoteIssueType, RemotePriority}
+import com.atlassian.jira.rpc.soap.beans._
 import JqlBuilder._
 import collection.convert.Wrappers
 import scala.collection.immutable.SortedMap

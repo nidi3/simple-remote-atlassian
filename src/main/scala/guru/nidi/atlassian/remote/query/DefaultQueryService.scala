@@ -43,8 +43,6 @@ class DefaultQueryService(service: JiraService) extends QueryService {
   
   def resolutionById(id: String): RemoteResolution = wrap(service.resolutionById, id)
 
-  def resolutionById(id: String): RemoteResolution = wrap(service.resolutionById, id)
-
   private def wrap[P, T](exec: P => T, param: P): T =
     try {
       exec(param)

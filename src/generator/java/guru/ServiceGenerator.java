@@ -1,3 +1,5 @@
+package guru;
+
 import com.atlassian.confluence.plugins.servlet.soap_axis1.confluenceservice_v2.ConfluenceSoapService;
 import com.atlassian.jira.rpc.soap.jirasoapservice_v2.JiraSoapService;
 import guru.nidi.atlassian.remote.confluence.ConfluenceService;
@@ -24,7 +26,11 @@ public class ServiceGenerator {
     private static final Comparator<Method> METHODS_BY_NAME = new Comparator<Method>() {
         @Override
         public int compare(Method m1, Method m2) {
-            return m1.getName().compareTo(m2.getName());
+            int res = m1.getName().compareTo(m2.getName());
+            if (res == 0) {
+                res = m1.getParameterTypes().length - m2.getParameterTypes().length;
+            }
+            return res;
         }
     };
 

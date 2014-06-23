@@ -7,8 +7,8 @@ public interface ConfluenceService{
   public boolean addAnonymousPermissionsToSpace(java.lang.String[] string1,java.lang.String string2);
   public boolean addAnonymousUsePermission();
   public boolean addAnonymousViewUserProfilePermission();
-  public com.atlassian.confluence.rpc.soap.beans.RemoteAttachment addAttachment(long long1,com.atlassian.confluence.rpc.soap.beans.RemoteAttachment remoteAttachment2,byte[] byte3);
   public com.atlassian.confluence.rpc.soap.beans.RemoteAttachment addAttachment(com.atlassian.confluence.rpc.soap.beans.RemoteAttachment remoteAttachment1,byte[] byte2);
+  public com.atlassian.confluence.rpc.soap.beans.RemoteAttachment addAttachment(long long1,com.atlassian.confluence.rpc.soap.beans.RemoteAttachment remoteAttachment2,byte[] byte3);
   public com.atlassian.confluence.rpc.soap.beans.RemoteComment addComment(com.atlassian.confluence.rpc.soap.beans.RemoteComment remoteComment1);
   public boolean addGlobalPermission(java.lang.String string1,java.lang.String string2);
   public boolean addGlobalPermissions(java.lang.String[] string1,java.lang.String string2);
@@ -25,8 +25,8 @@ public interface ConfluenceService{
   public com.atlassian.confluence.rpc.soap.beans.RemoteSpace addSpace(com.atlassian.confluence.rpc.soap.beans.RemoteSpace remoteSpace1);
   public com.atlassian.confluence.rpc.soap.beans.RemoteSpaceGroup addSpaceGroup(com.atlassian.confluence.rpc.soap.beans.RemoteSpaceGroup remoteSpaceGroup1);
   public com.atlassian.confluence.rpc.soap.beans.RemoteSpace addSpaceWithDefaultPermissions(com.atlassian.confluence.rpc.soap.beans.RemoteSpace remoteSpace1);
-  public void addUser(com.atlassian.confluence.rpc.soap.beans.RemoteUser remoteUser1,java.lang.String string2,boolean boolean3);
   public void addUser(com.atlassian.confluence.rpc.soap.beans.RemoteUser remoteUser1,java.lang.String string2);
+  public void addUser(com.atlassian.confluence.rpc.soap.beans.RemoteUser remoteUser1,java.lang.String string2,boolean boolean3);
   public boolean addUserToGroup(java.lang.String string1,java.lang.String string2);
   public boolean changeMyPassword(java.lang.String string1,java.lang.String string2);
   public boolean changeUserPassword(java.lang.String string1,java.lang.String string2);
@@ -37,8 +37,8 @@ public interface ConfluenceService{
   public boolean editUser(com.atlassian.confluence.rpc.soap.beans.RemoteUser remoteUser1);
   public boolean emptyTrash(java.lang.String string1);
   public java.lang.String exportSite(boolean boolean1);
-  public java.lang.String exportSpace(java.lang.String string1,java.lang.String string2,boolean boolean3);
   public java.lang.String exportSpace(java.lang.String string1,java.lang.String string2);
+  public java.lang.String exportSpace(java.lang.String string1,java.lang.String string2,boolean boolean3);
   public boolean flushIndexQueue();
   public java.lang.String[] getActiveUsers(boolean boolean1);
   public com.atlassian.confluence.rpc.soap.beans.RemotePageSummary[] getAncestors(long long1);
@@ -65,12 +65,12 @@ public interface ConfluenceService{
   public com.atlassian.confluence.rpc.soap.beans.RemoteLabel[] getLabelsById(long long1);
   public com.atlassian.confluence.rpc.soap.beans.RemoteLabel[] getMostPopularLabels(int int1);
   public com.atlassian.confluence.rpc.soap.beans.RemoteLabel[] getMostPopularLabelsInSpace(java.lang.String string1,int int2);
-  public com.atlassian.confluence.rpc.soap.beans.RemotePage getPage(java.lang.String string1,java.lang.String string2);
   public com.atlassian.confluence.rpc.soap.beans.RemotePage getPage(long long1);
+  public com.atlassian.confluence.rpc.soap.beans.RemotePage getPage(java.lang.String string1,java.lang.String string2);
   public com.atlassian.confluence.rpc.soap.beans.RemotePageHistory[] getPageHistory(long long1);
   public com.atlassian.confluence.rpc.soap.beans.RemotePermission[] getPagePermissions(long long1);
-  public com.atlassian.confluence.rpc.soap.beans.RemotePageSummary getPageSummary(java.lang.String string1,java.lang.String string2);
   public com.atlassian.confluence.rpc.soap.beans.RemotePageSummary getPageSummary(long long1);
+  public com.atlassian.confluence.rpc.soap.beans.RemotePageSummary getPageSummary(java.lang.String string1,java.lang.String string2);
   public com.atlassian.confluence.rpc.soap.beans.RemotePageSummary[] getPages(java.lang.String string1);
   public java.lang.String[] getPermissions(java.lang.String string1);
   public java.lang.String[] getPermissionsForUser(java.lang.String string1,java.lang.String string2);
@@ -148,10 +148,8 @@ public interface ConfluenceService{
   public java.lang.String[] renameUsers(java.util.HashMap hashMap1);
   public java.lang.String renderContent(java.lang.String string1,long long2,java.lang.String string3);
   public java.lang.String renderContent(java.lang.String string1,long long2,java.lang.String string3,java.util.HashMap hashMap4);
-  public java.lang.String renderContent(java.lang.String string1,long long2,java.lang.String string3,java.util.HashMap hashMap4);
   public com.atlassian.confluence.rpc.soap.beans.RemoteSearchResult[] search(java.lang.String string1,int int2);
   public com.atlassian.confluence.rpc.soap.beans.RemoteSearchResult[] search(java.lang.String string1,java.util.HashMap hashMap2,int int3);
-  public com.atlassian.confluence.rpc.soap.beans.RemoteSearchResult[] search(java.lang.String string1,int int2);
   public boolean setContentPermissions(long long1,java.lang.String string2,com.atlassian.confluence.rpc.soap.beans.RemoteContentPermission[] remoteContentPermission3);
   public boolean setEnableAnonymousAccess(boolean boolean1);
   public boolean setEnableWysiwyg(boolean boolean1);
