@@ -1,7 +1,7 @@
 package guru.nidi.atlassian.remote.query
 
 import org.slf4j.LoggerFactory
-import com.atlassian.jira.rpc.soap.beans.{RemoteIssueType, RemotePriority, RemoteIssue, RemoteProject}
+import com.atlassian.jira.rpc.soap.beans._
 import java.util.Collections
 import collection.convert.Wrappers
 import guru.nidi.atlassian.remote.jira.{RemoteIssueExt, JiraService}
@@ -38,6 +38,8 @@ class DefaultQueryService(service: JiraService) extends QueryService {
   def priorityById(id: String): RemotePriority = wrap(service.priorityById, id)
 
   def issueTypeById(id: String): RemoteIssueType = wrap(service.issueTypeById, id)
+
+  def resolutionById(id: String): RemoteResolution = wrap(service.resolutionById, id)
 
   private def wrap[P, T](exec: P => T, param: P): T =
     try {

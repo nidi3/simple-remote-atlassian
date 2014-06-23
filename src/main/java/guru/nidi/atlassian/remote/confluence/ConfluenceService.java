@@ -65,12 +65,12 @@ public interface ConfluenceService{
   public com.atlassian.confluence.rpc.soap.beans.RemoteLabel[] getLabelsById(long long1);
   public com.atlassian.confluence.rpc.soap.beans.RemoteLabel[] getMostPopularLabels(int int1);
   public com.atlassian.confluence.rpc.soap.beans.RemoteLabel[] getMostPopularLabelsInSpace(java.lang.String string1,int int2);
-  public com.atlassian.confluence.rpc.soap.beans.RemotePage getPage(long long1);
   public com.atlassian.confluence.rpc.soap.beans.RemotePage getPage(java.lang.String string1,java.lang.String string2);
+  public com.atlassian.confluence.rpc.soap.beans.RemotePage getPage(long long1);
   public com.atlassian.confluence.rpc.soap.beans.RemotePageHistory[] getPageHistory(long long1);
   public com.atlassian.confluence.rpc.soap.beans.RemotePermission[] getPagePermissions(long long1);
-  public com.atlassian.confluence.rpc.soap.beans.RemotePageSummary getPageSummary(long long1);
   public com.atlassian.confluence.rpc.soap.beans.RemotePageSummary getPageSummary(java.lang.String string1,java.lang.String string2);
+  public com.atlassian.confluence.rpc.soap.beans.RemotePageSummary getPageSummary(long long1);
   public com.atlassian.confluence.rpc.soap.beans.RemotePageSummary[] getPages(java.lang.String string1);
   public java.lang.String[] getPermissions(java.lang.String string1);
   public java.lang.String[] getPermissionsForUser(java.lang.String string1,java.lang.String string2);
@@ -83,6 +83,8 @@ public interface ConfluenceService{
   public com.atlassian.confluence.rpc.soap.beans.RemoteSpaceGroup getSpaceGroup(java.lang.String string1);
   public com.atlassian.confluence.rpc.soap.beans.RemoteSpaceGroup[] getSpaceGroups();
   public java.lang.String[] getSpaceLevelPermissions();
+  public com.atlassian.confluence.rpc.soap.beans.RemoteSpacePermissionSet getSpacePermissionSet(java.lang.String string1,java.lang.String string2);
+  public com.atlassian.confluence.rpc.soap.beans.RemoteSpacePermissionSet[] getSpacePermissionSets(java.lang.String string1);
   public java.lang.String getSpaceStatus(java.lang.String string1);
   public com.atlassian.confluence.rpc.soap.beans.RemoteSpaceSummary[] getSpaces();
   public com.atlassian.confluence.rpc.soap.beans.RemoteSpace[] getSpacesContainingContentWithLabel(java.lang.String string1);
@@ -144,10 +146,10 @@ public interface ConfluenceService{
   public boolean removeUserFromGroup(java.lang.String string1,java.lang.String string2);
   public boolean renameUser(java.lang.String string1,java.lang.String string2);
   public java.lang.String[] renameUsers(java.util.HashMap hashMap1);
-  public java.lang.String renderContent(java.lang.String string1,long long2,java.lang.String string3,java.util.HashMap hashMap4);
   public java.lang.String renderContent(java.lang.String string1,long long2,java.lang.String string3);
-  public com.atlassian.confluence.rpc.soap.beans.RemoteSearchResult[] search(java.lang.String string1,int int2);
+  public java.lang.String renderContent(java.lang.String string1,long long2,java.lang.String string3,java.util.HashMap hashMap4);
   public com.atlassian.confluence.rpc.soap.beans.RemoteSearchResult[] search(java.lang.String string1,java.util.HashMap hashMap2,int int3);
+  public com.atlassian.confluence.rpc.soap.beans.RemoteSearchResult[] search(java.lang.String string1,int int2);
   public boolean setContentPermissions(long long1,java.lang.String string2,com.atlassian.confluence.rpc.soap.beans.RemoteContentPermission[] remoteContentPermission3);
   public boolean setEnableAnonymousAccess(boolean boolean1);
   public boolean setEnableWysiwyg(boolean boolean1);

@@ -1,6 +1,6 @@
 package guru.nidi.atlassian.remote.query
 
-import com.atlassian.jira.rpc.soap.beans.{RemoteIssueType, RemotePriority, RemoteProject, RemoteIssue}
+import com.atlassian.jira.rpc.soap.beans._
 import guru.nidi.atlassian.remote.jira.RemoteIssueExt
 
 /**
@@ -20,4 +20,6 @@ trait QueryService {
   def priorityById(id: String): RemotePriority
 
   def issueTypeById(id: String): RemoteIssueType
+
+  def resolutionById(id: String): RemoteResolution
 }

@@ -23,6 +23,8 @@ public class JiraRestServiceTest {
     @Test
     public void test() throws IOException, RestException {
         JiraService js = new DefaultJiraService("https://jira.mimacom.com", System.getenv("JIRA_USER"), System.getenv("JIRA_PASS"));
+        final RemoteIssueExt[] issuesByJql = js.getIssuesByJql("project=CWSEP and key=CWSEP-1346", 0, 100);
+        final RemoteResolution remoteResolution = js.resolutionById(issuesByJql[0].getResolution());
         final List<Map<String, Object>> description = js.getIssuesByJql("project=LS and key=LS-62", 0, 100, "description,status", "operations,changelog");
         System.out.println(description);
     }

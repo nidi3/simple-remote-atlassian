@@ -6,12 +6,12 @@ import java.net.URL;
 public class DefaultConfluenceService implements ConfluenceService{
   private final String baseUrl;
   private final String token;
-  private final com.mimacom.rune.plugins.servlet.soap_axis1.confluenceservice_v2.ConfluenceSoapService service;
+  private final com.atlassian.confluence.plugins.servlet.soap_axis1.confluenceservice_v2.ConfluenceSoapService service;
   private final guru.nidi.atlassian.remote.confluence.ConfluenceTasks confluenceTasks;
   public DefaultConfluenceService(String baseUrl, String username, String password){
     this.baseUrl = baseUrl;
     try{
-      com.mimacom.rune.plugins.servlet.soap_axis1.confluenceservice_v2.ConfluenceSoapServiceServiceLocator locator = new com.mimacom.rune.plugins.servlet.soap_axis1.confluenceservice_v2.ConfluenceSoapServiceServiceLocator();
+      com.atlassian.confluence.plugins.servlet.soap_axis1.confluenceservice_v2.ConfluenceSoapServiceServiceLocator locator = new com.atlassian.confluence.plugins.servlet.soap_axis1.confluenceservice_v2.ConfluenceSoapServiceServiceLocator();
       service = locator.getConfluenceserviceV2(new URL(baseUrl+"/rpc/soap-axis/confluenceservice-v2"));
       token = service.login(username, password);
       confluenceTasks = new guru.nidi.atlassian.remote.confluence.ConfluenceTasks(this);
@@ -276,13 +276,13 @@ public com.atlassian.confluence.rpc.soap.beans.RemoteLabel[] getMostPopularLabel
     try{
       return service.getMostPopularLabelsInSpace(token,string1,int2);
     }catch(Exception e){throw new AtlassianException("Error calling getMostPopularLabelsInSpace.",e);}}
-public com.atlassian.confluence.rpc.soap.beans.RemotePage getPage(long long1){
-    try{
-      return service.getPage(token,long1);
-    }catch(Exception e){throw new AtlassianException("Error calling getPage.",e);}}
 public com.atlassian.confluence.rpc.soap.beans.RemotePage getPage(java.lang.String string1,java.lang.String string2){
     try{
       return service.getPage(token,string1,string2);
+    }catch(Exception e){throw new AtlassianException("Error calling getPage.",e);}}
+public com.atlassian.confluence.rpc.soap.beans.RemotePage getPage(long long1){
+    try{
+      return service.getPage(token,long1);
     }catch(Exception e){throw new AtlassianException("Error calling getPage.",e);}}
 public com.atlassian.confluence.rpc.soap.beans.RemotePageHistory[] getPageHistory(long long1){
     try{
@@ -292,13 +292,13 @@ public com.atlassian.confluence.rpc.soap.beans.RemotePermission[] getPagePermiss
     try{
       return service.getPagePermissions(token,long1);
     }catch(Exception e){throw new AtlassianException("Error calling getPagePermissions.",e);}}
-public com.atlassian.confluence.rpc.soap.beans.RemotePageSummary getPageSummary(long long1){
-    try{
-      return service.getPageSummary(token,long1);
-    }catch(Exception e){throw new AtlassianException("Error calling getPageSummary.",e);}}
 public com.atlassian.confluence.rpc.soap.beans.RemotePageSummary getPageSummary(java.lang.String string1,java.lang.String string2){
     try{
       return service.getPageSummary(token,string1,string2);
+    }catch(Exception e){throw new AtlassianException("Error calling getPageSummary.",e);}}
+public com.atlassian.confluence.rpc.soap.beans.RemotePageSummary getPageSummary(long long1){
+    try{
+      return service.getPageSummary(token,long1);
     }catch(Exception e){throw new AtlassianException("Error calling getPageSummary.",e);}}
 public com.atlassian.confluence.rpc.soap.beans.RemotePageSummary[] getPages(java.lang.String string1){
     try{
@@ -348,6 +348,14 @@ public java.lang.String[] getSpaceLevelPermissions(){
     try{
       return service.getSpaceLevelPermissions(token);
     }catch(Exception e){throw new AtlassianException("Error calling getSpaceLevelPermissions.",e);}}
+public com.atlassian.confluence.rpc.soap.beans.RemoteSpacePermissionSet getSpacePermissionSet(java.lang.String string1,java.lang.String string2){
+    try{
+      return service.getSpacePermissionSet(token,string1,string2);
+    }catch(Exception e){throw new AtlassianException("Error calling getSpacePermissionSet.",e);}}
+public com.atlassian.confluence.rpc.soap.beans.RemoteSpacePermissionSet[] getSpacePermissionSets(java.lang.String string1){
+    try{
+      return service.getSpacePermissionSets(token,string1);
+    }catch(Exception e){throw new AtlassianException("Error calling getSpacePermissionSets.",e);}}
 public java.lang.String getSpaceStatus(java.lang.String string1){
     try{
       return service.getSpaceStatus(token,string1);
@@ -592,21 +600,21 @@ public java.lang.String[] renameUsers(java.util.HashMap hashMap1){
     try{
       return service.renameUsers(token,hashMap1);
     }catch(Exception e){throw new AtlassianException("Error calling renameUsers.",e);}}
-public java.lang.String renderContent(java.lang.String string1,long long2,java.lang.String string3,java.util.HashMap hashMap4){
-    try{
-      return service.renderContent(token,string1,long2,string3,hashMap4);
-    }catch(Exception e){throw new AtlassianException("Error calling renderContent.",e);}}
 public java.lang.String renderContent(java.lang.String string1,long long2,java.lang.String string3){
     try{
       return service.renderContent(token,string1,long2,string3);
     }catch(Exception e){throw new AtlassianException("Error calling renderContent.",e);}}
-public com.atlassian.confluence.rpc.soap.beans.RemoteSearchResult[] search(java.lang.String string1,int int2){
+public java.lang.String renderContent(java.lang.String string1,long long2,java.lang.String string3,java.util.HashMap hashMap4){
     try{
-      return service.search(token,string1,int2);
-    }catch(Exception e){throw new AtlassianException("Error calling search.",e);}}
+      return service.renderContent(token,string1,long2,string3,hashMap4);
+    }catch(Exception e){throw new AtlassianException("Error calling renderContent.",e);}}
 public com.atlassian.confluence.rpc.soap.beans.RemoteSearchResult[] search(java.lang.String string1,java.util.HashMap hashMap2,int int3){
     try{
       return service.search(token,string1,hashMap2,int3);
+    }catch(Exception e){throw new AtlassianException("Error calling search.",e);}}
+public com.atlassian.confluence.rpc.soap.beans.RemoteSearchResult[] search(java.lang.String string1,int int2){
+    try{
+      return service.search(token,string1,int2);
     }catch(Exception e){throw new AtlassianException("Error calling search.",e);}}
 public boolean setContentPermissions(long long1,java.lang.String string2,com.atlassian.confluence.rpc.soap.beans.RemoteContentPermission[] remoteContentPermission3){
     try{

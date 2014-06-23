@@ -696,6 +696,11 @@ public class DummyJiraService implements JiraService {
     }
 
     @Override
+    public RemoteResolution resolutionById(String string0) {
+        return null;
+    }
+
+    @Override
     public RemoteSecurityLevel securityLevelByName(RemoteProject remoteProject0, String string1) {
         return null;
     }

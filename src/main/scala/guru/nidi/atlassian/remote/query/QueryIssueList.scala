@@ -1,6 +1,6 @@
 package guru.nidi.atlassian.remote.query
 
-import com.atlassian.jira.rpc.soap.beans.{RemoteVersion, RemoteIssueType, RemotePriority}
+import com.atlassian.jira.rpc.soap.beans.{RemoteResolution, RemoteVersion, RemoteIssueType, RemotePriority}
 import JqlBuilder._
 import collection.convert.Wrappers
 import scala.collection.immutable.SortedMap
@@ -42,6 +42,8 @@ class QueryIssueList(query: JiraQuery, elems: Seq[QueryIssue]) extends QueryIssu
 
   def issueType: RemoteIssueType = query.issueTypeById(getType)
 
+  def resolution: RemoteResolution = query.resolution(getResolution)
+
   def firstFixVersion: RemoteVersion = firstVersion(getFixVersions)
 
   def firstAffectsVersion: RemoteVersion = firstVersion(getAffectsVersions)
@@ -57,7 +59,7 @@ class QueryIssueList(query: JiraQuery, elems: Seq[QueryIssue]) extends QueryIssu
   override def toString: String = elems.toString
 
   private def firstVersion(v: => Array[RemoteVersion]): RemoteVersion =
-    if (v == null || v.length == 0) null
+    if (v == null || v.length == 0) NO_VERSION
     else v.toList.sorted(Orderings.version)(0)
 
   private def groupByVersion(v: QueryIssueList => RemoteVersion): VersionGroup = SortedMap(groupBy(v).toSeq: _*)(Orderings.version)
@@ -65,6 +67,8 @@ class QueryIssueList(query: JiraQuery, elems: Seq[QueryIssue]) extends QueryIssu
 
 
 object QueryIssueList {
+  val NO_VERSION = new RemoteVersion("none", "None", false, null, false, 0)
+
   def ofQueryIssues(query: JiraQuery, elems: QueryIssue*): QueryIssueList = new QueryIssueList(query, elems)
 
   def ofJql(query: JiraQuery, context: String, expression: String, order: String): QueryIssueList =

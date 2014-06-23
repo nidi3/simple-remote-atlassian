@@ -6,13 +6,13 @@ import java.net.URL;
 public class DefaultJiraService implements JiraService{
   private final String baseUrl;
   private final String token;
-  private final com.mimacom.jira.rpc.soap.jirasoapservice_v2.JiraSoapService service;
+  private final com.atlassian.jira.rpc.soap.jirasoapservice_v2.JiraSoapService service;
   private final guru.nidi.atlassian.remote.jira.rest.JiraRestService jiraRestService;
   private final guru.nidi.atlassian.remote.jira.JiraTasks jiraTasks;
   public DefaultJiraService(String baseUrl, String username, String password){
     this.baseUrl = baseUrl;
     try{
-      com.mimacom.jira.rpc.soap.jirasoapservice_v2.JiraSoapServiceServiceLocator locator = new com.mimacom.jira.rpc.soap.jirasoapservice_v2.JiraSoapServiceServiceLocator();
+      com.atlassian.jira.rpc.soap.jirasoapservice_v2.JiraSoapServiceServiceLocator locator = new com.atlassian.jira.rpc.soap.jirasoapservice_v2.JiraSoapServiceServiceLocator();
       service = locator.getJirasoapserviceV2(new URL(baseUrl+"/rpc/soap/jirasoapservice-v2"));
       token = service.login(username, password);
       jiraRestService = new guru.nidi.atlassian.remote.jira.rest.JiraRestService(baseUrl, username, password);
@@ -28,11 +28,11 @@ public java.lang.Object executeGet(java.lang.String string0){
     }catch(Exception e){throw new AtlassianException("Error calling executeGet.",e);}}
 public java.lang.Object executePost(java.lang.String string0,java.lang.Object object1){
     try{
-      return jiraRestService.executePost(string0,object1);
+      return jiraRestService.executePost(string0, object1);
     }catch(Exception e){throw new AtlassianException("Error calling executePost.",e);}}
 public java.util.List<java.util.Map<java.lang.String, java.lang.Object>> getAllIssuesByJql(java.lang.String string0,java.lang.String string1,java.lang.String string2){
     try{
-      return jiraRestService.getAllIssuesByJql(string0,string1,string2);
+      return jiraRestService.getAllIssuesByJql(string0, string1, string2);
     }catch(Exception e){throw new AtlassianException("Error calling getAllIssuesByJql.",e);}}
 public java.util.List<com.atlassian.jira.rpc.soap.beans.RemoteProject> getAllProjects(){
     try{
@@ -76,15 +76,15 @@ public java.io.InputStream loadAttachment(com.atlassian.jira.rpc.soap.beans.Remo
     }catch(Exception e){throw new AtlassianException("Error calling loadAttachment.",e);}}
 public com.atlassian.jira.rpc.soap.beans.RemoteNamedObject actionByName(java.lang.String string0,java.lang.String string1){
     try{
-      return jiraTasks.actionByName(string0,string1);
+      return jiraTasks.actionByName(string0, string1);
     }catch(Exception e){throw new AtlassianException("Error calling actionByName.",e);}}
 public com.atlassian.jira.rpc.soap.beans.RemoteIssue createRequirementAndFeature(com.atlassian.jira.rpc.soap.beans.RemoteProject remoteProject0,java.lang.String string1,java.lang.String string2,java.lang.String string3){
     try{
-      return jiraTasks.createRequirementAndFeature(remoteProject0,string1,string2,string3);
+      return jiraTasks.createRequirementAndFeature(remoteProject0, string1, string2, string3);
     }catch(Exception e){throw new AtlassianException("Error calling createRequirementAndFeature.",e);}}
 public java.lang.String customFieldByName(com.atlassian.jira.rpc.soap.beans.RemoteIssue remoteIssue0,java.lang.String string1){
     try{
-      return jiraTasks.customFieldByName(remoteIssue0,string1);
+      return jiraTasks.customFieldByName(remoteIssue0, string1);
     }catch(Exception e){throw new AtlassianException("Error calling customFieldByName.",e);}}
 public java.lang.String fieldNameById(java.lang.String string0){
     try{
@@ -92,7 +92,7 @@ public java.lang.String fieldNameById(java.lang.String string0){
     }catch(Exception e){throw new AtlassianException("Error calling fieldNameById.",e);}}
 public com.atlassian.jira.rpc.soap.beans.RemoteIssue[] getIssues(com.atlassian.jira.rpc.soap.beans.RemoteProject remoteProject0,com.atlassian.jira.rpc.soap.beans.RemoteVersion remoteVersion1,boolean boolean2){
     try{
-      return jiraTasks.getIssues(remoteProject0,remoteVersion1,boolean2);
+      return jiraTasks.getIssues(remoteProject0, remoteVersion1, boolean2);
     }catch(Exception e){throw new AtlassianException("Error calling getIssues.",e);}}
 public guru.nidi.atlassian.remote.jira.JiraService getService(){
     try{
@@ -108,7 +108,7 @@ public com.atlassian.jira.rpc.soap.beans.RemoteIssueType issueTypeByName(java.la
     }catch(Exception e){throw new AtlassianException("Error calling issueTypeByName.",e);}}
 public java.lang.String makeReleaseNotes(com.atlassian.jira.rpc.soap.beans.RemoteProject remoteProject0,com.atlassian.jira.rpc.soap.beans.RemoteVersion remoteVersion1,boolean boolean2){
     try{
-      return jiraTasks.makeReleaseNotes(remoteProject0,remoteVersion1,boolean2);
+      return jiraTasks.makeReleaseNotes(remoteProject0, remoteVersion1, boolean2);
     }catch(Exception e){throw new AtlassianException("Error calling makeReleaseNotes.",e);}}
 public com.atlassian.jira.rpc.soap.beans.RemotePriority priorityById(java.lang.String string0){
     try{
@@ -116,8 +116,12 @@ public com.atlassian.jira.rpc.soap.beans.RemotePriority priorityById(java.lang.S
     }catch(Exception e){throw new AtlassianException("Error calling priorityById.",e);}}
 public com.atlassian.jira.rpc.soap.beans.RemoteIssue progressStatusAction(java.lang.String string0,java.lang.String string1,java.lang.String string2){
     try{
-      return jiraTasks.progressStatusAction(string0,string1,string2);
+      return jiraTasks.progressStatusAction(string0, string1, string2);
     }catch(Exception e){throw new AtlassianException("Error calling progressStatusAction.",e);}}
+public com.atlassian.jira.rpc.soap.beans.RemoteResolution resolutionById(java.lang.String string0){
+    try{
+      return jiraTasks.resolutionById(string0);
+    }catch(Exception e){throw new AtlassianException("Error calling resolutionById.",e);}}
 public com.atlassian.jira.rpc.soap.beans.RemoteSecurityLevel securityLevelByName(com.atlassian.jira.rpc.soap.beans.RemoteProject remoteProject0,java.lang.String string1){
     try{
       return jiraTasks.securityLevelByName(remoteProject0,string1);

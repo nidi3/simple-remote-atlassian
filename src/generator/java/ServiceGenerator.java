@@ -1,5 +1,5 @@
-import com.mimacom.jira.rpc.soap.jirasoapservice_v2.JiraSoapService;
-import com.mimacom.rune.plugins.servlet.soap_axis1.confluenceservice_v2.ConfluenceSoapService;
+import com.atlassian.confluence.plugins.servlet.soap_axis1.confluenceservice_v2.ConfluenceSoapService;
+import com.atlassian.jira.rpc.soap.jirasoapservice_v2.JiraSoapService;
 import guru.nidi.atlassian.remote.confluence.ConfluenceService;
 import guru.nidi.atlassian.remote.confluence.ConfluenceTasks;
 import guru.nidi.atlassian.remote.jira.JiraService;

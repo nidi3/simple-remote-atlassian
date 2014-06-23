@@ -25,6 +25,7 @@ public interface JiraService{
   public java.lang.String makeReleaseNotes(com.atlassian.jira.rpc.soap.beans.RemoteProject remoteProject0,com.atlassian.jira.rpc.soap.beans.RemoteVersion remoteVersion1,boolean boolean2);
   public com.atlassian.jira.rpc.soap.beans.RemotePriority priorityById(java.lang.String string0);
   public com.atlassian.jira.rpc.soap.beans.RemoteIssue progressStatusAction(java.lang.String string0,java.lang.String string1,java.lang.String string2);
+  public com.atlassian.jira.rpc.soap.beans.RemoteResolution resolutionById(java.lang.String string0);
   public com.atlassian.jira.rpc.soap.beans.RemoteSecurityLevel securityLevelByName(com.atlassian.jira.rpc.soap.beans.RemoteProject remoteProject0,java.lang.String string1);
   public com.atlassian.jira.rpc.soap.beans.RemoteStatus statusById(java.lang.String string0);
   public com.atlassian.jira.rpc.soap.beans.RemoteStatus statusByName(java.lang.String string0);

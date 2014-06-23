@@ -1,6 +1,6 @@
 package guru.nidi.atlassian.remote.query
 
-import com.atlassian.jira.rpc.soap.beans.{RemoteProject, RemotePriority, RemoteIssueType, RemoteIssue}
+import com.atlassian.jira.rpc.soap.beans._
 import guru.nidi.atlassian.remote.jira.RemoteIssueExt
 
 /**
@@ -20,4 +20,7 @@ class QueryServiceWrapper(val delegate: QueryService) extends QueryService {
   def priorityById(id: String): RemotePriority = delegate.priorityById(id)
 
   def issueTypeById(id: String): RemoteIssueType = delegate.issueTypeById(id)
+
+  def resolutionById(id: String): RemoteResolution = delegate.resolutionById(id)
+
 }

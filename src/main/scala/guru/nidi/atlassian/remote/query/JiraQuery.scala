@@ -6,7 +6,7 @@ import guru.nidi.text.transform.Name._
 import guru.nidi.text.transform.Segment._
 import guru.nidi.text.transform.parse.SimpleParser
 import guru.nidi.text.transform.format.SimpleFormatter
-import com.atlassian.jira.rpc.soap.beans.{RemoteIssueType, RemotePriority, RemoteIssue}
+import com.atlassian.jira.rpc.soap.beans.{RemoteResolution, RemoteIssueType, RemotePriority, RemoteIssue}
 import java.util.Locale
 import guru.nidi.atlassian.remote.jira.RemoteIssueExt
 
@@ -55,5 +55,7 @@ class JiraQuery(service: QueryService,
   def priorityById(id: String): RemotePriority = service.priorityById(id)
 
   def issueTypeById(id: String): RemoteIssueType = service.issueTypeById(id)
+
+  def resolution(id: String): RemoteResolution = service.resolutionById(id)
 }
 
