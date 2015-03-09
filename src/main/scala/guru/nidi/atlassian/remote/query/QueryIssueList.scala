@@ -1,17 +1,33 @@
+/**
+ * Copyright (C) 2013 Stefan Niederhauser (nidin@gmx.ch)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package guru.nidi.atlassian.remote.query
 
 import com.atlassian.jira.rpc.soap.beans._
-import JqlBuilder._
-import collection.convert.Wrappers
-import scala.collection.immutable.SortedMap
 import guru.nidi.atlassian.remote.jira.RemoteIssueExt
+import guru.nidi.atlassian.remote.query.JqlBuilder._
+
+import scala.collection.convert.Wrappers
+import scala.collection.immutable.SortedMap
 
 /**
  *
  */
 class QueryIssueList(query: JiraQuery, elems: Seq[QueryIssue]) extends QueryIssueWrapper(elems, qi => new QueryIssueList(query, List(qi))) {
 
-  import QueryIssueList._
+  import guru.nidi.atlassian.remote.query.QueryIssueList._
 
   def children(expression: String, order: String): QueryIssueList =
     if (this.isEmpty) {

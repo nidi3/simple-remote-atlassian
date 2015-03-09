@@ -9,6 +9,14 @@
     <name>${project.artifactId}</name>
 
     <description />
+    <inceptionYear>2013</inceptionYear>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
     <properties>
         <slf4j-version>1.6.6</slf4j-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -44,6 +52,34 @@
                                 <include>**/JavaFacade.java</include>
                             </includes>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <header>com/mycila/maven/plugin/license/templates/APACHE-2.txt</header>
+                    <excludes>
+                        <exclude>*</exclude>
+                        <exclude>src/main/resources/**/*</exclude>
+                        <exclude>src/test/resources/**/*</exclude>
+                    </excludes>
+                    <mapping>
+                        <java>SLASHSTAR_STYLE</java>
+                    </mapping>
+                    <strictCheck>true</strictCheck>
+                    <properties>
+                        <owner>Stefan Niederhauser</owner>
+                        <email>nidin@gmx.ch</email>
+                    </properties>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -138,7 +174,7 @@
         <dependency>
             <groupId>guru.nidi</groupId>
             <artifactId>text-transform</artifactId>
-            <version>1.0.4</version>
+            <version>1.0.5-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.scala-lang</groupId>
@@ -180,6 +216,10 @@
                 <exclusion>
                     <groupId>commons-logging</groupId>
                     <artifactId>commons-logging</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.activation</groupId>
+                    <artifactId>activation</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
