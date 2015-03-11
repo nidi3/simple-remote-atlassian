@@ -23,6 +23,7 @@ import guru.nidi.atlassian.remote.jira.JiraService;
 import guru.nidi.atlassian.remote.jira.JiraTasks;
 import guru.nidi.atlassian.remote.jira.RemoteIssueExt;
 import guru.nidi.atlassian.remote.rest.RestException;
+import junit.framework.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -35,13 +36,23 @@ import java.util.Map;
  *
  */
 public class JiraRestServiceTest {
+
     @Test
+    @Ignore
     public void test() throws IOException, RestException {
         JiraService js = TestUtils.jiraService();
         final RemoteIssueExt[] issuesByJql = js.getIssuesByJql("project=CWSEP and key=CWSEP-1346", 0, 100);
         final RemoteResolution remoteResolution = js.resolutionById(issuesByJql[0].getResolution());
         final List<Map<String, Object>> description = js.getIssuesByJql("project=LS and key=LS-62", 0, 100, "description,status", "operations,changelog");
         System.out.println(description);
+    }
+
+    @Test
+    @Ignore
+    public void testRestGetVersions() throws IOException, RestException {
+        JiraRestService js = TestUtils.jiraRestService();
+        RemoteVersion[] versions = js.getVersions("TQMI");
+        Assert.assertTrue(versions.length > 0);
     }
 
     @Test

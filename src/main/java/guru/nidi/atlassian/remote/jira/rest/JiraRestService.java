@@ -104,8 +104,7 @@ public class JiraRestService {
 
     public Map<String, Object> getIssue(String keyOrId, String fields, String expand) throws IOException, RestException {
         final Map<String, Object> params = stdQueryParams(new HashMap<String, Object>(), fields, expand);
-        final Map<String, Object> res = (Map<String, Object>) access.executeGet("issue/" + keyOrId, params, Map.class);
-        return res;
+        return (Map<String, Object>) access.executeGet("issue/" + keyOrId, params, Map.class);
     }
 
     private Map<String, Object> stdQueryParams(Map<String, Object> params, String fields, String expand) {
@@ -163,6 +162,11 @@ public class JiraRestService {
         return res;
     }
 
+    public RemoteVersion[] getVersions(String projectKey) throws IOException, RestException {
+        final List<Map<String, Object>> versions = (List<Map<String, Object>>) access.executeGet("project/" + projectKey + "/versions");
+        return versions(versions);
+    }
+
     private RemoteIssueExt remoteIssueFromJson(Map<String, Object> issue) {
         Map<String, Object> fields = (Map<String, Object>) issue.get("fields");
         return new RemoteIssueExt((String) issue.get("id"),
@@ -211,7 +215,7 @@ public class JiraRestService {
     private RemoteComponent[] components(Map<String, Object> fields) {
         List<RemoteComponent> components = new ArrayList<RemoteComponent>();
         for (Map<String, String> comp : (List<Map<String, String>>) fields.get("components")) {
-            components.add(new RemoteComponent((String) comp.get("id"), (String) comp.get("name")));
+            components.add(new RemoteComponent(comp.get("id"), comp.get("name")));
         }
         return components.toArray(new RemoteComponent[components.size()]);
     }
@@ -257,4 +261,5 @@ public class JiraRestService {
     private Long longOf(Integer value) {
         return value == null ? null : Long.valueOf(value);
     }
+
 }
