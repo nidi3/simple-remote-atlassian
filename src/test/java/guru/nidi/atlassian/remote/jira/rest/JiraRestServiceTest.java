@@ -57,6 +57,14 @@ public class JiraRestServiceTest {
 
     @Test
     @Ignore
+    public void testRestGetProject() throws IOException, RestException {
+        JiraRestService js = TestUtils.jiraRestService();
+        RemoteProject project = js.getProjectByKey("TQMI");
+        Assert.assertNotNull(project);
+    }
+
+    @Test
+    @Ignore
     public void testRestGetIssue() throws IOException, RestException {
         JiraService js = TestUtils.jiraService();
         final RemoteIssueExt issue = js.getIssue("LS-1774");

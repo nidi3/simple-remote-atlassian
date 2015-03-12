@@ -147,6 +147,22 @@ public class DefaultJiraService implements JiraService {
         }
     }
 
+    public com.atlassian.jira.rpc.soap.beans.RemoteVersion[] getVersions(java.lang.String string1) {
+        try {
+            return jiraRestService.getVersions(string1);
+        } catch (Exception e) {
+            throw new AtlassianException("Error calling getVersions.", e);
+        }
+    }
+
+    public com.atlassian.jira.rpc.soap.beans.RemoteProject getProjectByKey(String projectKey) {
+        try {
+            return jiraRestService.getProjectByKey(projectKey);
+        } catch (Exception e) {
+            throw new AtlassianException("Error calling getProjectByKey.", e);
+        }
+    }
+
     public com.atlassian.jira.rpc.soap.beans.RemoteNamedObject actionByName(java.lang.String string0, java.lang.String string1) {
         try {
             return jiraTasks.actionByName(string0, string1);
@@ -803,14 +819,6 @@ public class DefaultJiraService implements JiraService {
         }
     }
 
-    public com.atlassian.jira.rpc.soap.beans.RemoteProject getProjectByKey(java.lang.String string1) {
-        try {
-            return service.getProjectByKey(token, string1);
-        } catch (Exception e) {
-            throw new AtlassianException("Error calling getProjectByKey.", e);
-        }
-    }
-
     public com.atlassian.jira.rpc.soap.beans.RemoteProjectRole getProjectRole(long long1) {
         try {
             return service.getProjectRole(token, long1);
@@ -944,15 +952,6 @@ public class DefaultJiraService implements JiraService {
             return service.getUser(token, string1);
         } catch (Exception e) {
             throw new AtlassianException("Error calling getUser.", e);
-        }
-    }
-
-    public com.atlassian.jira.rpc.soap.beans.RemoteVersion[] getVersions(java.lang.String string1) {
-        try {
-//            return service.getVersions(token, string1);
-            return jiraRestService.getVersions(string1);
-        } catch (Exception e) {
-            throw new AtlassianException("Error calling getVersions.", e);
         }
     }
 

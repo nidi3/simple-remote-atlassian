@@ -77,11 +77,17 @@ public class JiraRestService {
     public List<RemoteProject> getAllProjects() throws IOException, RestException {
         final List<Map<String, Object>> projects = (List<Map<String, Object>>) access.executeGet("project");
         List<RemoteProject> res = new ArrayList<RemoteProject>();
+
         for (Map<String, Object> project : projects) {
-            res.add(new RemoteProject((String) project.get("id"), (String) project.get("name"), null, null,
-                    (String) project.get("key"), null, null, null, null, null));
+            res.add(mapRequestToProject(project));
         }
         return res;
+    }
+
+    public RemoteProject getProjectByKey(String projectKey) throws IOException, RestException {
+        final Map<String, Object> project = (Map<String, Object>) access.executeGet("project/" + projectKey);
+
+        return mapRequestToProject(project);
     }
 
     public List<RemoteProject> getProjectsByKey(String... keys) throws IOException, RestException {
@@ -260,6 +266,11 @@ public class JiraRestService {
 
     private Long longOf(Integer value) {
         return value == null ? null : Long.valueOf(value);
+    }
+
+    private RemoteProject mapRequestToProject(Map<String, Object> project) {
+        return new RemoteProject((String) project.get("id"), (String) project.get("name"), null, null,
+                (String) project.get("key"), null, null, null, null, null);
     }
 
 }
