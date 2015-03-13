@@ -13,8 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package guru.nidi.atlassian.remote;
+package it.guru.nidi.atlassian.remote;
 
+import com.atlassian.jira.rpc.soap.beans.RemoteIssue;
+import com.atlassian.jira.rpc.soap.beans.RemoteIssueType;
+import com.atlassian.jira.rpc.soap.beans.RemoteProject;
+import com.atlassian.jira.rpc.soap.beans.RemoteVersion;
 import guru.nidi.atlassian.remote.bamboo.BambooService;
 import guru.nidi.atlassian.remote.bamboo.rest.DefaultBambooService;
 import guru.nidi.atlassian.remote.confluence.ConfluenceService;
@@ -24,16 +28,19 @@ import guru.nidi.atlassian.remote.jira.JiraService;
 import guru.nidi.atlassian.remote.jira.rest.JiraRestService;
 import guru.nidi.atlassian.remote.meta.JiraGenerateRequest;
 
+import java.util.Calendar;
+import java.util.List;
+
 /**
  *
  */
 public class TestUtils {
 
-    private static final String USERNAME = System.getenv("JIRA_USER");
-    private static final String PASSWORD = System.getenv("JIRA_PASS");
-    private static final String BAMBOO_URL = System.getenv("BAMBOO_URL");
-    private static final String CONFLUENCE_URL = System.getenv("CONFLUENCE_URL");
-    private static final String JIRA_URL = System.getenv("JIRA_URL");
+    private static final String USERNAME = "admin";
+    private static final String PASSWORD = "admin";
+    private static final String BAMBOO_URL = "http://localhost:6990/bamboo";
+    private static final String CONFLUENCE_URL = "http://localhost:1990/confluence";
+    private static final String JIRA_URL = "http://localhost:2990/jira";
 
     public static BambooService bambooService() {
         return new DefaultBambooService(BAMBOO_URL, USERNAME, PASSWORD);
@@ -55,5 +62,18 @@ public class TestUtils {
         final JiraGenerateRequest request = new JiraGenerateRequest();
         request.setUrl(JIRA_URL);
         return request;
+    }
+
+    public static void setupJira(JiraService js) {
+        final RemoteProject tst;
+        List<RemoteProject> list = js.getProjectsByKey("TST");
+        if (list.isEmpty()) {
+            tst = js.createProject("TST", "Test", "Description", "http://localhost:2990/jira/browse/TST", "admin", null, null, null);
+            final RemoteIssueType[] issueTypes = js.getIssueTypes();
+            js.createIssue(new RemoteIssue(null, null, "admin", null, null, Calendar.getInstance(), null, "Desc", null, null, null, "TST-1", null, "TST", "admin", null, null, "sum", issueTypes[0].getId(), null, 0L));
+            js.addVersion("TST", new RemoteVersion(null, "First", false, Calendar.getInstance(), false, 0L));
+        } else {
+            tst = list.get(0);
+        }
     }
 }

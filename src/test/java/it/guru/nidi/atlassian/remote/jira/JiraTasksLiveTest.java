@@ -13,13 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package guru.nidi.atlassian.remote.jira;
+package it.guru.nidi.atlassian.remote.jira;
 
 import com.atlassian.jira.rpc.soap.beans.RemoteCustomFieldValue;
 import com.atlassian.jira.rpc.soap.beans.RemoteIssue;
 import com.atlassian.jira.rpc.soap.beans.RemoteProject;
 import com.atlassian.jira.rpc.soap.beans.RemoteVersion;
-import guru.nidi.atlassian.remote.TestUtils;
+import guru.nidi.atlassian.remote.jira.DefaultJiraService;
+import guru.nidi.atlassian.remote.jira.JiraTasks;
+import it.guru.nidi.atlassian.remote.TestUtils;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -31,27 +34,16 @@ import java.util.List;
  *
  */
 public class JiraTasksLiveTest {
-    private void print(RemoteIssue issue) {
-        Arrays.sort(issue.getCustomFieldValues(), new Comparator<RemoteCustomFieldValue>() {
-            @Override
-            public int compare(RemoteCustomFieldValue o1, RemoteCustomFieldValue o2) {
-                return o1 == null ? 1 : o2 == null ? -1 : key(o1).compareTo(key(o2));
-            }
-
-            private String key(RemoteCustomFieldValue v) {
-                return v.getCustomfieldId() == null ? "" : v.getCustomfieldId();
-            }
-        });
-        for (RemoteCustomFieldValue value : issue.getCustomFieldValues()) {
-            System.out.println(value == null ? null : (value.getCustomfieldId() + " " + value.getKey() + " " + Arrays.toString(value.getValues())));
-        }
+    @BeforeClass
+    public static void init() {
+        System.out.println("Start jira with 'mvn jira:run' or run as integration test.");
     }
 
     @Test
     @Ignore
     public void testCreateRequirementAndFeature() throws Exception {
-        JiraTasks tasks = new JiraTasks(new DefaultJiraService("https://jira.atlassian.com", System.getenv("JIRA_USER"), System.getenv("JIRA_PASS")));
-        RemoteVersion[] vs = tasks.getService().getVersions("MOA");
+        JiraTasks tasks = new JiraTasks(new DefaultJiraService("http://localhost:2990/jira", "admin", "admin"));
+        RemoteVersion[] vs = tasks.getService().getVersions("TST");
         RemoteIssue i = tasks.getService().getIssue("MOA-63");
 //        List<Map<String, Object>> allIssuesByJql = tasks.getService().getIssuesByJql("project in (LS) and (type in (Epic,'Non Functional Requirement') and fixVersion='r1.0' and level is empty and component is not empty)", 1, 2,null,null);
         RemoteIssue[] issues = tasks.getService().getIssuesByJql("project in (LS) and (type in (Epic,'Non Functional Requirement') and fixVersion='r1.0' and level is empty and component is not empty)", 1, 1);
@@ -87,6 +79,22 @@ public class JiraTasksLiveTest {
         JiraTasks tasks = new JiraTasks(TestUtils.jiraService());
         for (int i = 1229; i <= 1234; i++) {
             //tasks.getService().deleteIssue("SIBAD-" + i);
+        }
+    }
+
+    private void print(RemoteIssue issue) {
+        Arrays.sort(issue.getCustomFieldValues(), new Comparator<RemoteCustomFieldValue>() {
+            @Override
+            public int compare(RemoteCustomFieldValue o1, RemoteCustomFieldValue o2) {
+                return o1 == null ? 1 : o2 == null ? -1 : key(o1).compareTo(key(o2));
+            }
+
+            private String key(RemoteCustomFieldValue v) {
+                return v.getCustomfieldId() == null ? "" : v.getCustomfieldId();
+            }
+        });
+        for (RemoteCustomFieldValue value : issue.getCustomFieldValues()) {
+            System.out.println(value == null ? null : (value.getCustomfieldId() + " " + value.getKey() + " " + Arrays.toString(value.getValues())));
         }
     }
 }

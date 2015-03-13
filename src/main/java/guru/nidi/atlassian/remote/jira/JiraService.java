@@ -26,7 +26,9 @@ public interface JiraService{
   public guru.nidi.atlassian.remote.jira.RemoteIssueExt[] getIssuesByJql(java.lang.String string0,int int1,int int2);
   public java.util.List<java.util.Map<java.lang.String, java.lang.Object>> getIssuesByJql(java.lang.String string0,int int1,int int2,java.lang.String string3,java.lang.String string4);
   public guru.nidi.atlassian.remote.jira.RemoteIssueExt[] getIssuesFromFilter(java.lang.String string0);
+  public com.atlassian.jira.rpc.soap.beans.RemoteProject getProjectByKey(java.lang.String string0);
   public java.util.List<com.atlassian.jira.rpc.soap.beans.RemoteProject> getProjectsByKey(java.lang.String... string0);
+  public com.atlassian.jira.rpc.soap.beans.RemoteVersion[] getVersions(java.lang.String string0);
   public void linkIssues(guru.nidi.atlassian.remote.jira.rest.IssueLink issueLink0);
   public java.io.InputStream loadAttachment(com.atlassian.jira.rpc.soap.beans.RemoteAttachment remoteAttachment0);
   public com.atlassian.jira.rpc.soap.beans.RemoteNamedObject actionByName(java.lang.String string0,java.lang.String string1);
@@ -111,8 +113,7 @@ public interface JiraService{
   public com.atlassian.jira.rpc.soap.beans.RemoteAvatar getProjectAvatar(java.lang.String string1);
   public com.atlassian.jira.rpc.soap.beans.RemoteAvatar[] getProjectAvatars(java.lang.String string1,boolean boolean2);
   public com.atlassian.jira.rpc.soap.beans.RemoteProject getProjectById(long long1);
-  public com.atlassian.jira.rpc.soap.beans.RemoteProject getProjectByKey(java.lang.String string1);
-  public com.atlassian.jira.rpc.soap.beans.RemoteProjectRole getProjectRole(long long1);
+    public com.atlassian.jira.rpc.soap.beans.RemoteProjectRole getProjectRole(long long1);
   public com.atlassian.jira.rpc.soap.beans.RemoteProjectRoleActors getProjectRoleActors(com.atlassian.jira.rpc.soap.beans.RemoteProjectRole remoteProjectRole1,com.atlassian.jira.rpc.soap.beans.RemoteProject remoteProject2);
   public com.atlassian.jira.rpc.soap.beans.RemoteProjectRole[] getProjectRoles();
   public com.atlassian.jira.rpc.soap.beans.RemoteProject getProjectWithSchemesById(long long1);
@@ -129,8 +130,7 @@ public interface JiraService{
   public com.atlassian.jira.rpc.soap.beans.RemoteIssueType[] getSubTaskIssueTypes();
   public com.atlassian.jira.rpc.soap.beans.RemoteIssueType[] getSubTaskIssueTypesForProject(java.lang.String string1);
   public com.atlassian.jira.rpc.soap.beans.RemoteUser getUser(java.lang.String string1);
-  public com.atlassian.jira.rpc.soap.beans.RemoteVersion[] getVersions(java.lang.String string1);
-  public com.atlassian.jira.rpc.soap.beans.RemoteWorklog[] getWorklogs(java.lang.String string1);
+    public com.atlassian.jira.rpc.soap.beans.RemoteWorklog[] getWorklogs(java.lang.String string1);
   public boolean hasPermissionToCreateWorklog(java.lang.String string1);
   public boolean hasPermissionToDeleteWorklog(java.lang.String string1);
   public boolean hasPermissionToEditComment(com.atlassian.jira.rpc.soap.beans.RemoteComment remoteComment1);

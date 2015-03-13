@@ -15,8 +15,8 @@
  */
 package guru.nidi.atlassian.remote.meta;
 
-import guru.nidi.atlassian.remote.TestUtils;
 import guru.nidi.atlassian.remote.meta.client.JiraExportClient;
+import it.guru.nidi.atlassian.remote.TestUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 

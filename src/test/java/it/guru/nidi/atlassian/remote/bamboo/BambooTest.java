@@ -13,12 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package guru.nidi.atlassian.remote.bamboo.rest;
+package it.guru.nidi.atlassian.remote.bamboo;
 
-import guru.nidi.atlassian.remote.TestUtils;
 import guru.nidi.atlassian.remote.bamboo.BambooResultDetail;
 import guru.nidi.atlassian.remote.bamboo.BambooService;
-import org.junit.Ignore;
+import guru.nidi.atlassian.remote.bamboo.rest.BambooPlan;
+import guru.nidi.atlassian.remote.bamboo.rest.BambooResult;
+import guru.nidi.atlassian.remote.bamboo.rest.BambooServerInfo;
+import it.guru.nidi.atlassian.remote.TestUtils;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
@@ -30,7 +33,13 @@ import static junit.framework.Assert.assertNotNull;
  *
  */
 public class BambooTest {
-    private BambooService service = TestUtils.bambooService();
+    private static BambooService service;
+
+    @BeforeClass
+    public static void init() {
+        service = TestUtils.bambooService();
+        System.out.println("Start jira with 'mvn bamboo:run' or run as integration test.");
+    }
 
     @Test
     public void serverInfo() {
@@ -51,9 +60,8 @@ public class BambooTest {
     }
 
     @Test
-    @Ignore
     public void resultDetail() {
-        final BambooResultDetail detail = service.getResultDetail("IPOM-NIGHTLY-221");
+        final BambooResultDetail detail = service.getResultDetail("AP-SUCCEED-2");
         assertNotNull(detail);
     }
 }

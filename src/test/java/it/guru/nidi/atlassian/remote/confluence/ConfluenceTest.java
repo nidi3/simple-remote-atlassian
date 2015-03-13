@@ -13,35 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package guru.nidi.atlassian.remote.confluence;
+package it.guru.nidi.atlassian.remote.confluence;
 
-import com.atlassian.confluence.rpc.soap.beans.RemotePage;
+import com.atlassian.confluence.rpc.soap.beans.RemotePageSummary;
 import com.atlassian.confluence.rpc.soap.beans.RemoteSpace;
 import com.atlassian.confluence.rpc.soap.beans.RemoteSpaceSummary;
-import guru.nidi.atlassian.remote.TestUtils;
-import org.junit.Ignore;
+import guru.nidi.atlassian.remote.confluence.ConfluenceService;
+import it.guru.nidi.atlassian.remote.TestUtils;
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import static junit.framework.Assert.*;
 
 /**
  *
  */
 public class ConfluenceTest {
+    private static ConfluenceService service;
+
+    @BeforeClass
+    public static void init() {
+        service = TestUtils.confluenceService();
+        System.out.println("Start jira with 'mvn confluence:run' or run as integration test.");
+    }
+
     @Test
-    @Ignore
     public void simple() {
-        ConfluenceService service = TestUtils.confluenceService();
         RemoteSpaceSummary[] spaces = service.getSpaces();
-        RemoteSpace moa = service.getSpace("LIVINGSERVICES");
-        RemotePage page = service.getPage("IPOM", "Release notes");
-        System.out.println(page.getContent());
+        assertEquals(1, spaces.length);
+        assertEquals("Demonstration Space", spaces[0].getName());
+        assertEquals("ds", spaces[0].getKey());
 
-        page = service.getPage("LIVINGSERVICES", "Einführung und Ziele");
-        System.out.println(page.getContent());
-
-        page = service.getPage("LIVINGSERVICES", "Projektaspekte");
-        System.out.println(page.getContent());
-
-        page = service.getPage("LIVINGSERVICES", "Randbedingungen");
-        System.out.println(page.getContent());
+        RemoteSpace ds = service.getSpace("ds");
+        assertNotNull(ds);
+        final RemotePageSummary[] dses = service.getPages("ds");
+        assertTrue(dses.length > 1);
     }
 }
