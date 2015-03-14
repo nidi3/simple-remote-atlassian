@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory
 trait ParseExceptionHandler {
   private val logger = LoggerFactory.getLogger(getClass)
 
-  protected def log(issue: QueryIssueList, e: Exception) = logger.warn("Parsing problem with issue {}", issue, e)
+  protected def log(issue: QueryIssueList, e: Exception) = logger.warn("Parsing problem with issue {}", issue.asInstanceOf[Any], e)
 
   def handleException(input: String, issue: QueryIssueList, e: Exception): Segment
 }
