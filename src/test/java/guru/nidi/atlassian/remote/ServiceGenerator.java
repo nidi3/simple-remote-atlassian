@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package guru;
+package guru.nidi.atlassian.remote;
 
 import com.atlassian.confluence.plugins.servlet.soap_axis1.confluenceservice_v2.ConfluenceSoapService;
 import com.atlassian.jira.rpc.soap.jirasoapservice_v2.JiraSoapService;
