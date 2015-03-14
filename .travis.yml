@@ -1,2 +1,2 @@
 language: java
-script: "mvn test && mvn verify"
+script: "mvn install:install-file -DgroupId=jta -DartifactId=jta -Dversion=1.0.1 -Dpackaging=jar -Dfile=lib/jta-1_0_1B-classes.jar && mvn test && mvn verify"
